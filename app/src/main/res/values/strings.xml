@@ -4,6 +4,14 @@
     <string name="email">scores@quickscores.com</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+   <string name="Home">Home team</string>
+    <string name="Away">Away team</string>
+    <string name="HomeGoals">0</string>
+    <string name="AwayGoals">0</string>
+    <string name="Time">Time</string>
+    <string name="HomeLogo">Home Logo</string>
+    <string name="AwayLogo">Away Logo</string>
+    <string name="league">League</string>
+    <string name="country">Country</string>
+
 </resources>

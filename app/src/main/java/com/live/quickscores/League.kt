@@ -1,5 +1,7 @@
 package com.live.quickscores
 
+import java.io.Serializable
+
 data class League(
     val country: String,
     val flag: String,
@@ -8,4 +10,4 @@ data class League(
     val name: String,
     val round: String,
     val season: Int
-)
+): Serializable

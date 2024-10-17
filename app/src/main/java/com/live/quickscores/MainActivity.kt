@@ -1,3 +1,5 @@
+package com.live.quickscores
+
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -9,8 +11,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.live.quickscores.R
-import com.live.quickscores.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -29,13 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        dates = generateDates(1000)
-        Log.d("MainActivity", "Generated Dates: $dates")
+
+        dates = generateDates()
+        Log.d("Dates", "Generated Dates: $dates")
 
         toolbar = findViewById(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
-
-
 
         setUpToolBar()
         initializeViews()
@@ -45,7 +44,8 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
 
         setUpViewPager(viewPager, tabLayout)
-
+        val todayIndex = findTodayIndex(dates)
+        viewPager.setCurrentItem(todayIndex, false)
         setSupportActionBar(toolbar)
     }
 
@@ -73,63 +73,66 @@ class MainActivity : AppCompatActivity() {
     private fun setUpViewPager(viewPager: ViewPager2, tabLayout: TabLayout) {
         val adapter = ViewPagerAdapter(this, dates)
         viewPager.adapter = adapter
-
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = getTabTitle(dates[position])
+            val date = dates[position]
+            Log.d("Tabs", "Setting tab for date: $date")
+            tab.text = getTabTitle(date)
         }.attach()
     }
 
     private fun getTabTitle(dateString: String): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val date = dateFormat.parse(dateString)
+        val date = dateFormat.parse(dateString) ?: return dateString
 
-        if (date == null) {
-            Log.e("MainActivity", "Date parsing failed for: $dateString")
-            return dateString
-        }
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance().apply { time = date }
         val today = Calendar.getInstance()
-
-        val yesterday = Calendar.getInstance().apply {
-            add(Calendar.DATE, -1)
-        }
-
-        val tomorrow = Calendar.getInstance().apply {
-            add(Calendar.DATE, 1)
-        }
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
+        val tomorrow = Calendar.getInstance().apply { add(Calendar.DATE, 1) }
 
         return when {
-            today.get(Calendar.YEAR) == date.year + 1900 &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == date.day + 1 -> "Today"
-
-            yesterday.get(Calendar.YEAR) == date.year + 1900 &&
-                    yesterday.get(Calendar.DAY_OF_YEAR) == date.day + 1 -> "Yesterday"
-
-            tomorrow.get(Calendar.YEAR) == date.year + 1900 &&
-                    tomorrow.get(Calendar.DAY_OF_YEAR) == date.day + 1 -> "Tomorrow"
-
-            else -> SimpleDateFormat("MMM dd", Locale.getDefault()).format(date)
+            calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "Today"
+            calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
+            calendar.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR) -> "Tomorrow"
+            else -> SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(date)
         }
     }
 
-    private fun generateDates(totalDays: Int): List<String> {
+    private fun generateDates(): List<String> {
         val dateList = mutableListOf<String>()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
-        for (i in (totalDays / 2) downTo 1) {
-            calendar.add(Calendar.DATE, -1)
-            dateList.add(dateFormat.format(calendar.time))
-        }
-
-        calendar.time = Date()
         dateList.add(dateFormat.format(calendar.time))
 
-        for (i in 1..(totalDays / 2)) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+
+        for (i in 1..14) {
+            calendar.add(Calendar.DATE, -1)
+            dateList.add(0, dateFormat.format(calendar.time))
+        }
+
+
+        calendar.time = Date()
+
+
+        for (i in 1..15) {
             calendar.add(Calendar.DATE, 1)
             dateList.add(dateFormat.format(calendar.time))
         }
 
         return dateList
     }
+    private fun findTodayIndex(dates: List<String>): Int {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        return dates.indexOf(today)
+    }
+
+
 }

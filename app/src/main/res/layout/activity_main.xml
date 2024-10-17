@@ -33,12 +33,12 @@
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabMode="fixed"
+                app:tabMode="scrollable"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="@color/gray"
+                app:tabIndicatorColor="@color/black"
                 app:tabIndicatorHeight="4dp"
                 app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="@color/white"/>
+                app:tabTextColor="@color/black"/>
 
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.viewpager2.widget.ViewPager2
@@ -46,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="@color/white"/>
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/BannerAdView"
