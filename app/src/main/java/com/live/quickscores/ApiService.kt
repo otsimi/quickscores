@@ -9,4 +9,5 @@ interface ApiService {
     @GET("v3/fixtures?")
     fun fetchFixtures(
         @Header("x-rapidapi-key") apiKey: String, @Query("date") date: String): Call<FixturesResponse>
+
 }

@@ -1,15 +1,13 @@
-import android.util.Log
+package com.live.quickscores
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.live.quickscores.FixturesResponse
-import com.live.quickscores.LOGO_URL
-import com.live.quickscores.Response
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
 import com.squareup.picasso.Picasso
 
-class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, private val fixtureList: List<Response>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -21,8 +19,13 @@ class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) :
             val firstResponse = competition.response.firstOrNull()
             if (firstResponse != null) {
                 binding.league.text = firstResponse.league.name
+                if (firstResponse.league.logo.isNotEmpty()){
+                    Picasso.get().load(LEAGUE_LOGO_URL+"${firstResponse.league.id}.png").into(binding.leagueLogo)
+                    println("${LEAGUE_LOGO_URL+firstResponse.league.id}.png,Gashagua")
+                }
                 binding.country.text = firstResponse.league.country
-//                Log.d("API Response", "FirstResponseJSON: $firstResponse")
+
+
             }
         }
     }
@@ -33,18 +36,18 @@ class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) :
             binding.AwayTeam.text = match.teams.away.name
             binding.Time.text = match.fixture.timestamp.toString()
             if (match.teams.home.logo.isNotEmpty()){
-                Picasso.get().load(LOGO_URL+match.teams.home.logo) .into(binding.HomeLogo)
+                Picasso.get().load(LOGO_URL + "${match.teams.home.id}.png").into(binding.HomeLogo)
+                println("${LOGO_URL+ match.teams.home.id},Gachagua")
             }
             if (match.teams.away.logo.isNotEmpty()){
-                Picasso.get().load(LOGO_URL+match.teams.away.logo) .into(binding.AwayLogo)
+                Picasso.get().load(LOGO_URL + "${match.teams.away.id}.png").into(binding.AwayLogo)
+                println("${LOGO_URL+ match.teams.away.id},Gachagua")
             }
         }
     }
-
     override fun getItemViewType(position: Int): Int {
         return if (isHeader(position)) TYPE_HEADER else TYPE_ITEM
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
             val binding = CompetitionTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -56,7 +59,7 @@ class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) :
     }
 
     override fun getItemCount(): Int {
-        return competitionList.sumOf { it.response.size + 1 }
+        return headerList.sumOf { it.response.size + 1 }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -71,7 +74,7 @@ class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) :
 
     private fun isHeader(position: Int): Boolean {
         var offset = 0
-        competitionList.forEach { competition ->
+        headerList.forEach { competition ->
             if (position == offset) return true
             offset += competition.response.size + 1
         }
@@ -80,22 +83,25 @@ class RecyclerViewAdapter(private val competitionList: List<FixturesResponse>) :
 
     private fun getCompetitionForPosition(position: Int): FixturesResponse {
         var offset = 0
-        competitionList.forEach { competition ->
+        headerList.forEach { competition ->
             if (position == offset) return competition
             offset += competition.response.size + 1
         }
-        throw IllegalStateException("Position not found")
+        throw IllegalStateException("Mulima")
     }
 
     private fun getMatchForPosition(position: Int): Response {
         var offset = 0
-        competitionList.forEach { competition ->
-            offset++  // Skip header
+        headerList.forEach { competition ->
+            offset++
             if (position < offset + competition.response.size) {
                 return competition.response[position - offset]
             }
             offset += competition.response.size
         }
-        throw IllegalStateException("Position not found")
+        throw IllegalStateException("Mulima")
     }
 }
+
+
+

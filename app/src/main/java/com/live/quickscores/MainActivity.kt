@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val date = dates[position]
-            Log.d("Tabs", "Setting tab for date: $date")
+            Log.d("Tabs", "Dates: $date")
             tab.text = getTabTitle(date)
         }.attach()
     }
@@ -118,9 +118,7 @@ class MainActivity : AppCompatActivity() {
             dateList.add(0, dateFormat.format(calendar.time))
         }
 
-
         calendar.time = Date()
-
 
         for (i in 1..15) {
             calendar.add(Calendar.DATE, 1)
