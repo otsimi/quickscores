@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,11 +13,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response as Response1
 
-class MatchFragment : Fragment() {
+class MatchFragment : Fragment() , RecyclerViewAdapter.OnFixtureClickListener {
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var date: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +59,7 @@ class MatchFragment : Fragment() {
         val headerList = listOf(fixturesResponse)
         val competitionList = fixturesResponse.response
 
-        recyclerViewAdapter = RecyclerViewAdapter(headerList, competitionList)
+        recyclerViewAdapter = RecyclerViewAdapter(headerList ,this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
@@ -72,5 +74,19 @@ class MatchFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onFixtureClick(match: Response) {
+        Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
+        val fixtureFragment = FixtureFragment().apply {
+            arguments = Bundle().apply {
+                putString("matchId", match.fixture.id.toString())
+            }
+        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container,fixtureFragment)
+            .addToBackStack(null)
+            .commit()
+        Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: ${match.fixture.id}")
     }
 }

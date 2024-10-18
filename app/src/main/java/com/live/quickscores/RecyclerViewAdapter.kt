@@ -7,11 +7,14 @@ import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
 import com.squareup.picasso.Picasso
 
-class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, private val fixtureList: List<Response>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, private val fixtureClickListener: OnFixtureClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_ITEM = 1
+    }
+    interface OnFixtureClickListener {
+        fun onFixtureClick(match: Response)
     }
 
     inner class TitleViewHolder(private val binding: CompetitionTitleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -35,14 +38,18 @@ class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, privat
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
             binding.Time.text = match.fixture.timestamp.toString()
-            if (match.teams.home.logo.isNotEmpty()){
+            if (match.teams.home.logo.isNotEmpty()) {
                 Picasso.get().load(LOGO_URL + "${match.teams.home.id}.png").into(binding.HomeLogo)
-                println("${LOGO_URL+ match.teams.home.id},Gachagua")
+                println("${LOGO_URL + match.teams.home.id},Gachagua")
             }
-            if (match.teams.away.logo.isNotEmpty()){
+            if (match.teams.away.logo.isNotEmpty()) {
                 Picasso.get().load(LOGO_URL + "${match.teams.away.id}.png").into(binding.AwayLogo)
-                println("${LOGO_URL+ match.teams.away.id},Gachagua")
+                println("${LOGO_URL + match.teams.away.id},Gachagua")
             }
+            binding.root.setOnClickListener {
+                fixtureClickListener.onFixtureClick(match)
+            }
+
         }
     }
     override fun getItemViewType(position: Int): Int {
