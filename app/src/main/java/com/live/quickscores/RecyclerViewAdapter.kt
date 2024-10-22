@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso
         private const val TYPE_ITEM = 1
     }
     interface OnFixtureClickListener {
+
+
         fun onFixtureClick(match: Response)
     }
 

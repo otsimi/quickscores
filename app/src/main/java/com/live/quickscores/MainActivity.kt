@@ -2,6 +2,7 @@ package com.live.quickscores
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,13 +18,16 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
+
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
     private lateinit var dates: List<String>
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,27 +35,56 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         dates = generateDates()
-        Log.d("Dates", "Generated Dates: $dates")
 
         toolbar = findViewById(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
-
         setUpToolBar()
-        initializeViews()
         loadBannerAd()
 
-        val viewPager = findViewById<ViewPager2>(R.id.view_pager)
-        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
+        viewPager = findViewById(R.id.view_pager)
+        tabLayout = findViewById(R.id.tab_layout)
+        adView = findViewById(R.id.BannerAdView)
 
         setUpViewPager(viewPager, tabLayout)
+
         val todayIndex = findTodayIndex(dates)
         viewPager.setCurrentItem(todayIndex, false)
         setSupportActionBar(toolbar)
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (position == 0) {
+                    showViewPagerAndTabs()
+                } else {
+                    hideViewPagerAndTabs()
+                }
+            }
+        })
+    }
+
+    override fun onFixtureClicked(matchId: String) {
+        navigateToFixtureFragment(matchId)
+    }
+
+
+    private fun navigateToFixtureFragment(matchId: String) {
+        val fixtureFragment = FixtureFragment().apply {
+            arguments = Bundle().apply {
+                putString("matchId", matchId)
+            }
+        }
+        hideViewPagerAndTabs()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fixtureFragment)
+            .addToBackStack(null)
+            .commit()
+
+        Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: $matchId")
     }
 
     private fun setUpToolBar() {
         setSupportActionBar(toolbar)
-
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
             R.string.navigation_drawer_open,
@@ -59,10 +92,6 @@ class MainActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-    }
-
-    private fun initializeViews() {
-        adView = findViewById(R.id.BannerAdView)
     }
 
     private fun loadBannerAd() {
@@ -75,7 +104,6 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val date = dates[position]
-            Log.d("Tabs", "Dates: $date")
             tab.text = getTabTitle(date)
         }.attach()
     }
@@ -112,7 +140,6 @@ class MainActivity : AppCompatActivity() {
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
 
-
         for (i in 1..14) {
             calendar.add(Calendar.DATE, -1)
             dateList.add(0, dateFormat.format(calendar.time))
@@ -127,10 +154,37 @@ class MainActivity : AppCompatActivity() {
 
         return dateList
     }
+
     private fun findTodayIndex(dates: List<String>): Int {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         return dates.indexOf(today)
     }
 
+    fun hideViewPagerAndTabs() {
+        viewPager.visibility = View.GONE
+        tabLayout.visibility = View.GONE
+        toolbar.visibility = View.GONE
+        Log.d("Murima", "ViewPager and Tabs are now hidden")
+    }
 
+    // Show the ViewPager, TabLayout, and toolbar
+    fun showViewPagerAndTabs() {
+        viewPager.visibility = View.VISIBLE
+        tabLayout.visibility = View.VISIBLE
+        toolbar.visibility = View.VISIBLE
+        Log.d("Murima", "ViewPager and Tabs are now visible")
+    }
+
+
+    @Deprecated("This method has been deprecated in favor of using the OnBackPressedDispatcher.")
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if (currentFragment is FixtureFragment) {
+            supportFragmentManager.popBackStack()
+            showViewPagerAndTabs()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

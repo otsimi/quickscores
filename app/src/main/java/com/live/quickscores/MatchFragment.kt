@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,24 +14,40 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response as Response1
 
-class MatchFragment : Fragment() , RecyclerViewAdapter.OnFixtureClickListener {
+class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var date: String
+    private var fixtureClickListener: OnFixtureClickListener? = null
 
+    interface OnFixtureClickListener {
+        fun onFixtureClicked(matchId: String)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFixtureClickListener) {
+            fixtureClickListener = context
+        } else {
+            throw RuntimeException("$context must implement OnFixtureClickListener")
+        }
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_match, container, false)
         date = arguments?.getString("date") ?: ""
         recyclerView = view.findViewById(R.id.RecyclerView)
 
         fetchDataForDate(date)
-
         return view
+    }
+
+    override fun onFixtureClick(match: Response) {
+        Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
+        fixtureClickListener?.onFixtureClicked(match.fixture.id.toString())
     }
 
     private fun fetchDataForDate(date: String) {
@@ -39,7 +56,6 @@ class MatchFragment : Fragment() , RecyclerViewAdapter.OnFixtureClickListener {
             override fun onResponse(call: Call<FixturesResponse>, response: Response1<FixturesResponse>) {
                 if (response.isSuccessful) {
                     val fixturesResponseBody = response.body()
-                    Log.d("API Response", "Full Response JSON: $fixturesResponseBody")
                     fixturesResponseBody?.let {
                         setupRecyclerView(it)
                     }
@@ -48,22 +64,24 @@ class MatchFragment : Fragment() , RecyclerViewAdapter.OnFixtureClickListener {
                 }
             }
 
-
             override fun onFailure(call: Call<FixturesResponse>, t: Throwable) {
-                Log.e("API Failure", t.message ?: "Murima")
+                Log.e("API Failure", t.message ?: "Error")
             }
         })
     }
 
     private fun setupRecyclerView(fixturesResponse: FixturesResponse) {
         val headerList = listOf(fixturesResponse)
-        val competitionList = fixturesResponse.response
-
-        recyclerViewAdapter = RecyclerViewAdapter(headerList ,this)
+        recyclerViewAdapter = RecyclerViewAdapter(headerList, this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        fixtureClickListener = null
     }
 
     companion object {
@@ -74,19 +92,5 @@ class MatchFragment : Fragment() , RecyclerViewAdapter.OnFixtureClickListener {
             fragment.arguments = args
             return fragment
         }
-    }
-
-    override fun onFixtureClick(match: Response) {
-        Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-        val fixtureFragment = FixtureFragment().apply {
-            arguments = Bundle().apply {
-                putString("matchId", match.fixture.id.toString())
-            }
-        }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,fixtureFragment)
-            .addToBackStack(null)
-            .commit()
-        Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: ${match.fixture.id}")
     }
 }

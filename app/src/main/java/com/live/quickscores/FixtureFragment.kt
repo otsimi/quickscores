@@ -23,6 +23,7 @@ class FixtureFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("FragmentTransaction", "onCreateView in FixtureFragment called")
         return inflater.inflate(R.layout.fragment_fixture, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
