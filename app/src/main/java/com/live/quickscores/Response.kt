@@ -1,6 +1,10 @@
 package com.live.quickscores
 
-import java.io.Serializable
+import com.live.quickscores.dataclasses.Fixture
+import com.live.quickscores.dataclasses.Goals
+import com.live.quickscores.dataclasses.League
+import com.live.quickscores.dataclasses.Score
+import com.live.quickscores.dataclasses.Teams
 
 data class Response(
     val fixture: Fixture,

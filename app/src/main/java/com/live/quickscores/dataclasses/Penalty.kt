@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.dataclasses
 
 data class Penalty(
     val away: Int,

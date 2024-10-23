@@ -3,6 +3,7 @@ package com.live.quickscores
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.live.quickscores.fragments.MatchFragment
 
 class ViewPagerAdapter(activity: FragmentActivity, private val dates: List<String>): FragmentStateAdapter(activity) {
 

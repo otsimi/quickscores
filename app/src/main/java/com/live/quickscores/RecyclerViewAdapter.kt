@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
+import com.live.quickscores.dataclasses.FixturesResponse
 import com.squareup.picasso.Picasso
 
         class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, private val fixtureClickListener: OnFixtureClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -14,8 +15,6 @@ import com.squareup.picasso.Picasso
         private const val TYPE_ITEM = 1
     }
     interface OnFixtureClickListener {
-
-
         fun onFixtureClick(match: Response)
     }
 

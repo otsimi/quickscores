@@ -1,4 +1,6 @@
-package com.live.quickscores
+package com.live.quickscores.dataclasses
+
+import com.live.quickscores.Response
 
 data class FixturesResponse(
     val errors: List<Any>,

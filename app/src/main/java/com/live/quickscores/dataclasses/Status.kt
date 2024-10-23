@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.dataclasses
 
 data class Status(
     val elapsed: Int,

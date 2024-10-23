@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import com.live.quickscores.dataclasses.FixturesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

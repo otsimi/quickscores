@@ -13,6 +13,8 @@ import com.google.android.gms.ads.AdView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.databinding.ActivityMainBinding
+import com.live.quickscores.fragments.FixtureFragment
+import com.live.quickscores.fragments.MatchFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -38,12 +40,13 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
 
         toolbar = findViewById(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
+        adView = findViewById(R.id.BannerAdView)
         setUpToolBar()
         loadBannerAd()
 
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tab_layout)
-        adView = findViewById(R.id.BannerAdView)
+
 
         setUpViewPager(viewPager, tabLayout)
 
@@ -63,25 +66,58 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         })
     }
 
-    override fun onFixtureClicked(matchId: String) {
-        navigateToFixtureFragment(matchId)
+    override fun onFixtureClicked(
+        matchId: String,
+        homeTeam: String,
+        awayTeam: String,
+        homeTeamLogoUrl: String,
+        awayTeamLogoUrl: String,
+        leagueName:String,
+        venue:String?,
+        formattedDate:String?
+    ) {
+        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate!!)
     }
 
 
-    private fun navigateToFixtureFragment(matchId: String) {
-        val fixtureFragment = FixtureFragment().apply {
-            arguments = Bundle().apply {
-                putString("matchId", matchId)
+    private fun navigateToFixtureFragment(
+        matchId: String,
+        homeTeam: String,
+        awayTeam: String,
+        homeTeamLogoUrl: String,
+        awayTeamLogoUrl: String,
+        leagueName: String,
+        venue:String?,
+        formattedDate:String?
+    ) {
+        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (existingFragment !is FixtureFragment) {
+            val fixtureFragment = FixtureFragment().apply {
+                arguments = Bundle().apply {
+                    putString("matchId", matchId)
+                    putString("homeTeam", homeTeam)
+                    putString("awayTeam", awayTeam)
+                    putString("homeTeamLogoUrl", homeTeamLogoUrl)
+                    putString("awayTeamLogoUrl", awayTeamLogoUrl)
+                    putString("leagueName",leagueName)
+                    putString("venue",venue)
+                    putString("date",formattedDate)
+                }
             }
-        }
-        hideViewPagerAndTabs()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fixtureFragment)
-            .addToBackStack(null)
-            .commit()
 
-        Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: $matchId")
+            Log.d("match", "arguments passed: ${fixtureFragment.arguments}")
+
+            hideViewPagerAndTabs()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fixtureFragment)
+                .addToBackStack(null)
+                .commit()
+
+            Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: $matchId")
+        }
     }
+
+
 
     private fun setUpToolBar() {
         setSupportActionBar(toolbar)
@@ -167,7 +203,6 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         Log.d("Murima", "ViewPager and Tabs are now hidden")
     }
 
-    // Show the ViewPager, TabLayout, and toolbar
     fun showViewPagerAndTabs() {
         viewPager.visibility = View.VISIBLE
         tabLayout.visibility = View.VISIBLE

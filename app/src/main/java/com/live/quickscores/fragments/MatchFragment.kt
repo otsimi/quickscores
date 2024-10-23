@@ -1,17 +1,28 @@
-package com.live.quickscores
+package com.live.quickscores.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.live.quickscores.R
+import com.live.quickscores.RAPID_API_KEY
+import com.live.quickscores.RecyclerViewAdapter
+import com.live.quickscores.Response
+import com.live.quickscores.RetrofitClient
+import com.live.quickscores.dataclasses.FixturesResponse
 import retrofit2.Call
 import retrofit2.Callback
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import retrofit2.Response as Response1
 
 class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
@@ -22,7 +33,16 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     private var fixtureClickListener: OnFixtureClickListener? = null
 
     interface OnFixtureClickListener {
-        fun onFixtureClicked(matchId: String)
+        fun onFixtureClicked(
+            matchId: String,
+            homeTeam: String,
+            awayTeam: String,
+            homeTeamLogoUrl: String,
+            awayTeamLogoUrl: String,
+            leagueName:String,
+            venue:String?,
+            date:String?
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -45,9 +65,19 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onFixtureClick(match: Response) {
+        val homeTeam = match.teams.home.name
+        val awayTeam = match.teams.away.name
+        val homeTeamLogoUrl = match.teams.home.logo
+        val awayTeamLogoUrl = match.teams.away.logo
+        val matchId = match.fixture.id.toString()
+        val leagueName=match.league.name
+        val venue=match.fixture.venue.name
+        val formattedDate = formatDate(match.fixture.date)
+
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(match.fixture.id.toString())
+        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate)
     }
 
     private fun fetchDataForDate(date: String) {
@@ -55,6 +85,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         RetrofitClient.apiService.fetchFixtures(apiKey, date).enqueue(object : Callback<FixturesResponse> {
             override fun onResponse(call: Call<FixturesResponse>, response: Response1<FixturesResponse>) {
                 if (response.isSuccessful) {
+                    Log.d("Malenge",response.message())
                     val fixturesResponseBody = response.body()
                     fixturesResponseBody?.let {
                         setupRecyclerView(it)
@@ -76,6 +107,17 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formatDate(dateString: String): String? {
+        return try {
+            val zonedDateTime = ZonedDateTime.parse(dateString)
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            zonedDateTime.format(formatter)
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
         }
     }
 
