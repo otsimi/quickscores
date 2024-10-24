@@ -1,14 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
     tools:context=".fragments.StatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/homeTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Home"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/AwayTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Away"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/statisticHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stats"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/homeTeam" />
+
+    <TextView
+        android:id="@+id/possession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/possession"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/homeTeam"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/homePossession" />
+
+
+    <TextView
+        android:id="@+id/homePossession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/possession_percent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/possession" />
+
+
+    <TextView
+        android:id="@+id/awayPossession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/possession_percent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/possession" />
+
+    <TextView
+        android:id="@+id/shots_on_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ontarget_shots"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/homePossession"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/home_shots_on_target" />
+
+
+    <TextView
+        android:id="@+id/home_shots_on_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ontarget_shots_number"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shots_on_target" />
+
+    <TextView
+        android:id="@+id/away_shots_on_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ontarget_shots_number"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shots_on_target" />
+
+    <TextView
+        android:id="@+id/fouls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fouls"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_shots_on_target"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/home_fouls" />
+
+
+    <TextView
+        android:id="@+id/home_fouls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fouls_number"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fouls" />
+
+    <TextView
+        android:id="@+id/away_fouls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fouls_number"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fouls" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

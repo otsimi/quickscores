@@ -51,6 +51,9 @@ class FixtureFragment : Fragment() {
                 putString("leagueName", it.getString("leagueName"))
                 putString("venue", it.getString("venue"))
                 putString("date", it.getString("date"))
+                putString("referee",it.getString("referee"))
+                putString("country",it.getString("country"))
+
             }
         }
         adapter.addFragment(MatchInfoFragment(), bundle)

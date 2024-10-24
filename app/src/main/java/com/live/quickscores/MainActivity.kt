@@ -56,12 +56,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (position == 0) {
-                    showViewPagerAndTabs()
-                } else {
-                    hideViewPagerAndTabs()
-                }
+
             }
         })
     }
@@ -81,6 +76,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
 
     ) {
         navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate,city,country,referee)
+        hideViewPagerAndTabs()
     }
 
 

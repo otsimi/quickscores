@@ -45,7 +45,10 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             country:String?,
             referee:String?,
             city:String?
+
+
         )
+
     }
 
     override fun onAttach(context: Context) {
@@ -85,6 +88,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
         fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee)
+        println("${referee},Malenge")
     }
 
     private fun fetchDataForDate(date: String) {
