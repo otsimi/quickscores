@@ -41,7 +41,10 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             awayTeamLogoUrl: String,
             leagueName:String,
             venue:String?,
-            date:String?
+            date:String?,
+            country:String?,
+            referee:String?,
+            city:String?
         )
     }
 
@@ -75,9 +78,13 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val leagueName=match.league.name
         val venue=match.fixture.venue.name
         val formattedDate = formatDate(match.fixture.date)
+        val country=match.league.country
+        val referee=match.fixture.referee
+        val city=match.fixture.venue.city
+
 
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate)
+        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee)
     }
 
     private fun fetchDataForDate(date: String) {

@@ -74,9 +74,13 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         awayTeamLogoUrl: String,
         leagueName:String,
         venue:String?,
-        formattedDate:String?
+        formattedDate:String?,
+        city:String?,
+        country:String?,
+        referee:String?,
+
     ) {
-        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate!!)
+        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate,city,country,referee)
     }
 
 
@@ -88,7 +92,11 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         awayTeamLogoUrl: String,
         leagueName: String,
         venue:String?,
-        formattedDate:String?
+        formattedDate:String?,
+        city:String?,
+        country:String?,
+        referee:String?,
+
     ) {
         val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (existingFragment !is FixtureFragment) {
@@ -102,6 +110,9 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
                     putString("leagueName",leagueName)
                     putString("venue",venue)
                     putString("date",formattedDate)
+                    putString("city",city)
+                    putString("country",country)
+                    putString("referee",referee)
                 }
             }
 
