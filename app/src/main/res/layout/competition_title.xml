@@ -18,7 +18,7 @@
             android:id="@+id/league"
             android:text="@string/league"
             android:textStyle="bold"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/country"
             android:text="@string/country"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 </LinearLayout>
