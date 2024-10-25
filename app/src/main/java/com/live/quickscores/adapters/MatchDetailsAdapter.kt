@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.adapters
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

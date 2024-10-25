@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
-import com.live.quickscores.RAPID_API_KEY
-import com.live.quickscores.RecyclerViewAdapter
+import com.live.quickscores.utils.RAPID_API_KEY
+import com.live.quickscores.adapters.RecyclerViewAdapter
 import com.live.quickscores.Response
 import com.live.quickscores.RetrofitClient
 import com.live.quickscores.dataclasses.FixturesResponse

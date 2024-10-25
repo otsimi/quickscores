@@ -1,11 +1,14 @@
-package com.live.quickscores
+package com.live.quickscores.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.live.quickscores.Response
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
 import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.utils.LEAGUE_LOGO_URL
+import com.live.quickscores.utils.LOGO_URL
 import com.squareup.picasso.Picasso
 
         class RecyclerViewAdapter(private val headerList: List<FixturesResponse>, private val fixtureClickListener: OnFixtureClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,8 +27,8 @@ import com.squareup.picasso.Picasso
             if (firstResponse != null) {
                 binding.league.text = firstResponse.league.name
                 if (firstResponse.league.logo.isNotEmpty()){
-                    Picasso.get().load(LEAGUE_LOGO_URL+"${firstResponse.league.id}.png").into(binding.leagueLogo)
-                    println("${LEAGUE_LOGO_URL+firstResponse.league.id}.png,Gashagua")
+                    Picasso.get().load(LEAGUE_LOGO_URL +"${firstResponse.league.id}.png").into(binding.leagueLogo)
+                    println("${LEAGUE_LOGO_URL +firstResponse.league.id}.png,Gashagua")
                 }
                 binding.country.text = firstResponse.league.country
 

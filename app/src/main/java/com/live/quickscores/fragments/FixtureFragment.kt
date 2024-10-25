@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.MainActivity
-import com.live.quickscores.MatchDetailsAdapter
+import com.live.quickscores.adapters.MatchDetailsAdapter
 import com.live.quickscores.databinding.FragmentFixtureBinding
 import com.squareup.picasso.Picasso
 

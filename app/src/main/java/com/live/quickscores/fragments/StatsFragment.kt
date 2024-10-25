@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.live.quickscores.R
-import com.live.quickscores.RAPID_API_KEY
+import com.live.quickscores.utils.RAPID_API_KEY
 import com.live.quickscores.RetrofitClient
 import com.live.quickscores.dataclasses.StatisticsResponse
 import retrofit2.Call
@@ -57,7 +57,7 @@ class StatsFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<StatisticsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<StatisticsResponse>, t: Throwable) { 
                 Log.e("StatsFragment", "API Failure: ${t.message ?: "Error"}")
             }
         })

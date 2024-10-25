@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import com.live.quickscores.utils.API_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

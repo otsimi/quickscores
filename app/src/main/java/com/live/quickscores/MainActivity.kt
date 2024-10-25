@@ -12,6 +12,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
 import com.live.quickscores.fragments.FixtureFragment
 import com.live.quickscores.fragments.MatchFragment
