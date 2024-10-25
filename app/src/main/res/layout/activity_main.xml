@@ -77,6 +77,7 @@
                 app:itemIconTint="@color/black"
                 app:itemTextColor="@color/black"
                 app:labelVisibilityMode="labeled"
+                android:background="@color/silver"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

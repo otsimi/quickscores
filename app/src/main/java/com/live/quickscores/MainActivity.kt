@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,14 +8,20 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
+import com.live.quickscores.fragments.CountriesFragment
 import com.live.quickscores.fragments.FixtureFragment
+import com.live.quickscores.fragments.LeagueTableFragment
+import com.live.quickscores.fragments.LeaguesFragment
 import com.live.quickscores.fragments.MatchFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -60,7 +67,45 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
 
             }
         })
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            handleBottomNavigationItemSelected(menuItem.itemId)
+        }
+
     }
+    private fun handleBottomNavigationItemSelected(itemId: Int): Boolean {
+        return when (itemId) {
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.standings -> {
+                hideViewPagerAndTabs()
+                navigateToFragment(LeagueTableFragment())
+                true
+            }
+            R.id.leagues -> {
+                hideViewPagerAndTabs()
+                navigateToFragment(LeaguesFragment())
+                true
+            }
+            R.id.countries -> {
+                hideViewPagerAndTabs()
+                navigateToFragment(CountriesFragment())
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun navigateToFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
+
 
     override fun onFixtureClicked(
         matchId: String,
@@ -204,14 +249,14 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         return dates.indexOf(today)
     }
 
-    fun hideViewPagerAndTabs() {
+    private fun hideViewPagerAndTabs() {
         viewPager.visibility = View.GONE
         tabLayout.visibility = View.GONE
         toolbar.visibility = View.GONE
         Log.d("Murima", "ViewPager and Tabs are now hidden")
     }
 
-    fun showViewPagerAndTabs() {
+    private fun showViewPagerAndTabs() {
         viewPager.visibility = View.VISIBLE
         tabLayout.visibility = View.VISIBLE
         toolbar.visibility = View.VISIBLE
@@ -230,4 +275,5 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
             super.onBackPressed()
         }
     }
+
 }
