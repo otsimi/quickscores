@@ -72,8 +72,20 @@
                     android:layout_height="wrap_content"
                     android:text="@string/Home"
                     android:layout_below="@id/homeTeamLogo"
-                    android:layout_marginStart="20dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_marginStart="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/homeTeamGoals"
+                    android:text="@string/HomeGoals"
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_toEndOf="@id/homeTeamLogo"
+                    android:layout_marginStart="25dp"
+
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,7 +95,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
                     android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,7 +104,8 @@
                     android:id="@+id/venue"
                     android:text="@string/venue"
                     android:layout_below="@id/matchDate"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -109,9 +123,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/Away"
                     android:layout_below="@id/awayTeamLogo"
-                    android:layout_marginEnd="20dp"
                     android:textStyle="bold"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/awayTeamGoals"
+                    android:text="@string/AwayGoals"
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_toStartOf="@id/awayTeamLogo"
+                    android:layout_marginEnd="25dp"
+
+                    />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

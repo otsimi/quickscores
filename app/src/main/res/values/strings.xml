@@ -6,8 +6,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="Home">Home team</string>
     <string name="Away">Away team</string>
-    <string name="HomeGoals">0</string>
-    <string name="AwayGoals">0</string>
+    <string name="HomeGoals">-</string>
+    <string name="AwayGoals">-</string>
     <string name="Time">Time</string>
     <string name="HomeLogo">Home Logo</string>
     <string name="AwayLogo">Away Logo</string>

@@ -10,20 +10,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.live.quickscores.FixturesRepository
+import com.live.quickscores.FixturesViewModel
+import com.live.quickscores.FixturesViewModelFactory
 import com.live.quickscores.R
-import com.live.quickscores.utils.RAPID_API_KEY
 import com.live.quickscores.adapters.RecyclerViewAdapter
-import com.live.quickscores.Response
-import com.live.quickscores.RetrofitClient
+import com.live.quickscores.dataclasses.FixtureResponses
 import com.live.quickscores.dataclasses.FixturesResponse
-import retrofit2.Call
-import retrofit2.Callback
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import retrofit2.Response as Response1
+
+
 
 class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
@@ -31,6 +33,10 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var date: String
     private var fixtureClickListener: OnFixtureClickListener? = null
+
+    private val viewModel: FixturesViewModel by viewModels {
+        FixturesViewModelFactory(FixturesRepository())
+    }
 
     interface OnFixtureClickListener {
         fun onFixtureClicked(
@@ -44,7 +50,9 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             date:String?,
             country:String?,
             referee:String?,
-            city:String?
+            city:String?,
+            homeTeamGoals:String?,
+            awayTeamGoals:String?
 
 
         )
@@ -67,12 +75,30 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         date = arguments?.getString("date") ?: ""
         recyclerView = view.findViewById(R.id.RecyclerView)
 
-        fetchDataForDate(date)
+        viewModel.fetchFixtures(date)
+        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+            response?.let {
+                if (it.isSuccessful) {
+                    it.body()?.let { fixturesData ->
+                        setupRecyclerView(fixturesData)
+                    } ?: run {
+                        Log.e("MatchFragment", "Empty response body")
+                    }
+                } else {
+                    Log.e("MatchFragment", "Error: ${it.message()}")
+                }
+            } ?: run {
+                Log.e("MatchFragment", "Response is null")
+            }
+        })
+
+
+
         return view
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onFixtureClick(match: Response) {
+    override fun onFixtureClick(match: FixtureResponses) {
         val homeTeam = match.teams.home.name
         val awayTeam = match.teams.away.name
         val homeTeamLogoUrl = match.teams.home.logo
@@ -84,37 +110,18 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val country=match.league.country
         val referee=match.fixture.referee
         val city=match.fixture.venue.city
+        val homeTeamGoals=match.goals.home
+        val awayTeamGoals=match.goals.away
 
 
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee)
+        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals)
         println("${referee},Malenge")
     }
 
-    private fun fetchDataForDate(date: String) {
-        val apiKey = RAPID_API_KEY
-        RetrofitClient.apiService.fetchFixtures(apiKey, date).enqueue(object : Callback<FixturesResponse> {
-            override fun onResponse(call: Call<FixturesResponse>, response: Response1<FixturesResponse>) {
-                if (response.isSuccessful) {
-                    Log.d("Malenge",response.message())
-                    val fixturesResponseBody = response.body()
-                    fixturesResponseBody?.let {
-                        setupRecyclerView(it)
-                    }
-                } else {
-                    Log.e("Malenge", response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<FixturesResponse>, t: Throwable) {
-                Log.e("API Failure", t.message ?: "Error")
-            }
-        })
-    }
 
     private fun setupRecyclerView(fixturesResponse: FixturesResponse) {
-        val headerList = listOf(fixturesResponse)
-        recyclerViewAdapter = RecyclerViewAdapter(headerList, this)
+        recyclerViewAdapter = RecyclerViewAdapter(listOf(fixturesResponse), this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter

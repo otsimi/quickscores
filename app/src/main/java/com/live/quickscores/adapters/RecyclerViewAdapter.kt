@@ -2,11 +2,12 @@ package com.live.quickscores.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.live.quickscores.Response
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
+import com.live.quickscores.dataclasses.FixtureResponses
 import com.live.quickscores.dataclasses.FixturesResponse
 import com.live.quickscores.utils.LEAGUE_LOGO_URL
 import com.live.quickscores.utils.LOGO_URL
@@ -14,6 +15,7 @@ import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.reflect.typeOf
 
 class RecyclerViewAdapter(
     private val headerList: List<FixturesResponse>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,7 +26,7 @@ class RecyclerViewAdapter(
     }
 
     interface OnFixtureClickListener {
-        fun onFixtureClick(match: Response)
+        fun onFixtureClick(match: FixtureResponses)
     }
 
     inner class TitleViewHolder(private val binding: CompetitionTitleBinding) :
@@ -39,7 +41,7 @@ class RecyclerViewAdapter(
 
     inner class MatchViewHolder(private val binding: MatchesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(match: Response) {
+        fun bind(match: FixtureResponses) {
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
             val isoDate = match.fixture.date
@@ -52,6 +54,24 @@ class RecyclerViewAdapter(
             }
             if (match.teams.away.logo.isNotEmpty()) {
                 Picasso.get().load("$LOGO_URL${match.teams.away.id}.png").into(binding.AwayLogo)
+            }
+            val homeTeamGoals = match.goals.home
+            println("${match.goals.home},Malenge")
+
+            if (homeTeamGoals!= null){
+                binding.HomeGoals.visibility = View.VISIBLE
+                binding.HomeGoals.text=match.goals.home
+
+            } else{
+                binding.HomeGoals.visibility = View.GONE
+            }
+            val awayTeamGoals=match.goals.away
+            if (awayTeamGoals!=null){
+                binding.AwayGoals.visibility=View.VISIBLE
+                binding.AwayGoals.text=match.goals.away
+            }
+            else{
+                binding.AwayGoals.visibility = View.GONE
             }
 
             binding.root.setOnClickListener {
@@ -108,7 +128,7 @@ class RecyclerViewAdapter(
 
     private sealed class ListItem
     private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int) : ListItem()
-    private data class MatchItem(val match: Response) : ListItem()
+    private data class MatchItem(val match: FixtureResponses) : ListItem()
 
     private fun getItemAtPosition(position: Int): ListItem {
         var offset = 0

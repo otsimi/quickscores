@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.MainActivity
 import com.live.quickscores.adapters.MatchDetailsAdapter
 import com.live.quickscores.databinding.FragmentFixtureBinding
+import com.live.quickscores.dataclasses.FixtureResponses
 import com.squareup.picasso.Picasso
 
 class FixtureFragment : Fragment() {
@@ -19,6 +20,10 @@ class FixtureFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private var fixtureBinding: FragmentFixtureBinding? = null
     private val binding get() = fixtureBinding!!
+    private var homeTeamGoals: String? = null
+    private var awayTeamGoals: String? = null
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +58,8 @@ class FixtureFragment : Fragment() {
                 putString("date", it.getString("date"))
                 putString("referee",it.getString("referee"))
                 putString("country",it.getString("country"))
+                homeTeamGoals = arguments?.getString("homeTeamGoals")
+                awayTeamGoals = arguments?.getString("awayTeamGoals")
 
             }
         }
@@ -85,6 +92,29 @@ class FixtureFragment : Fragment() {
             binding.matchDate.text = it.getString("date")
             Picasso.get().load(it.getString("homeTeamLogoUrl")).into(binding.homeTeamLogo)
             Picasso.get().load(it.getString("awayTeamLogoUrl")).into(binding.awayTeamLogo)
+            binding.homeTeamGoals.text = it.getString("homeTeamGoals")
+            binding.awayTeamGoals.text = it.getString("awayTeamGoals")
+
+            if (homeTeamGoals == "-" && awayTeamGoals == "-") {
+                binding.homeTeamGoals.visibility = View.VISIBLE
+                binding.awayTeamGoals.visibility = View.VISIBLE
+                binding.matchDate.visibility = View.VISIBLE
+                binding.venue.visibility = View.VISIBLE
+                binding.homeTeamGoals.text = homeTeamGoals
+                binding.awayTeamGoals.text = awayTeamGoals
+                binding.venue.text = it.getString("venue")
+                binding.matchDate.text = it.getString("date")
+
+            } else {
+                val homeGoalsInt = homeTeamGoals?.toIntOrNull() ?: 0
+                val awayGoalsInt = awayTeamGoals?.toIntOrNull() ?: 0
+                if (homeGoalsInt > 0 && awayGoalsInt > 0) {
+                    binding.homeTeamGoals.visibility = View.VISIBLE
+                    binding.awayTeamGoals.visibility = View.VISIBLE
+                    binding.matchDate.visibility = View.GONE
+                    binding.venue.visibility = View.GONE
+                }
+            }
         }
     }
 

@@ -36,7 +36,6 @@
                 android:id="@+id/HomeGoals"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/HomeGoals"
                 android:visibility="gone"/>
         </LinearLayout>
 
@@ -75,7 +74,6 @@
                 android:id="@+id/AwayGoals"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/AwayGoals"
                 android:visibility="gone"/>
         </LinearLayout>
 

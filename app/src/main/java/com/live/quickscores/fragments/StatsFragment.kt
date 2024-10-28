@@ -3,20 +3,27 @@ package com.live.quickscores.fragments
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.live.quickscores.R
-import com.live.quickscores.utils.RAPID_API_KEY
-import com.live.quickscores.RetrofitClient
-import com.live.quickscores.dataclasses.StatisticsResponse
-import retrofit2.Call
-import retrofit2.Callback
+import com.live.quickscores.StatisticsRepository
+import com.live.quickscores.StatisticsViewModel
+import com.live.quickscores.StatisticsViewModelFactory
+import com.live.quickscores.databinding.FragmentStatsBinding
+import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
 import retrofit2.Response
 
 class StatsFragment : Fragment() {
 
     private var matchId: String? = null
+    private var statsBinding:FragmentStatsBinding?=null
+    private val binding get() = statsBinding!!
+    private val viewModel: StatisticsViewModel by viewModels {
+        StatisticsViewModelFactory(StatisticsRepository())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,35 +37,33 @@ class StatsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        statsBinding = FragmentStatsBinding.inflate(inflater,container,false)
+
         matchId?.let { fixtureId ->
-            getMatchStatistics(fixtureId)
+            fetchMatchStatistics(fixtureId)
         }
 
-        return inflater.inflate(R.layout.fragment_stats, container, false)
+        return binding.root
     }
 
-    private fun getMatchStatistics(fixtureId: String) {
-        println("${fixtureId},murima")
-        val apiKey = RAPID_API_KEY
-        RetrofitClient.apiService.fetchFixtureStatistics(apiKey, fixtureId).enqueue(object :
-            Callback<StatisticsResponse> {
-            override fun onResponse(call: Call<StatisticsResponse>, response: Response<StatisticsResponse>) {
-             println("${apiKey},${fixtureId},Malenge")
-                if (response.isSuccessful) {
+    private fun fetchMatchStatistics(fixtureId: String) {
+        viewModel.fetchStats(fixtureId)
+        println("${fixtureId},Malenge")
 
-                    Log.d("StatsFragment", "Response malenge: ${response.message()}")
-                    val statsResponseBody = response.body()
-                    statsResponseBody?.let {
-                        println("${fixtureId},Malenge murima")
+        viewModel.stats.observe(viewLifecycleOwner, Observer { response ->
+            response?.let {
+                if (it.isSuccessful) {
+                    it.body()?.let { statsResponse ->
+                        Log.d("StatsFragment", "Statistics fetched successfully,Malenge: ${statsResponse}")
+//                        binding.homeTeam.text=
+                    } ?: run {
+                        Log.e("StatsFragment", "Empty statistics response body")
                     }
                 } else {
-
-                    Log.e("StatsFragment", "Error: ${response.message()}")
+                    Log.e("StatsFragment", "Error: ${it.message()}")
                 }
-            }
-
-            override fun onFailure(call: Call<StatisticsResponse>, t: Throwable) { 
-                Log.e("StatsFragment", "API Failure: ${t.message ?: "Error"}")
+            } ?: run {
+                Log.e("StatsFragment", "Statistics response is null")
             }
         })
     }

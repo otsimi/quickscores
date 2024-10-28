@@ -119,9 +119,11 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         city:String?,
         country:String?,
         referee:String?,
+        homeTeamGoals:String?,
+        awayTeamGoals:String?
 
     ) {
-        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate,city,country,referee)
+        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue,formattedDate,city,country,referee, homeTeamGoals ?: "-",awayTeamGoals ?: "-" )
         hideViewPagerAndTabs()
     }
 
@@ -138,6 +140,8 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         city:String?,
         country:String?,
         referee:String?,
+        homeTeamGoals: String?,
+        awayTeamGoals: String?
 
     ) {
         val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
@@ -155,10 +159,13 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
                     putString("city",city)
                     putString("country",country)
                     putString("referee",referee)
+                    putString("homeTeamGoals",homeTeamGoals)
+                    putString("awayTeamGoals",awayTeamGoals)
                 }
             }
 
             Log.d("match", "arguments passed: ${fixtureFragment.arguments}")
+            Log.d("onFixtureClicked", "Home Goals: $homeTeamGoals, Away Goals: $awayTeamGoals")
 
             hideViewPagerAndTabs()
             supportFragmentManager.beginTransaction()

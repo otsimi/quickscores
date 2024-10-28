@@ -1,20 +1,15 @@
 package com.live.quickscores
 
 import com.live.quickscores.dataclasses.FixturesResponse
-import com.live.quickscores.dataclasses.StatisticsResponse
-import retrofit2.Call
+import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ApiService {
     @GET("v3/fixtures?")
-    fun fetchFixtures(
-        @Header("x-rapidapi-key") apiKey: String, @Query("date") date: String): Call<FixturesResponse>
+    suspend fun fetchFixtures(@Query("date") date: String): Response<FixturesResponse>
 
-    @GET("v3/fixtures/statistics?")
-    fun fetchFixtureStatistics(
-        @Header("x-rapidapi-key")apiKey: String,@Query("fixture") fixtureId: String
-    ):Call<StatisticsResponse>
-
+   @GET("v3/fixtures/statistics")
+    suspend fun fetchFixtureStatistics(@Query("fixture") fixtureId: String): Response<StatisticsResponse>
 }
