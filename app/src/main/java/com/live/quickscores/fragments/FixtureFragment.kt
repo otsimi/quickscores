@@ -60,6 +60,8 @@ class FixtureFragment : Fragment() {
                 putString("country",it.getString("country"))
                 homeTeamGoals = arguments?.getString("homeTeamGoals")
                 awayTeamGoals = arguments?.getString("awayTeamGoals")
+                putString("homeTeamId",it.getString("homeTeamId"))
+                putString("awayTeamId",it.getString("awayTeamId"))
 
             }
         }

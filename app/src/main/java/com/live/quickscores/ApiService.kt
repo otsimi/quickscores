@@ -12,4 +12,7 @@ interface ApiService {
 
    @GET("v3/fixtures/statistics")
     suspend fun fetchFixtureStatistics(@Query("fixture") fixtureId: String): Response<StatisticsResponse>
+
+    @GET("v3/fixtures")
+    suspend fun fetchFixturesByTeamId(@Query("id")teamId:String):Response<FixturesResponse>
 }

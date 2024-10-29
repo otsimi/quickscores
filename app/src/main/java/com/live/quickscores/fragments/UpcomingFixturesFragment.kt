@@ -1,60 +1,109 @@
 package com.live.quickscores.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.R
+import com.live.quickscores.UpcomingFixturesRepository
+import com.live.quickscores.UpcomingFixturesViewModel
+import com.live.quickscores.UpcomingFixturesViewModelFactory
+import com.live.quickscores.adapters.UpcomingFixturesAdapter
+import com.live.quickscores.databinding.FragmentUpcomingFixturesBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UpcomingFixturesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UpcomingFixturesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private var binding: FragmentUpcomingFixturesBinding? = null
+    private val viewModel: UpcomingFixturesViewModel by viewModels {
+        UpcomingFixturesViewModelFactory(UpcomingFixturesRepository())
     }
+
+    private lateinit var homeAdapter: UpcomingFixturesAdapter
+    private lateinit var awayAdapter: UpcomingFixturesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upcoming_fixtures, container, false)
+    ): View {
+        val fragmentBinding = FragmentUpcomingFixturesBinding.inflate(inflater, container, false)
+        binding = fragmentBinding
+        return fragmentBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UpcomingFixturesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UpcomingFixturesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val homeTeamName = arguments?.getString("homeTeam") ?: "Home Team"
+        val awayTeamName = arguments?.getString("awayTeam") ?: "Away Team"
+        val homeTeamId = arguments?.getString("homeTeamId") ?: ""
+        val awayTeamId = arguments?.getString("awayTeamId") ?: ""
+
+        binding?.homeTeamNextFixturesTitle?.text = homeTeamName
+        binding?.awayTeamNextFixturesTitle?.text = awayTeamName
+
+
+        homeAdapter = UpcomingFixturesAdapter(emptyList())
+        awayAdapter = UpcomingFixturesAdapter(emptyList())
+
+        setupHomeTeamRecyclerView()
+        setupAwayTeamRecyclerView()
+
+        if (homeTeamId.isNotEmpty()) {
+            println("${homeTeamId},Mlima")
+            viewModel.getUpcomingHomeFixtures(homeTeamId)
+            observeHomeTeamFixtures()
+        } else {
+            Log.e("UpcomingFixturesFragment", "Invalid home team ID")
+        }
+
+        if (awayTeamId.isNotEmpty()) {
+            println("${awayTeamId},Mrima")
+            viewModel.getUpcomingAwayFixtures(awayTeamId)
+            observeAwayTeamFixtures()
+        } else {
+            Log.e("UpcomingFixturesFragment", "Invalid away team ID")
+        }
+    }
+
+    private fun setupHomeTeamRecyclerView() {
+        binding?.homeFixturesRecyclerView?.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = homeAdapter
+        }
+    }
+
+    private fun setupAwayTeamRecyclerView() {
+        binding?.awayFixturesRecyclerView?.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = awayAdapter
+        }
+    }
+
+    private fun observeHomeTeamFixtures() {
+        viewModel.upcomingHomeFixtures.observe(viewLifecycleOwner) { response ->
+            println("${response},Malengeeee")
+            response?.body()?.let { fixtures ->
+                Log.d("UpcomingFixturesFragment", "Home fixtures fetched: ${fixtures.response}")
+                homeAdapter.updateFixtures(fixtures.response)
+            } ?: Log.e("UpcomingFixturesFragment", "No data available for home fixtures")
+        }
+    }
+
+    private fun observeAwayTeamFixtures() {
+        viewModel.upcomingAwayFixtures.observe(viewLifecycleOwner) { response ->
+            response?.body()?.let { fixtures ->
+                Log.d("UpcomingFixturesFragment", "Away fixtures fetched: ${fixtures.response}")
+                awayAdapter.updateFixtures(fixtures.response)
+            } ?: Log.e("UpcomingFixturesFragment", "No data available for away fixtures")
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

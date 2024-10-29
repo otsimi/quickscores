@@ -32,6 +32,31 @@
     <string name="help">Help</string>
     <string name="contact_us">Contact Us</string>
     <string name="share">Share</string>
+    <string name="GoalKeeper">GoalKeeper</string>
+    <string name="left_back">Left Back</string>
+    <string name="right_back">Right Back</string>
+    <string name="centre_back_1">Centre Back 1</string>
+    <string name="centre_back_2">Centre Back 2</string>
+    <string name="mid_fielder_1">Mid 1</string>
+    <string name="mid_fielder_2">Mid 2</string>
+    <string name="winger_1">Winger 1</string>
+    <string name="winger_2">Winger 2</string>
+    <string name="forward_1">Forward 1</string>
+    <string name="forward_2">Forward 2</string>
+    <string name="subs">Substitutes</string>
+    <string name="sub_1">Sub 1</string>
+    <string name="sub_2">Sub 2</string>
+    <string name="sub_3">Sub 3</string>
+    <string name="sub_4">Sub 4</string>
+    <string name="sub_5">Sub 5</string>
+    <string name="sub_6">Sub 5</string>
+    <string name="manager_name">Coach Name</string>
+    <string name="starting_lineup">Starting lineup</string>
+    <string name="player_number">12</string>
+
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
