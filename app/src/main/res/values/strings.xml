@@ -53,6 +53,13 @@
     <string name="manager_name">Coach Name</string>
     <string name="starting_lineup">Starting lineup</string>
     <string name="player_number">12</string>
+    <string name="formation">433</string>
+    <string name="league_name">League Title</string>
+    <string name="rank">#</string>
+    <string name="team_name">Name</string>
+    <string name="points">PTS</string>
+    <string name="logo">Img</string>
+    <string name="team_points">50</string>
 
 
 

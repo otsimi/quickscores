@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:orientation="horizontal">
+
+    <!-- Team Position -->
+    <TextView
+        android:id="@+id/teamPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/player_number"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Team Logo -->
+    <ImageView
+        android:id="@+id/teamLogo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/logo"
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Team Name -->
+    <TextView
+        android:id="@+id/teamName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/team_name"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Points -->
+    <TextView
+        android:id="@+id/teamPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/team_points"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Goal Difference -->
+    <TextView
+        android:id="@+id/teamGD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GD: +20"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Games Played -->
+    <TextView
+        android:id="@+id/teamGP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GP: 30"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Wins -->
+    <TextView
+        android:id="@+id/teamWins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="W: 15"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Losses -->
+    <TextView
+        android:id="@+id/teamLosses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="L: 10"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Draws -->
+    <TextView
+        android:id="@+id/teamDraws"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="D: 5"
+        android:textSize="16sp" />
+
+</LinearLayout>

@@ -17,175 +17,14 @@
         android:gravity="center">
 
         <!-- Header -->
-        <TextView
-            android:id="@+id/homeTeam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Home"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp" />
-
-        <!-- Starting Lineup -->
-        <TextView
-            android:id="@+id/homeStartingLineup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/starting_lineup"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingBottom="8dp" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeGoalkeeperNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeGoalkeeperName" android:text="@string/GoalKeeper" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeLeftBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeLeftBackName" android:text="@string/left_back" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeRightBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeRightBackName" android:text="@string/right_back" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeCentreBack_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeCentreBack_1Name" android:text="@string/centre_back_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeCentreBack_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeCentreBack_2Name" android:text="@string/centre_back_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeMid_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeMid_1Name" android:text="@string/mid_fielder_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeMid_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeMid_2Name" android:text="@string/mid_fielder_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeWinger_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeWinger_1Name" android:text="@string/winger_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeWinger_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeWinger_2Name" android:text="@string/winger_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeForward_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeForward_1Name" android:text="@string/forward_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeForward_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeForward_2Name" android:text="@string/forward_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-<!--        subs-->
-        <TextView
-            android:id="@+id/homeSubs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subs"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingTop="16dp" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub1Name" android:text="@string/sub_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub2Name" android:text="@string/sub_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub3Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub3Name" android:text="@string/sub_3" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub4Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub4Name" android:text="@string/sub_4" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub5Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub5Name" android:text="@string/sub_5" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/homeSub6Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/homeSub6Name" android:text="@string/sub_6" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-        <!-- Manager -->
+<!--        <TextView-->
+<!--            android:id="@+id/homeTeam"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/Home"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:paddingBottom="16dp" />-->
         <TextView
             android:id="@+id/homeManagerName"
             android:layout_width="wrap_content"
@@ -201,6 +40,175 @@
             android:layout_height="60dp"
             android:src="@drawable/imageholder"
             android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/homeTeamFormation"
+            android:text="@string/formation"
+            android:paddingBottom="5dp"/>
+
+
+        <!-- Starting Lineup -->
+        <TextView
+            android:id="@+id/homeStartingLineup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/starting_lineup"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingBottom="0dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeGoalkeeperNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeGoalkeeperName" android:text="@string/GoalKeeper" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeLeftBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeLeftBackName" android:text="@string/left_back" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeRightBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeRightBackName" android:text="@string/right_back" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeCentreBack_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeCentreBack_1Name" android:text="@string/centre_back_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeCentreBack_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeCentreBack_2Name" android:text="@string/centre_back_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeMid_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeMid_1Name" android:text="@string/mid_fielder_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeMid_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeMid_2Name" android:text="@string/mid_fielder_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeWinger_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeWinger_1Name" android:text="@string/winger_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeWinger_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeWinger_2Name" android:text="@string/winger_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeForward_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeForward_1Name" android:text="@string/forward_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeForward_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeForward_2Name" android:text="@string/forward_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+<!--        subs-->
+        <TextView
+            android:id="@+id/homeSubs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subs"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingTop="12dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+            <TextView android:id="@+id/homeSub1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub1Name" android:text="@string/sub_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeSub2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub2Name" android:text="@string/sub_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeSub3Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub3Name" android:text="@string/sub_3" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeSub4Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub4Name" android:text="@string/sub_4" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeSub5Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub5Name" android:text="@string/sub_5" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/homeSub6Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/homeSub6Name" android:text="@string/sub_6" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+        <!-- Manager -->
+
     </LinearLayout>
 
     <!-- Divider Line -->
@@ -217,177 +225,15 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/awayTeam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Away"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp" />
-
-        <!-- Starting Lineup -->
-        <TextView
-            android:id="@+id/awayStartingLineup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/starting_lineup"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingBottom="8dp" />
-
-        <!-- Player Positions with Numbers and Names -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayGoalkeeperNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayGoalkeeperName" android:text="@string/GoalKeeper" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayLeftBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayLeftBackName" android:text="@string/left_back" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayRightBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayRightBackName" android:text="@string/right_back" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayCentreBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayCentreBackName" android:text="@string/centre_back_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayCentreBack2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayCentreBack2Name" android:text="@string/centre_back_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayMid_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayMid_1Name" android:text="@string/mid_fielder_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayMid_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayMid_2Name" android:text="@string/mid_fielder_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayWinger_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayWinger_1Name" android:text="@string/winger_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayWinger_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayWinger_2Name" android:text="@string/winger_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayForward_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayForward_1Name" android:text="@string/forward_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awayForward_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awayForward_2Name" android:text="@string/forward_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-<!--        away subs-->
-        <TextView
-            android:id="@+id/awaySubs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subs"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingTop="16dp" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub1Name" android:text="@string/sub_1" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub2Name" android:text="@string/sub_2" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub3Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub3Name" android:text="@string/sub_3" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub4Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub4Name" android:text="@string/sub_4" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub5Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub5Name" android:text="@string/sub_5" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp">
-            <TextView android:id="@+id/awaySub6Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
-            <TextView android:id="@+id/awaySub6Name" android:text="@string/sub_6" style="@style/PlayerNameStyle" />
-        </LinearLayout>
-
-
-        <!-- Manager -->
+<!--        &lt;!&ndash; Header &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/awayTeam"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/Away"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:paddingBottom="16dp" />-->
         <TextView
             android:id="@+id/awayManagerName"
             android:layout_width="wrap_content"
@@ -403,6 +249,175 @@
             android:layout_height="60dp"
             android:src="@drawable/imageholder"
             android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/awayTeamFormation"
+            android:text="@string/formation"
+            android:paddingBottom="5dp"/>
+
+        <!-- Starting Lineup -->
+        <TextView
+            android:id="@+id/awayStartingLineup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/starting_lineup"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingBottom="5dp" />
+
+        <!-- Player Positions with Numbers and Names -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayGoalkeeperNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayGoalkeeperName" android:text="@string/GoalKeeper" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayLeftBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayLeftBackName" android:text="@string/left_back" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayRightBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayRightBackName" android:text="@string/right_back" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayCentreBackNumber" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayCentreBackName" android:text="@string/centre_back_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayCentreBack2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayCentreBack2Name" android:text="@string/centre_back_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayMid_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayMid_1Name" android:text="@string/mid_fielder_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayMid_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayMid_2Name" android:text="@string/mid_fielder_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayWinger_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayWinger_1Name" android:text="@string/winger_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayWinger_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayWinger_2Name" android:text="@string/winger_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayForward_1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayForward_1Name" android:text="@string/forward_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awayForward_2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awayForward_2Name" android:text="@string/forward_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+<!--        away subs-->
+        <TextView
+            android:id="@+id/awaySubs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subs"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub1Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub1Name" android:text="@string/sub_1" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub2Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub2Name" android:text="@string/sub_2" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub3Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub3Name" android:text="@string/sub_3" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub4Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub4Name" android:text="@string/sub_4" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub5Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub5Name" android:text="@string/sub_5" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+            <TextView android:id="@+id/awaySub6Number" android:text="@string/player_number" style="@style/JerseyNumberStyle" />
+            <TextView android:id="@+id/awaySub6Name" android:text="@string/sub_6" style="@style/PlayerNameStyle" />
+        </LinearLayout>
+
+
+        <!-- Manager -->
+
     </LinearLayout>
     </LinearLayout>
 </ScrollView>

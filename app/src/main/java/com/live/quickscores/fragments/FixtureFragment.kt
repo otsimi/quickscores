@@ -54,6 +54,7 @@ class FixtureFragment : Fragment() {
                 putString("homeTeamLogoUrl", it.getString("homeTeamLogoUrl"))
                 putString("awayTeamLogoUrl", it.getString("awayTeamLogoUrl"))
                 putString("leagueName", it.getString("leagueName"))
+                putString("leagueId", it.getString("leagueId"))
                 putString("venue", it.getString("venue"))
                 putString("date", it.getString("date"))
                 putString("referee",it.getString("referee"))
@@ -62,6 +63,7 @@ class FixtureFragment : Fragment() {
                 awayTeamGoals = arguments?.getString("awayTeamGoals")
                 putString("homeTeamId",it.getString("homeTeamId"))
                 putString("awayTeamId",it.getString("awayTeamId"))
+
 
             }
         }

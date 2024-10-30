@@ -54,7 +54,8 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             homeTeamGoals:String?,
             awayTeamGoals:String?,
             homeTeamId:String,
-            awayTeamId:String
+            awayTeamId:String,
+            leagueId:String,
 
 
         )
@@ -116,11 +117,12 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val awayTeamGoals=match.goals.away
         val homeTeamId=match.teams.home.id
         val awayTeamId=match.teams.away.id
+        val leagueId=match.league.id
 
 
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
         fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
-            homeTeamId.toString(),awayTeamId.toString(),)
+            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString())
         println("${referee},Malenge")
     }
 
