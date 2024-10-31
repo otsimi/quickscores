@@ -22,5 +22,7 @@ interface ApiService {
     suspend fun fetchLineups(@Query("fixture")fixtureId: String):Response<LineupsResponse>
 
     @GET("/v3/standings")
-    suspend fun getLeagueStandings(@Query("league")leagueId:String):Response<StandingsResponse>
-}
+    suspend fun getLeagueStandings(@Query("league") leagueId: String, @Query("season") season: String): Response<StandingsResponse>}
+
+
+

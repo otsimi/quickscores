@@ -14,12 +14,17 @@ class LeagueTableViewModel(private val repository: LeagueTableRepository):ViewMo
     private val tableStanding=MutableLiveData<Response<StandingsResponse>>()
     val table:LiveData<Response<StandingsResponse>>get() = tableStanding
 
-    fun getTable(leagueId:String){
+    fun getTable(leagueId: String, season: String){
+        println("getTable called with leagueId: $leagueId")
         viewModelScope.launch {
             try {
-                val response=repository.getLeagueTable(leagueId)
-                tableStanding.value=response
-                println("${response},MrimaKenya")
+                val response=repository.getLeagueTable(leagueId,season)
+                if (response != null) {
+                    tableStanding.value = response
+                    println("${response}, MrimaKenya")
+                } else {
+                    println("Response is null, MrimaKenya")
+                }
             } catch (e:Exception){
                 println(e)
             }
