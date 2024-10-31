@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import com.live.quickscores.countriesresponse.CountriesResponse
 import com.live.quickscores.dataclasses.FixturesResponse
 import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
 import com.live.quickscores.lineupresponse.LineupsResponse
@@ -22,7 +23,14 @@ interface ApiService {
     suspend fun fetchLineups(@Query("fixture")fixtureId: String):Response<LineupsResponse>
 
     @GET("/v3/standings")
-    suspend fun getLeagueStandings(@Query("league") leagueId: String, @Query("season") season: String): Response<StandingsResponse>}
+    suspend fun getLeagueStandings(@Query("league") leagueId: String, @Query("season") season: String): Response<StandingsResponse>
+
+    @GET("v3/countries")
+    suspend fun getCountries():Response<CountriesResponse>
+
+}
+
+
 
 
 

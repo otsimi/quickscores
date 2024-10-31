@@ -18,7 +18,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
-import com.live.quickscores.fragments.CountriesFragment
 import com.live.quickscores.fragments.FixtureFragment
 import com.live.quickscores.fragments.LeagueTableFragment
 import com.live.quickscores.fragments.LeaguesFragment
