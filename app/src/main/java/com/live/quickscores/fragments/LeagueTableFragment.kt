@@ -72,7 +72,7 @@ class LeagueTableFragment : Fragment() {
             if (response == null) {
                 Log.e("API Error,Malwnwgww", "API response is null")
             } else {
-                println("API response,Malehe: ${response.body()}")
+                println("API response,Maleerreeehe: ${response.body()}")
             }
             println("observeLeagueTable called, response: $response")
             response?.body()?.let { standingsResponse ->
