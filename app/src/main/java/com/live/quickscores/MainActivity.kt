@@ -13,13 +13,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
+import com.live.quickscores.fragments.CountriesFragment
 import com.live.quickscores.fragments.FixtureFragment
 import com.live.quickscores.fragments.LeagueTableFragment
+import com.live.quickscores.fragments.LeaguesFixturesFragment
 import com.live.quickscores.fragments.LeaguesFragment
 import com.live.quickscores.fragments.MatchFragment
 import java.text.SimpleDateFormat
@@ -27,7 +28,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
+class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked {
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
 
 
         setUpViewPager(viewPager, tabLayout)
+
 
         val todayIndex = findTodayIndex(dates)
         viewPager.setCurrentItem(todayIndex, false)
@@ -104,7 +106,31 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
             .commit()
     }
 
+    override fun onCountryClicked(
+        countryName: String,
+        countryCode:String){
+        navigateToLeaguesFragment(countryName,countryCode)
+        hideViewPagerAndTabs()
+    }
+    private fun navigateToLeaguesFragment(countryName: String?,countryCode: String?){
+        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (existingFragment !is LeaguesFragment){
+            val leaguesFragment=LeaguesFragment().apply {
+                arguments=Bundle().apply {
+                    putString("countryName", countryName)
+                    putString("countryCode",countryCode)
+                }
 
+
+            }
+            hideViewPagerAndTabs()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, leaguesFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+    }
 
     override fun onFixtureClicked(
         matchId: String,
@@ -130,8 +156,6 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
         navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue!!,formattedDate,city,country,referee, homeTeamGoals ?: "-",awayTeamGoals ?: "-",homeTeamId,awayTeamId,leagueId,season)
         hideViewPagerAndTabs()
     }
-
-
     private fun navigateToFixtureFragment(
         matchId: String,
         homeTeam: String,
@@ -188,7 +212,28 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
             Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: $matchId")
         }
     }
-
+    override fun onLeagueClicked(leagueId: String, season: String, name: String, leagueLogo: String,leagueCountryName:String) {
+        navigateToLeaguesFixtureFragment(leagueId, season, name, leagueLogo,leagueCountryName)
+        hideViewPagerAndTabs()
+    }
+    private fun navigateToLeaguesFixtureFragment(leagueId: String, season: String, name: String, leagueLogo: String,leagueCountryName: String) {
+        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (existingFragment !is LeaguesFixturesFragment) {
+            val leaguesFixturesFragment = LeaguesFixturesFragment().apply {
+                arguments = Bundle().apply {
+                    putString("leagueId", leagueId)
+                    putString("season", season)
+                    putString("name", name)
+                    putString("leagueLogo", leagueLogo)
+                    putString("country",leagueCountryName)
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, leaguesFixturesFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
 
 
     private fun setUpToolBar() {
@@ -294,5 +339,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener {
             super.onBackPressed()
         }
     }
+
+
 
 }

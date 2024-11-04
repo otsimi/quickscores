@@ -3,6 +3,7 @@ package com.live.quickscores
 import com.live.quickscores.countriesresponse.CountriesResponse
 import com.live.quickscores.dataclasses.FixturesResponse
 import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
+import com.live.quickscores.leagueResponse.LeaguesResponse
 import com.live.quickscores.lineupresponse.LineupsResponse
 import com.live.quickscores.standingsresponse.StandingsResponse
 import retrofit2.Response
@@ -27,6 +28,12 @@ interface ApiService {
 
     @GET("v3/countries")
     suspend fun getCountries():Response<CountriesResponse>
+
+    @GET("v3/leagues")
+    suspend fun getLeagues(@Query("code") countryCode:String):Response<LeaguesResponse>
+
+    @GET("v3/fixtures")
+    suspend fun getFixturesByLeagueId(@Query("date") date: String ,@Query("league") leagueId:String):Response<FixturesResponse>
 
 }
 

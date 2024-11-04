@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-}
+    id("org.jetbrains.kotlin.kapt")}
 
 android {
     namespace = "com.live.quickscores"
@@ -55,5 +55,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
     implementation("androidx.fragment:fragment-ktx:1.8.4")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.caverock:androidsvg:1.4")
+//    implementation("com.github.bumptech.glide:annotations:4.12.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+
 
 }

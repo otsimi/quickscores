@@ -1,5 +1,6 @@
-package com.live.quickscores
+package com.live.quickscores.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +9,36 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.live.quickscores.CountriesRepository
+import com.live.quickscores.CountriesViewModel
+import com.live.quickscores.CountriesViewModelFactory
 import com.live.quickscores.adapters.CountriesAdapter
 import com.live.quickscores.countriesresponse.CountriesResponse
+import com.live.quickscores.countriesresponse.Response
 import com.live.quickscores.databinding.FragmentCountriesBinding
 
-class CountriesFragment : Fragment() {
+class CountriesFragment : Fragment(), CountriesAdapter.OnCountryClickListener {
 
     private var _binding: FragmentCountriesBinding? = null
     private val binding get() = _binding!!
-
+    private var countryClickListener: OnCountryClicked? = null
     private lateinit var countriesAdapter: CountriesAdapter
     private val viewModel: CountriesViewModel by viewModels {
-        CountriesViewModelFactory(CountriesRepository()) // replace with actual repository instance
+        CountriesViewModelFactory(CountriesRepository())
+    }
+
+
+    interface OnCountryClicked {
+        fun onCountryClicked(countryName: String,countryCode:String)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnCountryClicked) {
+            countryClickListener = context
+        } else {
+            throw RuntimeException("$context must implement OnCountryClicked")
+        }
     }
 
     override fun onCreateView(
@@ -35,13 +54,11 @@ class CountriesFragment : Fragment() {
 
         setupRecyclerView()
         observeCountriesData()
-
-        // Trigger the fetching of countries
         viewModel.fetchCountries()
     }
 
     private fun setupRecyclerView() {
-        countriesAdapter = CountriesAdapter(emptyList())
+        countriesAdapter = CountriesAdapter(emptyList(), this)
         binding.RecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = countriesAdapter
@@ -61,13 +78,24 @@ class CountriesFragment : Fragment() {
     }
 
     private fun updateAdapterData(countriesResponse: CountriesResponse) {
-        countriesAdapter = CountriesAdapter(countriesResponse.response) // update with actual list
+        countriesAdapter = CountriesAdapter(countriesResponse.response, this)
         binding.RecyclerView.adapter = countriesAdapter
         countriesAdapter.notifyDataSetChanged()
+    }
+
+    override fun onCountryClick(country: Response) {
+        val countryName = country.name ?: "Unknown Country"
+        val countryCode = country.code
+        countryClickListener?.onCountryClicked(countryName,countryCode)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        countryClickListener = null
     }
 }

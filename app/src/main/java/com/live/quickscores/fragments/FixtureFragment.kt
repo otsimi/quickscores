@@ -65,7 +65,6 @@ class FixtureFragment : Fragment() {
                 putString("awayTeamId",it.getString("awayTeamId"))
                 putString("season",it.getString("season"))
 
-
             }
         }
         adapter.addFragment(MatchInfoFragment(), bundle)

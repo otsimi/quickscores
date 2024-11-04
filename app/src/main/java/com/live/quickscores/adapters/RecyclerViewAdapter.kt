@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.live.quickscores.R
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
 import com.live.quickscores.dataclasses.FixtureResponses
@@ -51,9 +52,13 @@ class RecyclerViewAdapter(
             binding.Time.text = formattedTime
             if (match.teams.home.logo.isNotEmpty()) {
                 Picasso.get().load("$LOGO_URL${match.teams.home.id}.png").into(binding.HomeLogo)
+            }else{
+                binding.HomeLogo.setImageResource(R.drawable.imageholder)
             }
             if (match.teams.away.logo.isNotEmpty()) {
                 Picasso.get().load("$LOGO_URL${match.teams.away.id}.png").into(binding.AwayLogo)
+            }else{
+                binding.AwayLogo.setImageResource(R.drawable.imageholder)
             }
             val homeTeamGoals = match.goals.home
             println("${match.goals.home},Malenge")
