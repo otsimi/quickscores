@@ -64,11 +64,11 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
         viewPager.setCurrentItem(todayIndex, false)
         setSupportActionBar(toolbar)
 
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-
-            }
-        })
+//        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//
+//            }
+//        })
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             handleBottomNavigationItemSelected(menuItem.itemId)
