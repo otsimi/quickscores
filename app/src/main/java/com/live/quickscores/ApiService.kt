@@ -33,7 +33,7 @@ interface ApiService {
     suspend fun getLeagues(@Query("code") countryCode:String):Response<LeaguesResponse>
 
     @GET("v3/fixtures")
-    suspend fun getFixturesByLeagueId(@Query("date") date: String ,@Query("league") leagueId:String):Response<FixturesResponse>
+    suspend fun getFixturesByLeagueId(@Query("date") date: String ,@Query("league") leagueId:String,@Query("season")season: String):Response<FixturesResponse>
 
 }
 

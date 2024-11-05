@@ -28,6 +28,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         LeaguesViewModelFactoryProvider(LeaguesRepository())
     }
     private var countryCode: String? = null
+    private var countryName:String?=null
     private var season: String? = null
 
     interface OnLeagueClicked{
@@ -54,6 +55,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         super.onCreate(savedInstanceState)
         arguments?.let {
             countryCode = it.getString("countryCode")
+            countryName=it.getString("countryName")
 
         }
     }
@@ -126,12 +128,14 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
 
     override fun onLeagueClick(league: Response) {
         val leagueId=league.league.id
-        val season=league.seasons
+        val season=league.seasons.toString()
         val name=league.league.name
         val leagueLogo=league.league.logo
-        val leagueCountryName=league.country
-        leagueClickListener?.onLeagueClicked(leagueId.toString(),season.toString(),name,leagueLogo,
-            leagueCountryName.toString()
+        val leagueCountryName=league.country.name
+        leagueClickListener?.onLeagueClicked(leagueId.toString(),season,name,leagueLogo,
+            leagueCountryName
         )
+        println("${leagueCountryName},leagueCountryName")
+        println("${leagueId},leagueId")
     }
 }

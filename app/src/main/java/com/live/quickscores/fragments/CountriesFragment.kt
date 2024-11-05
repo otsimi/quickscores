@@ -29,7 +29,10 @@ class CountriesFragment : Fragment(), CountriesAdapter.OnCountryClickListener {
 
 
     interface OnCountryClicked {
-        fun onCountryClicked(countryName: String,countryCode:String)
+        fun onCountryClicked(
+            countryName: String,
+            countryCode:String
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -87,6 +90,8 @@ class CountriesFragment : Fragment(), CountriesAdapter.OnCountryClickListener {
         val countryName = country.name ?: "Unknown Country"
         val countryCode = country.code
         countryClickListener?.onCountryClicked(countryName,countryCode)
+        println("${countryName},Malenge,countryName")
+        println("${countryCode},Malenge")
     }
 
     override fun onDestroyView() {

@@ -8,19 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
-import com.live.quickscores.adapters.RecyclerViewAdapter.OnFixtureClickListener
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.dataclasses.FixtureResponses
 import com.live.quickscores.dataclasses.FixturesResponse
 import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class LeagueFixturesAdapter(private val fixtureLists:List<FixtureResponses>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<LeagueFixturesAdapter.LeagueFixturesViewHolder>() {
+class LeagueFixturesAdapter(private val fixtureLists: List<FixturesResponse>, private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<LeagueFixturesAdapter.LeagueFixturesViewHolder>() {
 
     interface OnFixtureClickListener {
-        fun onFixtureClick(match: FixtureResponses)
+        fun onFixtureClick(match: FixturesResponse)
     }
 
     inner class LeagueFixturesViewHolder(val binding:MatchesBinding):RecyclerView.ViewHolder(binding.root){
@@ -56,31 +54,31 @@ class LeagueFixturesAdapter(private val fixtureLists:List<FixtureResponses>,priv
         position: Int
     ) {
         val leagueFixtures=fixtureLists[position]
-        holder.homeTeam.text=leagueFixtures.teams.home.name
-        holder.awayTeam.text=leagueFixtures.teams.away.name
-        if (leagueFixtures.teams.home.logo.isNotEmpty()){
-            Picasso.get().load(leagueFixtures.teams.home.logo).into(holder.homeTeamLogo)
+        holder.homeTeam.text= leagueFixtures.response[0].teams.home.name
+        holder.awayTeam.text=leagueFixtures.response[0].teams.away.name
+        if (leagueFixtures.response[0].teams.home.logo.isNotEmpty()){
+            Picasso.get().load(leagueFixtures.response[0].teams.home.logo).into(holder.homeTeamLogo)
         } else{
             holder.homeTeamLogo.setImageResource(R.drawable.imageholder)
         }
-        if (leagueFixtures.teams.away.logo.isNotEmpty()){
-            Picasso.get().load(leagueFixtures.teams.away.logo).into(holder.awayTeamLogo)
+        if (leagueFixtures.response[0].teams.away.logo.isNotEmpty()){
+            Picasso.get().load(leagueFixtures.response[0].teams.away.logo).into(holder.awayTeamLogo)
         } else{
             holder.awayTeamLogo.setImageResource(R.drawable.imageholder)
         }
-        if (leagueFixtures.goals.home!=null){
+        if (leagueFixtures.response[0].goals.home!=null){
             holder.homeGoals.visibility= View.VISIBLE
-            holder.homeGoals.text=leagueFixtures.goals.home
+            holder.homeGoals.text=leagueFixtures.response[0].goals.home
         } else{
             println()
         }
-        if (leagueFixtures.goals.away!=null){
+        if (leagueFixtures.response[0].goals.away!=null){
             holder.awayGoals.visibility=View.VISIBLE
-            holder.awayGoals.text=leagueFixtures.goals.away
+            holder.awayGoals.text=leagueFixtures.response[0].goals.away
         }else{
             println()
         }
-        val isoDate = leagueFixtures.fixture.date
+        val isoDate = leagueFixtures.response[0].fixture.date
         val formattedTime = convertToLocalTime(isoDate)
         holder.matchTime.text=formattedTime
     }

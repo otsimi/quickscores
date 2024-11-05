@@ -13,10 +13,10 @@ class LeagueFixturesViewModel(private val repo: LeagueFixturesRepo):ViewModel() 
     private val leagueFixtures=MutableLiveData<Response<FixturesResponse>>()
     val fixtures:LiveData<Response<FixturesResponse>>get() = leagueFixtures
 
-    fun fetchFixturesByLeagueId(leagueId:String,date:String){
+    fun fetchFixturesByLeagueId(date:String,leagueId:String,season:String){
         viewModelScope.launch {
             try {
-                val response=repo.getLeagueFixturesById(leagueId,date)
+                val response=repo.getLeagueFixturesById(leagueId,date,season)
                 leagueFixtures.value=response
             }catch (e:Exception){
                 println(e)

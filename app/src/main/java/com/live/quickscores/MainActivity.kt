@@ -28,7 +28,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked {
+class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
+    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked,LeaguesFixturesFragment.OnFixtureClickListener {
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest
@@ -120,6 +121,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,C
                     putString("countryName", countryName)
                     putString("countryCode",countryCode)
                 }
+                println("${countryName},${countryCode},Malengekubwa")
 
 
             }
@@ -227,6 +229,11 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,C
                     putString("leagueLogo", leagueLogo)
                     putString("country",leagueCountryName)
                 }
+                println("${leagueId},MalengeKubwaSana")
+                println("${season},MalengeKubwaSana")
+                println("${name},MalengeKubwaSana")
+                println("${leagueCountryName},MalengeKubwaSana")
+
             }
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, leaguesFixturesFragment)
