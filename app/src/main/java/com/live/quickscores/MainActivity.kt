@@ -1,12 +1,14 @@
 package com.live.quickscores
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
 
         val todayIndex = findTodayIndex(dates)
         viewPager.setCurrentItem(todayIndex, false)
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 
 //        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 //            override fun onPageSelected(position: Int) {
@@ -249,10 +251,21 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
             this, drawerLayout, toolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
-        )
+        ).apply {
+            drawerArrowDrawable.color = Color.parseColor("#C0C0C0")
+        }
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        toggle.toolbarNavigationClickListener = View.OnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
+
 
     private fun loadBannerAd() {
         adRequest = AdRequest.Builder().build()
