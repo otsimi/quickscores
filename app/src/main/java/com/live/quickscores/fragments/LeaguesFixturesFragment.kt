@@ -18,7 +18,9 @@ import com.live.quickscores.LeagueFixturesViewModel
 import com.live.quickscores.LeagueFixturesViewModelFactoryProvider
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentLeaguesFixturesBinding
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
+import com.live.quickscores.fixturesresponse.Response
+import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -68,6 +70,7 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             leagueName = it.getString("name") ?: leagueName
             countryName=it.getString("country")?:countryName
@@ -89,19 +92,21 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.leagueName.text = leagueName
-        binding.countryName.text = countryName
-        val date = getCurrentDate()
+//        binding.leagueName.text = leagueName
+//        binding.countryName.text = countryName
+        val fromDate = getCurrentDate()
+        val toDate=getDateInThreeMonths()
         val season = getCurrentYear().toString()
         println("${season},leagueSeasonPrintout")
-        viewModel.fetchFixturesByLeagueId(date, leagueId, season)
-        println("${leagueId},${date},${season},Malengeprinted")
+        viewModel.fetchFixturesByLeagueId(leagueId,season,fromDate,toDate)
+        println("${leagueId},${season},${fromDate},${toDate}Malengeprinted")
         viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
             response?.let{
                 if (it.isSuccessful) {
                     println("Response received successfully: ${response.body()}")
-                    it.body()?.let { fixturesData ->
-                        setUpRecyclerView(fixturesData)
+                    it.body()?.let { fixturesData  ->
+                        val groupedFixtures = groupFixturesByDate(fixturesData.response)
+                        setUpRecyclerView(groupedFixtures)
                     } ?: run {
                         Log.e("LeagueFixturesFragment", "Empty response body")
                     }
@@ -115,14 +120,21 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
 
         })
     }
-    private fun setUpRecyclerView(fixturesResponse: FixturesResponse) {
-
-        fixturesAdapter= LeagueFixturesAdapter(listOf(fixturesResponse),this)
+    private fun setUpRecyclerView(groupedFixtures: Map<String, List<Response>>) {
+        fixturesAdapter = LeagueFixturesAdapter(groupedFixtures, this)
         binding.RecyclerView.apply {
-            layoutManager=LinearLayoutManager(requireContext())
-            adapter=fixturesAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = fixturesAdapter
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun groupFixturesByDate(fixtures: List<Response>): Map<String, List<Response>> {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return fixtures.groupBy { fixture ->
+            OffsetDateTime.parse(fixture.fixture.date).format(dateFormatter)
+        }
+    }
+
 
 
     companion object {
@@ -133,32 +145,6 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onFixtureClick(match: FixturesResponse) {
-        val homeTeam = match.response[0].teams.home.name
-        val awayTeam = match.response[0].teams.away.name
-        val homeTeamLogoUrl = match.response[0].teams.home.logo
-        val awayTeamLogoUrl = match.response[0].teams.away.logo
-        val matchId = match.response[0].fixture.id.toString()
-        val leagueName=match.response[0].league.name
-        val venue=match.response[0].fixture.venue.name
-        val formattedDate = formatDate(match.response[0].fixture.date)
-        val country=match.response[0].league.country
-        val referee=match.response[0].fixture.referee
-        val city=match.response[0].fixture.venue.city
-        val homeTeamGoals=match.response[0].goals.home
-        val awayTeamGoals=match.response[0].goals.away
-        val homeTeamId=match.response[0].teams.home.id
-        val awayTeamId=match.response[0].teams.away.id
-        val leagueId=match.response[0].league.id
-        val season=match.response[0].league.season
-
-
-        Toast.makeText(requireContext(), "Clicked on: ${match.response[0].teams.home.name} vs ${match.response[0].teams.away.name}", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
-            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
-        println("${referee},Malenge")
-    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {
         return try {
@@ -174,6 +160,12 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
     private fun getCurrentDate(): String {
         return ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDateInThreeMonths(): String {
+        val currentDate = ZonedDateTime.now().toLocalDate()
+        val dateInThreeMonths = currentDate.plusMonths(3)
+        return dateInThreeMonths.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getCurrentYear(): Int {
@@ -181,6 +173,32 @@ class LeaguesFixturesFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickL
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onFixtureClick(match: Response) {
+        val homeTeam = match.teams.home.name
+        val awayTeam = match.teams.away.name
+        val homeTeamLogoUrl = match.teams.home.logo
+        val awayTeamLogoUrl = match.teams.away.logo
+        val matchId = match.fixture.id.toString()
+        val leagueName=match.league.name
+        val venue=match.fixture.venue.name
+        val formattedDate = formatDate(match.fixture.date)
+        val country=match.league.country
+        val referee=match.fixture.referee
+        val city=match.fixture.venue.city
+        val homeTeamGoals=match.goals.home
+        val awayTeamGoals=match.goals.away
+        val homeTeamId=match.teams.home.id
+        val awayTeamId=match.teams.away.id
+        val leagueId=match.league.id
+        val season=match.league.season
+
+
+        Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
+        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
+            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
+        println("${referee},Malenge")
+    }
 
 
 }

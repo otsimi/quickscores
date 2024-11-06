@@ -60,6 +60,7 @@
     <string name="points">PTS</string>
     <string name="logo">Img</string>
     <string name="team_points">50</string>
+    <string name="notification_dialog">No fixtures available for this day,Scroll to another day!</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

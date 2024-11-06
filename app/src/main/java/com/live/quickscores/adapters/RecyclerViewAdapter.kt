@@ -8,15 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.dataclasses.FixtureResponses
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import com.live.quickscores.utils.LEAGUE_LOGO_URL
 import com.live.quickscores.utils.LOGO_URL
 import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import kotlin.reflect.typeOf
 
 class RecyclerViewAdapter(
     private val headerList: List<FixturesResponse>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -27,7 +26,7 @@ class RecyclerViewAdapter(
     }
 
     interface OnFixtureClickListener {
-        fun onFixtureClick(match: FixtureResponses)
+        fun onFixtureClick(match: Response)
     }
 
     inner class TitleViewHolder(private val binding: CompetitionTitleBinding) :
@@ -42,7 +41,7 @@ class RecyclerViewAdapter(
 
     inner class MatchViewHolder(private val binding: MatchesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(match: FixtureResponses) {
+        fun bind(match: Response) {
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
             val isoDate = match.fixture.date
@@ -133,7 +132,7 @@ class RecyclerViewAdapter(
 
     private sealed class ListItem
     private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int) : ListItem()
-    private data class MatchItem(val match: FixtureResponses) : ListItem()
+    private data class MatchItem(val match: Response) : ListItem()
 
     private fun getItemAtPosition(position: Int): ListItem {
         var offset = 0

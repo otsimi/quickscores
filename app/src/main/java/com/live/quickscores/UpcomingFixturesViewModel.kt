@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 

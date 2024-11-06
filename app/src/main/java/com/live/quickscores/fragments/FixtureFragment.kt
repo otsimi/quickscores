@@ -12,7 +12,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.MainActivity
 import com.live.quickscores.adapters.MatchDetailsAdapter
 import com.live.quickscores.databinding.FragmentFixtureBinding
-import com.live.quickscores.dataclasses.FixtureResponses
 import com.squareup.picasso.Picasso
 
 class FixtureFragment : Fragment() {

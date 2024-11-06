@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -13,10 +13,10 @@ class LeagueFixturesViewModel(private val repo: LeagueFixturesRepo):ViewModel() 
     private val leagueFixtures=MutableLiveData<Response<FixturesResponse>>()
     val fixtures:LiveData<Response<FixturesResponse>>get() = leagueFixtures
 
-    fun fetchFixturesByLeagueId(date:String,leagueId:String,season:String){
+    fun fetchFixturesByLeagueId(leagueId:String,season:String,fromDate:String,toDate:String){
         viewModelScope.launch {
             try {
-                val response=repo.getLeagueFixturesById(leagueId,date,season)
+                val response=repo.getLeagueFixturesById(leagueId,season,fromDate,toDate)
                 leagueFixtures.value=response
             }catch (e:Exception){
                 println(e)

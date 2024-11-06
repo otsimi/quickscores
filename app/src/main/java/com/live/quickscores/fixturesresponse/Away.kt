@@ -1,6 +1,6 @@
-package com.live.quickscores.dataclasses
+package com.live.quickscores.fixturesresponse
 
-data class Home(
+data class Away(
     val id: Int,
     val logo: String,
     val name: String,

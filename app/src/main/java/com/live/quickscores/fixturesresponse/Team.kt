@@ -1,4 +1,4 @@
-package com.live.quickscores.dataclasses.statisticsResponse
+package com.live.quickscores.fixturesresponse
 
 data class Team(
     val id: Int,

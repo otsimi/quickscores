@@ -8,13 +8,10 @@ import androidx.lifecycle.Observer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.live.quickscores.R
 import com.live.quickscores.StatisticsRepository
 import com.live.quickscores.StatisticsViewModel
 import com.live.quickscores.StatisticsViewModelFactory
 import com.live.quickscores.databinding.FragmentStatsBinding
-import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
-import retrofit2.Response
 
 class StatsFragment : Fragment() {
 

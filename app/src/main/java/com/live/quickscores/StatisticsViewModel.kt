@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
+import com.live.quickscores.fixturesresponse.statisticsResponse.StatisticsResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 

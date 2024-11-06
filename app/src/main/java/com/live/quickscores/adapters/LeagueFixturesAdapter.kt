@@ -1,91 +1,107 @@
 package com.live.quickscores.adapters
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
+import com.live.quickscores.fixturesresponse.Response
 import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.format.DateTimeParseException
+import java.util.*
 
-class LeagueFixturesAdapter(private val fixtureLists: List<FixturesResponse>, private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<LeagueFixturesAdapter.LeagueFixturesViewHolder>() {
+class LeagueFixturesAdapter(
+    private val groupedFixtures: Map<String, List<Response>>,
+    private val fixtureClickListener: OnFixtureClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnFixtureClickListener {
-        fun onFixtureClick(match: FixturesResponse)
+        fun onFixtureClick(match: Response)
     }
 
-    inner class LeagueFixturesViewHolder(val binding:MatchesBinding):RecyclerView.ViewHolder(binding.root){
-        val homeTeam:TextView=binding.HomeTeam
-        val awayTeam:TextView=binding.AwayTeam
-        val homeGoals:TextView=binding.HomeGoals
-        val awayGoals:TextView=binding.AwayGoals
-        val homeTeamLogo:ImageView=binding.HomeLogo
-        val awayTeamLogo:ImageView=binding.AwayLogo
-        val matchTime:TextView=binding.Time
+    companion object {
+        private const val VIEW_TYPE_HEADER = 0
+        private const val VIEW_TYPE_ITEM = 1
+    }
+
+    private val itemList = mutableListOf<Pair<String?, Response?>>()
+
+    init {
+        for ((date, fixtures) in groupedFixtures) {
+            itemList.add(date to null)
+            fixtures.forEach { fixture ->
+                itemList.add(null to fixture)
+            }
+        }
+    }
+
+    inner class LeagueFixturesViewHolder(val binding: MatchesBinding) : RecyclerView.ViewHolder(binding.root) {
+        val homeTeam: TextView = binding.HomeTeam
+        val awayTeam: TextView = binding.AwayTeam
+        val homeGoals: TextView = binding.HomeGoals
+        val awayGoals: TextView = binding.AwayGoals
+        val homeTeamLogo: ImageView = binding.HomeLogo
+        val awayTeamLogo: ImageView = binding.AwayLogo
+        val matchTime: TextView = binding.Time
 
         init {
-            binding.root.setOnClickListener{
+            binding.root.setOnClickListener {
                 val position = adapterPosition
-                if (position!=RecyclerView.NO_POSITION){
-                    fixtureClickListener.onFixtureClick(fixtureLists[position])
+                if (position != RecyclerView.NO_POSITION) {
+                    itemList[position].second?.let { fixtureClickListener.onFixtureClick(it) }
                 }
             }
         }
     }
 
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): LeagueFixturesAdapter.LeagueFixturesViewHolder {
-       val binding=MatchesBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return LeagueFixturesViewHolder(binding)
+    inner class DateHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val dateHeader: TextView = itemView.findViewById(R.id.dateHeader)
     }
 
-    override fun onBindViewHolder(
-        holder: LeagueFixturesAdapter.LeagueFixturesViewHolder,
-        position: Int
-    ) {
-        val leagueFixtures=fixtureLists[position]
-        holder.homeTeam.text= leagueFixtures.response[0].teams.home.name
-        holder.awayTeam.text=leagueFixtures.response[0].teams.away.name
-        if (leagueFixtures.response[0].teams.home.logo.isNotEmpty()){
-            Picasso.get().load(leagueFixtures.response[0].teams.home.logo).into(holder.homeTeamLogo)
-        } else{
-            holder.homeTeamLogo.setImageResource(R.drawable.imageholder)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_HEADER) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.date_header, parent, false)
+            DateHeaderViewHolder(view)
+        } else {
+            val binding = MatchesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            LeagueFixturesViewHolder(binding)
         }
-        if (leagueFixtures.response[0].teams.away.logo.isNotEmpty()){
-            Picasso.get().load(leagueFixtures.response[0].teams.away.logo).into(holder.awayTeamLogo)
-        } else{
-            holder.awayTeamLogo.setImageResource(R.drawable.imageholder)
-        }
-        if (leagueFixtures.response[0].goals.home!=null){
-            holder.homeGoals.visibility= View.VISIBLE
-            holder.homeGoals.text=leagueFixtures.response[0].goals.home
-        } else{
-            println()
-        }
-        if (leagueFixtures.response[0].goals.away!=null){
-            holder.awayGoals.visibility=View.VISIBLE
-            holder.awayGoals.text=leagueFixtures.response[0].goals.away
-        }else{
-            println()
-        }
-        val isoDate = leagueFixtures.response[0].fixture.date
-        val formattedTime = convertToLocalTime(isoDate)
-        holder.matchTime.text=formattedTime
     }
 
-    override fun getItemCount(): Int {
-       return fixtureLists.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = itemList[position]
+        if (getItemViewType(position) == VIEW_TYPE_HEADER) {
+            (holder as DateHeaderViewHolder).dateHeader.text = item.first
+        } else {
+            val itemHolder = holder as LeagueFixturesViewHolder
+            item.second?.let {
+                itemHolder.homeTeam.text = it.teams.home.name
+                itemHolder.awayTeam.text = it.teams.away.name
+                Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
+                Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
+                itemHolder.homeGoals.text = it.goals.home ?: "0"
+                itemHolder.awayGoals.text = it.goals.away ?: "0"
+                itemHolder.matchTime.text = convertToLocalTime(it.fixture.date)
+            }
+        }
     }
+
+    override fun getItemCount(): Int = itemList.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if (itemList[position].second == null) VIEW_TYPE_HEADER else VIEW_TYPE_ITEM
+    }
+
     @SuppressLint("NewApi")
     private fun convertToLocalTime(isoDate: String): String {
         return try {
@@ -95,7 +111,16 @@ class LeagueFixturesAdapter(private val fixtureLists: List<FixturesResponse>, pr
         } catch (e: Exception) {
             "N/A"
         }
-
     }
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formatedDate(dateString: String): String? {
+        return try {
+            val zonedDateTime = ZonedDateTime.parse(dateString)
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            zonedDateTime.format(formatter)
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }

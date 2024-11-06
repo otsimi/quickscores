@@ -1,6 +1,6 @@
 package com.live.quickscores
 
-import com.live.quickscores.dataclasses.statisticsResponse.StatisticsResponse
+import com.live.quickscores.fixturesresponse.statisticsResponse.StatisticsResponse
 import retrofit2.Response
 
 class StatisticsRepository {

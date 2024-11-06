@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
-import com.live.quickscores.dataclasses.FixtureResponses
+import com.live.quickscores.fixturesresponse.Response
 
 class UpcomingFixturesAdapter(
-    private var fixtureList: List<FixtureResponses>
+    private var fixtureList: List<Response>
 ) : RecyclerView.Adapter<UpcomingFixturesAdapter.FixtureViewHolder>() {
 
     inner class FixtureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,7 +34,7 @@ class UpcomingFixturesAdapter(
         holder.awayTeam.text = fixture.teams.away.name
     }
 
-    fun updateFixtures(newFixtures: List<FixtureResponses>) {
+    fun updateFixtures(newFixtures: List<Response>) {
         fixtureList = newFixtures
         notifyDataSetChanged()
     }

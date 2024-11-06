@@ -1,13 +1,12 @@
 package com.live.quickscores
 
-import com.live.quickscores.dataclasses.FixturesResponse
-import com.live.quickscores.leagueResponse.Season
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import retrofit2.Response
 
 class LeagueFixturesRepo {
     private val apiService:ApiService=RetrofitClient().getRetrofitInstance()
-    suspend fun getLeagueFixturesById(date:String,leagueId:String,season: String):Response<FixturesResponse>{
-        return apiService.getFixturesByLeagueId(date,leagueId,season)
+    suspend fun getLeagueFixturesById(leagueId:String,season: String,fromDate:String,toDate:String):Response<FixturesResponse>{
+        return apiService.getFixturesByLeagueId(leagueId,season,fromDate,toDate)
 
     }
 }

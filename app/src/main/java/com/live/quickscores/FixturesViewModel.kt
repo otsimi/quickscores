@@ -3,7 +3,7 @@ package com.live.quickscores
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import retrofit2.Response

@@ -1,6 +1,6 @@
 package com.live.quickscores
 
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import retrofit2.Response
 
 class UpcomingFixturesRepository {

@@ -19,8 +19,8 @@ import com.live.quickscores.FixturesViewModel
 import com.live.quickscores.FixturesViewModelFactory
 import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
-import com.live.quickscores.dataclasses.FixtureResponses
-import com.live.quickscores.dataclasses.FixturesResponse
+import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixturesresponse.FixturesResponse
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -102,7 +102,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onFixtureClick(match: FixtureResponses) {
+    override fun onFixtureClick(match: Response) {
         val homeTeam = match.teams.home.name
         val awayTeam = match.teams.away.name
         val homeTeamLogoUrl = match.teams.home.logo

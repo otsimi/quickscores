@@ -1,4 +1,4 @@
-package com.live.quickscores.dataclasses
+package com.live.quickscores.fixturesresponse
 
 data class Periods(
     val first: Int,

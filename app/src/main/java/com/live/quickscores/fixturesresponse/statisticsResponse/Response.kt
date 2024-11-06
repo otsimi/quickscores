@@ -1,4 +1,4 @@
-package com.live.quickscores.dataclasses.statisticsResponse
+package com.live.quickscores.fixturesresponse.statisticsResponse
 
 data class Response(
     val statistics: List<Statistic>,
