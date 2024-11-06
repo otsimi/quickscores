@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        supportActionBar.setBackgroundDrawable(R.color.gray)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -241,7 +242,6 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
                 .commit()
         }
     }
-
 
     private fun setUpToolBar() {
         setSupportActionBar(toolbar)

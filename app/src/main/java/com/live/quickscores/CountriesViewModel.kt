@@ -29,6 +29,7 @@ class CountriesViewModel(private val repository: CountriesRepository):ViewModel(
         }
     }
 }
+@Suppress("UNCHECKED_CAST")
 class CountriesViewModelFactory(private val repository: CountriesRepository):ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(CountriesViewModel::class.java)) {

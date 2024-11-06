@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:title="@string/all"/>
+        android:title="@string/all"
+        android:icon="@drawable/baseline_sports_soccer_24"/>
 
     <item
         android:id="@+id/countries"
@@ -15,5 +16,5 @@
     <item
         android:id="@+id/leagues"
         android:title="@string/leagues"
-        android:icon="@drawable/baseline_sports_soccer_24"/>
+        android:icon="@drawable/trophy_svgrepo_com"/>
 </menu>

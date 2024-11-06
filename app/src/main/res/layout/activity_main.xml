@@ -30,8 +30,8 @@
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:theme="@style/ToolbarTheme"
-                app:titleTextColor="@color/black"
-                app:subtitleTextColor="@color/black"
+                app:titleTextColor="@color/white"
+                app:subtitleTextColor="@color/white"
                 app:popupTheme="@style/ToolbarPopupTheme"/>
 
             <com.google.android.material.tabs.TabLayout
@@ -40,10 +40,9 @@
                 android:layout_height="wrap_content"
                 app:tabMode="scrollable"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="@color/black"
-                app:tabIndicatorHeight="4dp"
+                app:tabIndicatorColor="@android:color/white"
                 app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="@color/black"/>
+                app:tabTextColor="@color/white"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,8 +50,7 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="@color/white"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -74,10 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:menu="@menu/bottom_navigation_menu"
-                app:itemIconTint="@color/black"
-                app:itemTextColor="@color/black"
+
+                app:itemTextColor="@color/white"
                 app:labelVisibilityMode="labeled"
-                android:background="@color/silver"
+                android:background="@color/dark_slate_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
