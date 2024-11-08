@@ -30,8 +30,8 @@ class LeagueFixturesAdapter(
     }
 
     companion object {
-        private const val VIEW_TYPE_HEADER = 0
-        private const val VIEW_TYPE_ITEM = 1
+        private const val TYPE_HEADER = 0
+        private const val TYPE_ITEM = 1
     }
 
     private val itemList = mutableListOf<Pair<String?, Response?>>()
@@ -69,7 +69,7 @@ class LeagueFixturesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_HEADER) {
+        return if (viewType == TYPE_HEADER) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.date_header, parent, false)
             DateHeaderViewHolder(view)
         } else {
@@ -80,7 +80,7 @@ class LeagueFixturesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = itemList[position]
-        if (getItemViewType(position) == VIEW_TYPE_HEADER) {
+        if (getItemViewType(position) == TYPE_HEADER) {
             (holder as DateHeaderViewHolder).dateHeader.text = item.first
         } else {
             val itemHolder = holder as LeagueFixturesViewHolder
@@ -99,7 +99,7 @@ class LeagueFixturesAdapter(
     override fun getItemCount(): Int = itemList.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (itemList[position].second == null) VIEW_TYPE_HEADER else VIEW_TYPE_ITEM
+        return if (itemList[position].second == null) TYPE_HEADER else TYPE_ITEM
     }
 
     @SuppressLint("NewApi")
@@ -112,15 +112,5 @@ class LeagueFixturesAdapter(
             "N/A"
         }
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun formatedDate(dateString: String): String? {
-        return try {
-            val zonedDateTime = ZonedDateTime.parse(dateString)
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            zonedDateTime.format(formatter)
-        } catch (e: DateTimeParseException) {
-            e.printStackTrace()
-            null
-        }
-    }
+
 }

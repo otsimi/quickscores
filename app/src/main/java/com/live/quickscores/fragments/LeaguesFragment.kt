@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.LeaguesRepository
 import com.live.quickscores.LeaguesViewModel
 import com.live.quickscores.LeaguesViewModelFactoryProvider
@@ -30,6 +32,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     private var countryCode: String? = null
     private var countryName:String?=null
     private var season: String? = null
+    private lateinit var sharedViewModel: LeagueIdSharedViewModel
 
     interface OnLeagueClicked{
         fun onLeagueClicked(
@@ -39,6 +42,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
             leagueLogo:String,
             leagueCountryName:String
         )
+
     }
 
 
@@ -71,6 +75,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(LeagueIdSharedViewModel::class.java)
         setUpRecyclerView()
         observeLeagueData()
         countryCode?.let { code ->
@@ -127,15 +132,17 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     }
 
     override fun onLeagueClick(league: Response) {
-        val leagueId=league.league.id
+        val leagueId=league.league.id.toString()
+        sharedViewModel.setSelectedLeagueId(leagueId)
         val season=league.seasons.toString()
         val name=league.league.name
         val leagueLogo=league.league.logo
         val leagueCountryName=league.country.name
-        leagueClickListener?.onLeagueClicked(leagueId.toString(),season,name,leagueLogo,
+        leagueClickListener?.onLeagueClicked(leagueId,season,name,leagueLogo,
             leagueCountryName
         )
         println("${leagueCountryName},leagueCountryName")
         println("${leagueId},leagueId")
+
     }
 }

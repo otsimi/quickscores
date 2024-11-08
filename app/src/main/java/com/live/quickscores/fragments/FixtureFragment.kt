@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.MainActivity
-import com.live.quickscores.adapters.MatchDetailsAdapter
+import com.live.quickscores.adapters.MatchDetailsViewPagerAdapter
 import com.live.quickscores.databinding.FragmentFixtureBinding
 import com.squareup.picasso.Picasso
 
@@ -43,7 +43,7 @@ class FixtureFragment : Fragment() {
         viewPager = binding.viewPager
         tabLayout = binding.tabLayout
 
-        val adapter = MatchDetailsAdapter(requireActivity())
+        val adapter = MatchDetailsViewPagerAdapter(requireActivity())
 
         val bundle = Bundle().apply {
             arguments?.let {
