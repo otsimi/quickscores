@@ -1,32 +1,71 @@
 package com.live.quickscores.fragments
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.live.quickscores.LeagueFixturesRepo
+import com.live.quickscores.LeagueFixturesViewModel
+import com.live.quickscores.LeagueFixturesViewModelFactoryProvider
+import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.R
+import com.live.quickscores.adapters.LeagueFixturesAdapter
+import com.live.quickscores.databinding.FragmentResultsBinding
+import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fragments.LeagueFixturesContentFragment.OnFixtureClickListener
+import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Calendar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener {
+    private var _binding:FragmentResultsBinding?=null
+    private val binding get() = _binding!!
+    private lateinit var fixturesAdapter: LeagueFixturesAdapter
+    private var fixtureClickListener: OnFixtureClickListener? = null
+    private val viewModel: LeagueFixturesViewModel by viewModels {
+        LeagueFixturesViewModelFactoryProvider(LeagueFixturesRepo())
+    }
+    private val sharedViewModel: LeagueIdSharedViewModel by activityViewModels()
+    private var leagueId: String? = null
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ResultsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ResultsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    interface OnFixtureClickListener {
+        fun onFixtureClicked(
+            matchId: String,
+            homeTeam: String,
+            awayTeam: String,
+            homeTeamLogoUrl: String,
+            awayTeamLogoUrl: String,
+            leagueName: String,
+            venue: String?,
+            date: String?,
+            country: String?,
+            referee: String?,
+            city: String?,
+            homeTeamGoals: String?,
+            awayTeamGoals: String?,
+            homeTeamId: String,
+            awayTeamId: String,
+            leagueId: String,
+            season: String
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,27 +73,115 @@ class ResultsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_results, container, false)
+        _binding=FragmentResultsBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.selectedLeagueId.observe(viewLifecycleOwner) { id ->
+            leagueId = id
+            println("$id, gottenStringBundle")
+            println("${leagueId}, malengeLoadedId")
+
+            val season = getCurrentYear().toString()
+            val fromDate = getDateThreeMonthsAgo()
+            val toDate = getCurrentDate()
+
+            leagueId?.let {
+                viewModel.fetchFixturesByLeagueId(it, season, fromDate, toDate)
+                println("${it},${season},${fromDate},${toDate}, Malengeparams")
+            } ?: run {
+                println("leagueId is null, unable to fetch fixtures")
+            }
+        }
+        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+            response?.body()?.let { fixturesData ->
+                val groupedFixtures = groupFixturesByDate(fixturesData.response)
+                println("$groupedFixtures, responseMalenge")
+                setUpRecyclerView(groupedFixtures)
+            }
+        })
+    }
+    private fun setUpRecyclerView(groupedFixtures: Map<String, List<Response>>) {
+        fixturesAdapter = LeagueFixturesAdapter(groupedFixtures, this)
+        binding.RecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = fixturesAdapter
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ResultsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
+
         fun newInstance(param1: String, param2: String) =
             ResultsFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onFixtureClick(match: Response) {
+        val homeTeam = match.teams.home.name
+        val awayTeam = match.teams.away.name
+        val homeTeamLogoUrl = match.teams.home.logo
+        val awayTeamLogoUrl = match.teams.away.logo
+        val matchId = match.fixture.id.toString()
+        val leagueName = match.league.name
+        val venue = match.fixture.venue.name
+        val formattedDate = formatDate(match.fixture.date)
+        val country = match.league.country
+        val referee = match.fixture.referee
+        val city = match.fixture.venue.city
+        val homeTeamGoals = match.goals.home
+        val awayTeamGoals = match.goals.away
+        val homeTeamId = match.teams.home.id
+        val awayTeamId = match.teams.away.id
+        val leagueId = match.league.id
+        val season = match.league.season
+
+        Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
+        fixtureClickListener?.onFixtureClicked(
+            matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl, leagueName, venue,
+            formattedDate, country, city, referee, homeTeamGoals, awayTeamGoals,
+            homeTeamId.toString(), awayTeamId.toString(), leagueId.toString(), season.toString()
+        )
+        println("$referee, Malenge")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun groupFixturesByDate(fixtures: List<Response>): Map<String, List<Response>> {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return fixtures.groupBy { fixture ->
+            OffsetDateTime.parse(fixture.fixture.date).format(dateFormatter)
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentDate(): String {
+        return ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    }
+    @SuppressLint("SimpleDateFormat")
+    fun getDateThreeMonthsAgo(): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -3)
+        val formatter = SimpleDateFormat("yyyy-MM-dd") // Change pattern as needed
+        return formatter.format(calendar.time)
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentYear(): Int {
+        return ZonedDateTime.now().year
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formatDate(dateString: String): String? {
+        return try {
+            val zonedDateTime = ZonedDateTime.parse(dateString)
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            zonedDateTime.format(formatter)
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
     }
 }

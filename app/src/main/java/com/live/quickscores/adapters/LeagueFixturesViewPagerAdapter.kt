@@ -18,7 +18,8 @@ class LeagueFixturesViewPagerAdapter(fragmentActivity: FragmentActivity) :
     }
 
     fun addFragment(fragment: Fragment, bundle: Bundle) {
-        fragmentList.add(Pair(fragment, bundle))
-        println("${bundle},bundleMalenge")
+        val pair = Pair(fragment, bundle)
+        fragmentList.add(pair)
+        println("${pair.first}, ${pair.second}, MalengeFragments")
     }
 }

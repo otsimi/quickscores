@@ -27,13 +27,14 @@ import com.live.quickscores.fragments.LeagueTableFragment
 import com.live.quickscores.fragments.LeaguesFixturesFragment
 import com.live.quickscores.fragments.LeaguesFragment
 import com.live.quickscores.fragments.MatchFragment
+import com.live.quickscores.fragments.ResultsFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
-    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked, LeagueFixturesContentFragment.OnFixtureClickListener {
+    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked, LeagueFixturesContentFragment.OnFixtureClickListener,ResultsFragment.OnFixtureClickListener {
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest

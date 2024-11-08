@@ -58,13 +58,10 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
         )
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { args ->
-            leagueId = args.getString("leagueId")
-            val leagueName = args.getString("leagueName")
-            println("$leagueId, $leagueName, gottenStringBundle")
-        }
+
     }
 
     override fun onCreateView(

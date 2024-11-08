@@ -14,11 +14,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.adapters.LeagueFixturesViewPagerAdapter
 import com.live.quickscores.databinding.FragmentLeaguesFixturesBinding
+import com.squareup.picasso.Picasso
 
 class LeaguesFixturesFragment : Fragment() {
     private var leagueId: String? = null
     private var leagueName: String? = null
-    private var countryName: String? = null
+    private var leagueLogo: String? = null
     private var _binding: FragmentLeaguesFixturesBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewPager: ViewPager2
@@ -30,16 +31,18 @@ class LeaguesFixturesFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedViewModel = ViewModelProvider(requireActivity())[LeagueIdSharedViewModel::class.java]
 
-        arguments?.let {
-            leagueName = it.getString("leagueName")
-            countryName = it.getString("country") ?: countryName
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        arguments?.let {
+            leagueName= requireArguments().getString("name")
+            println("${leagueName},MalengeName")
+            leagueLogo=requireArguments().getString("leagueLogo")
+            println("${leagueLogo},leagueLogoUrlString")
+        }
         _binding = FragmentLeaguesFixturesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,6 +58,9 @@ class LeaguesFixturesFragment : Fragment() {
         }
 
         binding.leagueName.text = leagueName
+        if (leagueLogo!!.isNotEmpty()){
+            Picasso.get().load(leagueLogo).into(binding.leagueLogo)
+        }
     }
 
     private fun setupViewPagerAndTabs() {

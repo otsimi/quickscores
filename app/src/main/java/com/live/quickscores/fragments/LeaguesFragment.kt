@@ -143,6 +143,8 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         )
         println("${leagueCountryName},leagueCountryName")
         println("${leagueId},leagueId")
+        println("${name},leagueNameMalenge")
+        println("${leagueLogo},leagueLogoMalenge")
 
     }
 }
