@@ -12,7 +12,7 @@ import com.live.quickscores.leagueResponse.Response
 import com.squareup.picasso.Picasso
 
 
-class LeaguesAdapter(private val leagueLists:List<Response>, private val leagueClickListener: LeaguesFragment):RecyclerView.Adapter<LeaguesAdapter.LeaguesViewHolder>() {
+class LeaguesAdapter(private val leagueLists:List<Response>, private val leagueClickListener: LeaguesFragment,):RecyclerView.Adapter<LeaguesAdapter.LeaguesViewHolder>() {
     interface OnLeagueClickListener{
         fun onLeagueClick(league:Response)
     }

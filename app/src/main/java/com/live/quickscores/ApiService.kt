@@ -35,6 +35,9 @@ interface ApiService {
     @GET("v3/fixtures")
     suspend fun getFixturesByLeagueId(@Query("league") leagueId:String,@Query("season")season: String,@Query("from") fromDate: String,@Query("to") toDate:String):Response<FixturesResponse>
 
+    @GET("v3/leagues")
+    suspend fun getAllLeagues():Response<LeaguesResponse>
+
 }
 
 
