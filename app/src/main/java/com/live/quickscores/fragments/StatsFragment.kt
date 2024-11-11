@@ -8,9 +8,9 @@ import androidx.lifecycle.Observer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.live.quickscores.StatisticsRepository
-import com.live.quickscores.StatisticsViewModel
-import com.live.quickscores.StatisticsViewModelFactory
+import com.live.quickscores.repositories.StatisticsRepository
+import com.live.quickscores.viewmodelclasses.StatisticsViewModel
+import com.live.quickscores.viewmodelclasses.StatisticsViewModelFactory
 import com.live.quickscores.databinding.FragmentStatsBinding
 
 class StatsFragment : Fragment() {

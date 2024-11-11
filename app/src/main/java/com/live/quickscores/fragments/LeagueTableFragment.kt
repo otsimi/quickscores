@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.live.quickscores.LeagueTableRepository
-import com.live.quickscores.LeagueTableViewModel
-import com.live.quickscores.LeagueTableViewModelFactory
+import com.live.quickscores.repositories.LeagueTableRepository
+import com.live.quickscores.viewmodelclasses.LeagueTableViewModel
+import com.live.quickscores.viewmodelclasses.LeagueTableViewModelFactory
 import com.live.quickscores.adapters.LeagueTableAdapter
 import com.live.quickscores.databinding.FragmentLeagueTableBinding
 import com.live.quickscores.standingsresponse.StandingsResponse

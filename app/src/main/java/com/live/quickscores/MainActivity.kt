@@ -232,10 +232,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
                     putString("leagueLogo", leagueLogo)
                     putString("country",leagueCountryName)
                 }
-                println("${leagueId},MalengeKubwaSana")
-                println("${season},MalengeKubwaSana")
-                println("${name},MalengeKubwaSana")
-                println("${leagueCountryName},MalengeKubwaSana")
+                println("${leagueId},${season},${name},${leagueCountryName},MalengeKubwaSana")
 
             }
             supportFragmentManager.beginTransaction()

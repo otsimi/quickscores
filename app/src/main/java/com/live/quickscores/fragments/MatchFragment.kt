@@ -14,9 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.live.quickscores.FixturesRepository
-import com.live.quickscores.FixturesViewModel
-import com.live.quickscores.FixturesViewModelFactory
+import com.live.quickscores.repositories.FixturesRepository
+import com.live.quickscores.viewmodelclasses.FixturesViewModel
+import com.live.quickscores.viewmodelclasses.FixturesViewModelFactory
 import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
 import com.live.quickscores.fixturesresponse.Response

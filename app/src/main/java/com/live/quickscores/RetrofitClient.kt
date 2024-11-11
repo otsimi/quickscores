@@ -1,5 +1,6 @@
 package com.live.quickscores
 
+import com.live.quickscores.services.ApiService
 import com.live.quickscores.utils.API_URL
 import com.live.quickscores.utils.RAPID_API_KEY
 import okhttp3.Interceptor

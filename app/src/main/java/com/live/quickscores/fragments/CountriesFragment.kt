@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.live.quickscores.CountriesRepository
-import com.live.quickscores.CountriesViewModel
-import com.live.quickscores.CountriesViewModelFactory
+import com.live.quickscores.repositories.CountriesRepository
+import com.live.quickscores.viewmodelclasses.CountriesViewModel
+import com.live.quickscores.viewmodelclasses.CountriesViewModelFactory
 import com.live.quickscores.adapters.CountriesAdapter
 import com.live.quickscores.countriesresponse.CountriesResponse
 import com.live.quickscores.countriesresponse.Response

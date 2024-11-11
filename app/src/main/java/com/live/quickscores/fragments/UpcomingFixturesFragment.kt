@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.live.quickscores.R
-import com.live.quickscores.UpcomingFixturesRepository
-import com.live.quickscores.UpcomingFixturesViewModel
-import com.live.quickscores.UpcomingFixturesViewModelFactory
+import com.live.quickscores.repositories.UpcomingFixturesRepository
+import com.live.quickscores.viewmodelclasses.UpcomingFixturesViewModel
+import com.live.quickscores.viewmodelclasses.UpcomingFixturesViewModelFactory
 import com.live.quickscores.adapters.UpcomingFixturesAdapter
 import com.live.quickscores.databinding.FragmentUpcomingFixturesBinding
 

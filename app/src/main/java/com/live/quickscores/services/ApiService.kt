@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.services
 
 import com.live.quickscores.allleaguesresponse.AllLeaguesReponse
 import com.live.quickscores.countriesresponse.CountriesResponse

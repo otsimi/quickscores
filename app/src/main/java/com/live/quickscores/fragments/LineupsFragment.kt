@@ -7,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.live.quickscores.LineupsRepository
-import com.live.quickscores.LineupsViewModel
-import com.live.quickscores.LineupsViewModelFactory
-import com.live.quickscores.R
+import com.live.quickscores.repositories.LineupsRepository
+import com.live.quickscores.viewmodelclasses.LineupsViewModel
+import com.live.quickscores.viewmodelclasses.LineupsViewModelFactory
 import com.live.quickscores.databinding.FragmentLineupsBinding
-import com.live.quickscores.lineupresponse.LineupsResponse
-import com.live.quickscores.lineupresponse.Response
 import com.live.quickscores.utils.LOGO_URL
 import com.squareup.picasso.Picasso
 
@@ -21,7 +18,7 @@ import com.squareup.picasso.Picasso
 class LineupsFragment : Fragment() {
     private var lineupsBinding:FragmentLineupsBinding?=null
     private val binding get() =lineupsBinding!!
-    private val viewModel:LineupsViewModel by viewModels{
+    private val viewModel: LineupsViewModel by viewModels{
         LineupsViewModelFactory(LineupsRepository())
     }
 

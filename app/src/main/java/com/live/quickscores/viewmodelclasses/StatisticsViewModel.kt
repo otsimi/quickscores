@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.viewmodelclasses
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.live.quickscores.fixturesresponse.statisticsResponse.StatisticsResponse
+import com.live.quickscores.repositories.StatisticsRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -29,7 +30,7 @@ class StatisticsViewModel(private val repository: StatisticsRepository):ViewMode
 class StatisticsViewModelFactory(private val repository: StatisticsRepository):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(StatisticsViewModel::class.java)){
-            return StatisticsViewModel(repository)as T
+            return StatisticsViewModel(repository) as T
         }
         throw IllegalArgumentException("Uknown ViewModel scope")
     }

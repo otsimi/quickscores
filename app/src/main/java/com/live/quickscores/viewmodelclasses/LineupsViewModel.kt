@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.viewmodelclasses
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.live.quickscores.lineupresponse.LineupsResponse
+import com.live.quickscores.repositories.LineupsRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -29,7 +30,7 @@ class LineupsViewModel(private val repository: LineupsRepository):ViewModel() {
 class LineupsViewModelFactory(private val repository: LineupsRepository):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(LineupsViewModel::class.java)){
-            return LineupsViewModel(repository)as T
+            return LineupsViewModel(repository) as T
         }
         throw IllegalArgumentException("Uknown ViewModel scope")
     }

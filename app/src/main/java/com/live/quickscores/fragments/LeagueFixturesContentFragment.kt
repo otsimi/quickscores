@@ -12,9 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.live.quickscores.LeagueFixturesRepo
-import com.live.quickscores.LeagueFixturesViewModel
-import com.live.quickscores.LeagueFixturesViewModelFactoryProvider
+import com.live.quickscores.repositories.LeagueFixturesRepo
+import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModel
+import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModelFactoryProvider
 import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentLeagueFixturesContentBinding

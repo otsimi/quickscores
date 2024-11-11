@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.live.quickscores.AllLeaguesRepo
-import com.live.quickscores.AllLeaguesViewModel
-import com.live.quickscores.AllLeaguesViewModelFactoryProvider
+import com.live.quickscores.repositories.AllLeaguesRepo
+import com.live.quickscores.viewmodelclasses.AllLeaguesViewModel
+import com.live.quickscores.viewmodelclasses.AllLeaguesViewModelFactoryProvider
+import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.adapters.AllLeaguesAdapter
 import com.live.quickscores.allleaguesresponse.AllLeaguesReponse
 import com.live.quickscores.databinding.FragmentAllLeaguesBinding
@@ -24,7 +26,8 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
     private val binding get() = _binding!!
     private var leagueClickListener: OnLeagueClicked?=null
     private lateinit var leaguesAdapter: AllLeaguesAdapter
-    private val viewModel:AllLeaguesViewModel by viewModels{
+    private lateinit var sharedViewModel: LeagueIdSharedViewModel
+    private val viewModel: AllLeaguesViewModel by viewModels{
         AllLeaguesViewModelFactoryProvider(AllLeaguesRepo())
     }
     interface OnLeagueClicked{
@@ -63,6 +66,7 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(LeagueIdSharedViewModel::class.java)
         setUpRecyclerView()
         println("Fetching leagues data...")
         observeLeagueData()
@@ -110,6 +114,7 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
 
     override fun onLeagueClick(league: com.live.quickscores.allleaguesresponse.Response) {
         val leagueId=league.league.id.toString()
+        sharedViewModel.setSelectedLeagueId(leagueId)
         val season=league.seasons.toString()
         val name=league.league.name
         val leagueLogo=league.league.logo

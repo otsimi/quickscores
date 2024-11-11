@@ -1,4 +1,4 @@
-package com.live.quickscores
+package com.live.quickscores.viewmodelclasses
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.live.quickscores.countriesresponse.CountriesResponse
+import com.live.quickscores.repositories.CountriesRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 

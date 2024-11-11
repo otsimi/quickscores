@@ -12,9 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.LeagueIdSharedViewModel
-import com.live.quickscores.LeaguesRepository
-import com.live.quickscores.LeaguesViewModel
-import com.live.quickscores.LeaguesViewModelFactoryProvider
+import com.live.quickscores.repositories.LeaguesRepository
+import com.live.quickscores.viewmodelclasses.LeaguesViewModel
+import com.live.quickscores.viewmodelclasses.LeaguesViewModelFactoryProvider
 import com.live.quickscores.adapters.LeaguesAdapter
 import com.live.quickscores.databinding.FragmentLeaguesBinding
 import com.live.quickscores.leagueResponse.LeaguesResponse
@@ -26,13 +26,13 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     private val binding get() = _binding!!
     private var leagueClickListener:OnLeagueClicked?=null
     private lateinit var leaguesAdapter: LeaguesAdapter
-    private val viewModel:LeaguesViewModel by viewModels(){
-        LeaguesViewModelFactoryProvider(LeaguesRepository())
-    }
     private var countryCode: String? = null
     private var countryName:String?=null
     private var season: String? = null
     private lateinit var sharedViewModel: LeagueIdSharedViewModel
+    private val viewModel: LeaguesViewModel by viewModels{
+        LeaguesViewModelFactoryProvider(LeaguesRepository())
+    }
 
     interface OnLeagueClicked{
         fun onLeagueClicked(
@@ -44,7 +44,6 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         )
 
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -141,10 +140,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         leagueClickListener?.onLeagueClicked(leagueId,season,name,leagueLogo,
             leagueCountryName
         )
-        println("${leagueCountryName},leagueCountryName")
-        println("${leagueId},leagueId")
-        println("${name},leagueNameMalenge")
-        println("${leagueLogo},leagueLogoMalenge")
+        println("${leagueCountryName},${leagueId},${name},${leagueLogo},leaguefetchDetails")
 
     }
 }

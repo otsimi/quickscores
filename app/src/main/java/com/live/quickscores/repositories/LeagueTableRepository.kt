@@ -1,10 +1,12 @@
-package com.live.quickscores
+package com.live.quickscores.repositories
 
+import com.live.quickscores.services.ApiService
+import com.live.quickscores.RetrofitClient
 import com.live.quickscores.standingsresponse.StandingsResponse
 import retrofit2.Response
 
 class LeagueTableRepository {
-    private val apiService:ApiService=RetrofitClient().getRetrofitInstance()
+    private val apiService: ApiService = RetrofitClient().getRetrofitInstance()
     suspend fun getLeagueTable(leagueId: String, season: String):Response<StandingsResponse>{
         println("Calling getLeagueStandings with leagueId: $leagueId")
         val response = apiService.getLeagueStandings(leagueId, season)
