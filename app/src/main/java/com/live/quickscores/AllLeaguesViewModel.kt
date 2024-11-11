@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.live.quickscores.allleaguesresponse.AllLeaguesReponse
 import com.live.quickscores.leagueResponse.LeaguesResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class AllLeaguesViewModel(private val repo: AllLeaguesRepo):ViewModel(){
-    private val countryLeagues= MutableLiveData<Response<LeaguesResponse>>()
-    val leagues: LiveData<Response<LeaguesResponse>> get() = countryLeagues
+    private val countryLeagues= MutableLiveData<Response<AllLeaguesReponse>>()
+    val leagues: LiveData<Response<AllLeaguesReponse>> get() = countryLeagues
 
     fun fetchAllLeagues(){
         viewModelScope.launch {

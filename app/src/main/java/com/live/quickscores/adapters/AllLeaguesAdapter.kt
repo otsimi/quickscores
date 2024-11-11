@@ -6,9 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
+import com.live.quickscores.allleaguesresponse.Response
 import com.live.quickscores.databinding.LeaguesItemsBinding
 import com.live.quickscores.fragments.AllLeaguesFragment
-import com.live.quickscores.leagueResponse.Response
 import com.squareup.picasso.Picasso
 
 class AllLeaguesAdapter(private val leagueLists:List<Response>,private val leagueClickListener:AllLeaguesFragment):RecyclerView.Adapter<AllLeaguesAdapter.AllLeaguesViewHolder>() {

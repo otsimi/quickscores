@@ -13,13 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.AllLeaguesRepo
 import com.live.quickscores.AllLeaguesViewModel
 import com.live.quickscores.AllLeaguesViewModelFactoryProvider
-import com.live.quickscores.R
 import com.live.quickscores.adapters.AllLeaguesAdapter
-import com.live.quickscores.adapters.LeaguesAdapter
+import com.live.quickscores.allleaguesresponse.AllLeaguesReponse
 import com.live.quickscores.databinding.FragmentAllLeaguesBinding
-import com.live.quickscores.fragments.LeaguesFragment.OnLeagueClicked
-import com.live.quickscores.leagueResponse.LeaguesResponse
-import com.live.quickscores.leagueResponse.Response
+
 
 
 class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
@@ -68,8 +65,8 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         println("Fetching leagues data...")
-        viewModel.fetchAllLeagues()
         observeLeagueData()
+        viewModel.fetchAllLeagues()
         println("leaguesFteched")
     }
     private fun setUpRecyclerView(){
@@ -96,7 +93,7 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
         }
     }
 
-    private fun updateAdapterData(response: LeaguesResponse){
+    private fun updateAdapterData(response: AllLeaguesReponse){
         leaguesAdapter= AllLeaguesAdapter(response.response,this)
         binding.RecyclerView.adapter=leaguesAdapter
     }
@@ -111,7 +108,7 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
             }
     }
 
-    override fun onLeagueClick(league: Response) {
+    override fun onLeagueClick(league: com.live.quickscores.allleaguesresponse.Response) {
         val leagueId=league.league.id.toString()
         val season=league.seasons.toString()
         val name=league.league.name
