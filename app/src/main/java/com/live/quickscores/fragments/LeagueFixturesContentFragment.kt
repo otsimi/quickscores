@@ -29,12 +29,11 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
     private val binding get() = _binding!!
     private lateinit var fixturesAdapter: LeagueFixturesAdapter
     private var fixtureClickListener: OnFixtureClickListener? = null
+    private val sharedViewModel: LeagueIdSharedViewModel by activityViewModels()
+    private var leagueId: String? = null
     private val viewModel: LeagueFixturesViewModel by viewModels {
         LeagueFixturesViewModelFactoryProvider(LeagueFixturesRepo())
     }
-
-    private val sharedViewModel: LeagueIdSharedViewModel by activityViewModels()
-    private var leagueId: String? = null
 
     interface OnFixtureClickListener {
         fun onFixtureClicked(
@@ -116,25 +115,22 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
         val homeTeamLogoUrl = match.teams.home.logo
         val awayTeamLogoUrl = match.teams.away.logo
         val matchId = match.fixture.id.toString()
-        val leagueName = match.league.name
-        val venue = match.fixture.venue.name
+        val leagueName=match.league.name
+        val venue=match.fixture.venue.name
         val formattedDate = formatDate(match.fixture.date)
-        val country = match.league.country
-        val referee = match.fixture.referee
-        val city = match.fixture.venue.city
-        val homeTeamGoals = match.goals.home
-        val awayTeamGoals = match.goals.away
-        val homeTeamId = match.teams.home.id
-        val awayTeamId = match.teams.away.id
-        val leagueId = match.league.id
-        val season = match.league.season
+        val country=match.league.country
+        val referee=match.fixture.referee
+        val city=match.fixture.venue.city
+        val homeTeamGoals=match.goals.home
+        val awayTeamGoals=match.goals.away
+        val homeTeamId=match.teams.home.id
+        val awayTeamId=match.teams.away.id
+        val leagueId=match.league.id
+        val season=match.league.season
 
         Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(
-            matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl, leagueName, venue,
-            formattedDate, country, city, referee, homeTeamGoals, awayTeamGoals,
-            homeTeamId.toString(), awayTeamId.toString(), leagueId.toString(), season.toString()
-        )
+        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
+            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
         println("$referee, Malenge")
     }
 

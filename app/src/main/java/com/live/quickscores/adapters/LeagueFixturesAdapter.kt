@@ -62,6 +62,7 @@ class LeagueFixturesAdapter(
                 }
             }
         }
+
     }
 
     inner class DateHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

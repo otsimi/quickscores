@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.kapt")}
+    id("org.jetbrains.kotlin.kapt")
+//    id("androidx.navigation.safeargs.kotlin")
+
+}
 
 android {
     namespace = "com.live.quickscores"
@@ -59,6 +62,9 @@ dependencies {
     implementation("com.caverock:androidsvg:1.4")
 //    implementation("com.github.bumptech.glide:annotations:4.12.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.8.3")
 
 
 }
