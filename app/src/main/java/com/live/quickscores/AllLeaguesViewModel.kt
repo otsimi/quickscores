@@ -18,6 +18,7 @@ class AllLeaguesViewModel(private val repo: AllLeaguesRepo):ViewModel(){
             try {
                 val response=repo.getAllLeagues()
                 countryLeagues.value=response
+                println("${response},leaguesFetched")
             } catch (e:Exception){
                 println(e)
             }

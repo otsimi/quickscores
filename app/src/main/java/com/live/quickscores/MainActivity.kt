@@ -35,7 +35,7 @@ import java.util.Date
 import java.util.Locale
 
 class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
-    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked, LeagueFixturesContentFragment.OnFixtureClickListener,ResultsFragment.OnFixtureClickListener {
+    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked,AllLeaguesFragment.OnLeagueClicked, LeagueFixturesContentFragment.OnFixtureClickListener,ResultsFragment.OnFixtureClickListener {
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest

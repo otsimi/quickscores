@@ -2,28 +2,32 @@ package com.live.quickscores.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.AllLeaguesRepo
 import com.live.quickscores.AllLeaguesViewModel
 import com.live.quickscores.AllLeaguesViewModelFactoryProvider
 import com.live.quickscores.R
+import com.live.quickscores.adapters.AllLeaguesAdapter
 import com.live.quickscores.adapters.LeaguesAdapter
 import com.live.quickscores.databinding.FragmentAllLeaguesBinding
 import com.live.quickscores.fragments.LeaguesFragment.OnLeagueClicked
+import com.live.quickscores.leagueResponse.LeaguesResponse
 import com.live.quickscores.leagueResponse.Response
 
 
-class AllLeaguesFragment : Fragment(),LeaguesAdapter.OnLeagueClickListener {
+class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
     private var _binding: FragmentAllLeaguesBinding?=null
     private val binding get() = _binding!!
     private var leagueClickListener: OnLeagueClicked?=null
-    private lateinit var leaguesAdapter: LeaguesAdapter
-    private val viewModel:AllLeaguesViewModel by viewModels(){
+    private lateinit var leaguesAdapter: AllLeaguesAdapter
+    private val viewModel:AllLeaguesViewModel by viewModels{
         AllLeaguesViewModelFactoryProvider(AllLeaguesRepo())
     }
     interface OnLeagueClicked{
@@ -63,15 +67,40 @@ class AllLeaguesFragment : Fragment(),LeaguesAdapter.OnLeagueClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+        println("Fetching leagues data...")
+        viewModel.fetchAllLeagues()
         observeLeagueData()
+        println("leaguesFteched")
     }
     private fun setUpRecyclerView(){
-        leaguesAdapter= LeaguesAdapter(emptyList(),this)
+        leaguesAdapter= AllLeaguesAdapter(emptyList(),this)
         binding.RecyclerView.apply {
             layoutManager= LinearLayoutManager(requireContext())
             binding.RecyclerView.adapter = leaguesAdapter
         }
     }
+    private fun observeLeagueData(){
+        viewModel.leagues.observe(viewLifecycleOwner) { response ->
+            if (response.isSuccessful) {
+                println("${response.body()},responseBodyM")
+                response.body()?.let {
+                    updateAdapterData(it)
+                } ?: run {
+                    Log.d("No data available","No data to fetch")
+                    Toast.makeText(requireContext(), "No data available", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Log.e("Error","Failed to fetch leagues")
+                Toast.makeText(requireContext(), "Failed to fetch leagues", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun updateAdapterData(response: LeaguesResponse){
+        leaguesAdapter= AllLeaguesAdapter(response.response,this)
+        binding.RecyclerView.adapter=leaguesAdapter
+    }
+
 
     companion object {
         fun newInstance(param1: String, param2: String) =
@@ -83,6 +112,21 @@ class AllLeaguesFragment : Fragment(),LeaguesAdapter.OnLeagueClickListener {
     }
 
     override fun onLeagueClick(league: Response) {
-        TODO("Not yet implemented")
+        val leagueId=league.league.id.toString()
+        val season=league.seasons.toString()
+        val name=league.league.name
+        val leagueLogo=league.league.logo
+        val leagueCountryName=league.country.name
+        leagueClickListener?.onLeagueClicked(leagueId,season,name,leagueLogo,
+            leagueCountryName)
+        println("${leagueId},${season},${name},${leagueLogo},${leagueCountryName},AllLeagues Malenge")
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+    override fun onDetach() {
+        super.onDetach()
+        leagueClickListener=null
     }
 }
