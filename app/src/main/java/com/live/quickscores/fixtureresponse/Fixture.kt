@@ -1,4 +1,4 @@
-package com.live.quickscores.fixturesresponse
+package com.live.quickscores.fixtureresponse
 
 data class Fixture(
     val date: String,

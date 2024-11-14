@@ -21,7 +21,7 @@ import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.R
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentLeagueFixturesContentBinding
-import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixtureresponse.Response
 import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -115,8 +115,8 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
             putString("country", country ?: "")
             putString("referee", referee ?: "")
             putString("city", city ?: "")
-            putString("homeTeamGoals", homeTeamGoals ?: "")
-            putString("awayTeamGoals", awayTeamGoals ?: "")
+            putString("homeTeamGoals", (homeTeamGoals ?: "").toString())
+            putString("awayTeamGoals", (awayTeamGoals ?: "").toString())
             putString("homeTeamId", homeTeamId.toString())
             putString("awayTeamId", awayTeamId.toString())
             putString("leagueId", leagueId.toString())

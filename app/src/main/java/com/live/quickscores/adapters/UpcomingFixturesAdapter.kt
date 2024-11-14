@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
-import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixtureresponse.Response
 
 class UpcomingFixturesAdapter(
     private var fixtureList: List<Response>

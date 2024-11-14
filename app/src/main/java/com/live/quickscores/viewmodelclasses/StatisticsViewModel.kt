@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.live.quickscores.fixturesresponse.statisticsResponse.StatisticsResponse
+import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.repositories.StatisticsRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class StatisticsViewModel(private val repository: StatisticsRepository):ViewModel() {
-    private val fixtureStats=MutableLiveData<Response<StatisticsResponse>>()
-    val stats:LiveData<Response<StatisticsResponse>> get() = fixtureStats
+    private val fixtureStats=MutableLiveData<Response<FixtureResponse>>()
+    val stats:LiveData<Response<FixtureResponse>> get() = fixtureStats
 
     fun fetchStats(fixtureId:String){
         viewModelScope.launch {

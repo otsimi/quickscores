@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.fixturesresponse.Response
-import com.live.quickscores.fixturesresponse.FixturesResponse
+import com.live.quickscores.fixtureresponse.FixtureResponse
+import com.live.quickscores.fixtureresponse.Response
 import com.live.quickscores.utils.LEAGUE_LOGO_URL
 import com.live.quickscores.utils.LOGO_URL
 import com.squareup.picasso.Picasso
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class RecyclerViewAdapter(
-    private val headerList: List<FixturesResponse>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val headerList: List<FixtureResponse>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -64,7 +64,7 @@ class RecyclerViewAdapter(
 
             if (homeTeamGoals!= null){
                 binding.HomeGoals.visibility = View.VISIBLE
-                binding.HomeGoals.text=match.goals.home
+                binding.HomeGoals.text= match.goals.home.toString()
 
             } else{
                 binding.HomeGoals.visibility = View.GONE
@@ -72,7 +72,7 @@ class RecyclerViewAdapter(
             val awayTeamGoals=match.goals.away
             if (awayTeamGoals!=null){
                 binding.AwayGoals.visibility=View.VISIBLE
-                binding.AwayGoals.text=match.goals.away
+                binding.AwayGoals.text=match.goals.away.toString()
             }
             else{
                 binding.AwayGoals.visibility = View.GONE

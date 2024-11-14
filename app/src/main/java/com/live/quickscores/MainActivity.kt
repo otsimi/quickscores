@@ -36,7 +36,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,LeaguesFragment.OnLeagueClicked,AllLeaguesFragment.OnLeagueClicked,ResultsFragment.OnFixtureClickListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest
@@ -115,117 +115,9 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,L
         }
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-
-
-    override fun onFixtureClicked(
-        matchId: String,
-        homeTeam: String,
-        awayTeam: String,
-        homeTeamLogoUrl: String,
-        awayTeamLogoUrl: String,
-        leagueName:String,
-        venue:String?,
-        formattedDate:String?,
-        city:String?,
-        country:String?,
-        referee:String?,
-        homeTeamGoals:String?,
-        awayTeamGoals:String?,
-        homeTeamId:String,
-        awayTeamId:String,
-        leagueId:String,
-        season:String
-
-
-    ) {
-        navigateToFixtureFragment(matchId,homeTeam,awayTeam,homeTeamLogoUrl,awayTeamLogoUrl,leagueName,venue!!,formattedDate,city,country,referee, homeTeamGoals ?: "-",awayTeamGoals ?: "-",homeTeamId,awayTeamId,leagueId,season)
-        hideViewPagerAndTabs()
-    }
-    private fun navigateToFixtureFragment(
-        matchId: String,
-        homeTeam: String,
-        awayTeam: String,
-        homeTeamLogoUrl: String,
-        awayTeamLogoUrl: String,
-        leagueName: String,
-        venue:String?,
-        formattedDate:String?,
-        city:String?,
-        country:String?,
-        referee:String?,
-        homeTeamGoals: String?,
-        awayTeamGoals: String?,
-        homeTeamId: String,
-        awayTeamId: String,
-        leagueId: String,
-        season: String
-
-    ) {
-        val existingFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        if (existingFragment !is FixtureFragment) {
-            val fixtureFragment = FixtureFragment().apply {
-                arguments = Bundle().apply {
-                    putString("matchId", matchId)
-                    putString("homeTeam", homeTeam)
-                    putString("awayTeam", awayTeam)
-                    putString("homeTeamLogoUrl", homeTeamLogoUrl)
-                    putString("awayTeamLogoUrl", awayTeamLogoUrl)
-                    putString("leagueName",leagueName)
-                    putString("venue",venue)
-                    putString("date",formattedDate)
-                    putString("city",city)
-                    putString("country",country)
-                    putString("referee",referee)
-                    putString("homeTeamGoals",homeTeamGoals)
-                    putString("awayTeamGoals",awayTeamGoals)
-                    putString("homeTeamId",homeTeamId)
-                    putString("awayTeamId",awayTeamId)
-                    putString("leagueId",leagueId)
-                    putString("season",season)
-                }
-            }
-
-            Log.d("match", "arguments passed: ${fixtureFragment.arguments}")
-            Log.d("onFixtureClicked", "Home Goals: $homeTeamGoals, Away Goals: $awayTeamGoals")
-
-            hideViewPagerAndTabs()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, fixtureFragment)
-                .addToBackStack(null)
-                .commit()
-
-            Log.d("FragmentTransaction", "Navigating to FixtureFragment with ID: $matchId")
-        }
-    }
-    override fun onLeagueClicked(leagueId: String, season: String, name: String, leagueLogo: String,leagueCountryName:String) {
-        navigateToLeaguesFixtureFragment(leagueId, season, name, leagueLogo,leagueCountryName)
-        hideViewPagerAndTabs()
-    }
-    private fun navigateToLeaguesFixtureFragment(leagueId: String, season: String, name: String, leagueLogo: String,leagueCountryName: String) {
-        val existingFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        if (existingFragment !is LeaguesFixturesFragment) {
-            val leaguesFixturesFragment = LeaguesFixturesFragment().apply {
-                arguments = Bundle().apply {
-                    putString("leagueId", leagueId)
-                    putString("season", season)
-                    putString("name", name)
-                    putString("leagueLogo", leagueLogo)
-                    putString("country",leagueCountryName)
-                }
-                println("${leagueId},${season},${name},${leagueCountryName},MalengeKubwaSana")
-
-            }
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, leaguesFixturesFragment)
-                .addToBackStack(null)
-                .commit()
-        }
     }
 
     private fun setUpToolBar() {

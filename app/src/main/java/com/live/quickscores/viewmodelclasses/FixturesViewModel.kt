@@ -3,15 +3,15 @@ package com.live.quickscores.viewmodelclasses
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.live.quickscores.fixturesresponse.FixturesResponse
 import androidx.lifecycle.*
+import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.repositories.FixturesRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class FixturesViewModel(private val repository: FixturesRepository):ViewModel(){
-    private val dailyFixtures = MutableLiveData<Response<FixturesResponse>>()
-    val fixtures: LiveData<Response<FixturesResponse>> get() = dailyFixtures
+    private val dailyFixtures = MutableLiveData<Response<FixtureResponse>>()
+    val fixtures: LiveData<Response<FixtureResponse>> get() = dailyFixtures
 
     fun fetchFixtures(date: String) {
         viewModelScope.launch {

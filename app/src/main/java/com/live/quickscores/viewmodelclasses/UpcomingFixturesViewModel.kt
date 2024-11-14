@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.live.quickscores.fixturesresponse.FixturesResponse
+import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.repositories.UpcomingFixturesRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class UpcomingFixturesViewModel(private val repository: UpcomingFixturesRepository):ViewModel() {
-    private val upcomingHomeTeamFixtures=MutableLiveData<Response<FixturesResponse>>()
-    val upcomingHomeFixtures:LiveData<Response<FixturesResponse>>get()=upcomingHomeTeamFixtures
+    private val upcomingHomeTeamFixtures=MutableLiveData<Response<FixtureResponse>>()
+    val upcomingHomeFixtures:LiveData<Response<FixtureResponse>>get()=upcomingHomeTeamFixtures
 
-    private val upcomingAwayTeamFixtures=MutableLiveData<Response<FixturesResponse>>()
-    val upcomingAwayFixtures:LiveData<Response<FixturesResponse>>get() = upcomingAwayTeamFixtures
+    private val upcomingAwayTeamFixtures=MutableLiveData<Response<FixtureResponse>>()
+    val upcomingAwayFixtures:LiveData<Response<FixtureResponse>>get() = upcomingAwayTeamFixtures
 
     fun getUpcomingHomeFixtures(teamId:String){
         viewModelScope.launch {

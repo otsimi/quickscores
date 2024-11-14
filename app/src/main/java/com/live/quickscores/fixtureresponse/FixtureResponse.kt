@@ -1,6 +1,6 @@
-package com.live.quickscores.fixturesresponse.statisticsResponse
+package com.live.quickscores.fixtureresponse
 
-data class StatisticsResponse(
+data class FixtureResponse(
     val errors: List<Any>,
     val `get`: String,
     val paging: Paging,

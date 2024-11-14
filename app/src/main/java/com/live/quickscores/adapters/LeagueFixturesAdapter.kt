@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.fixturesresponse.FixturesResponse
-import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixtureresponse.Response
 import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
 import java.time.ZonedDateTime
@@ -94,8 +92,8 @@ class LeagueFixturesAdapter(
                     itemHolder.awayTeam.text = it.teams.away.name
                     Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
                     Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
-                    itemHolder.homeGoals.text = it.goals.home ?: "0"
-                    itemHolder.awayGoals.text = it.goals.away ?: "0"
+                    itemHolder.homeGoals.text = it.goals.home.toString() ?: "0"
+                    itemHolder.awayGoals.text = it.goals.away.toString() ?: "0"
                     itemHolder.matchTime.text = convertToLocalTime(it.fixture.date)
                 }
             }

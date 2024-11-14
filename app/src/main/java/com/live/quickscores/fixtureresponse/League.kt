@@ -1,6 +1,4 @@
-package com.live.quickscores.fixturesresponse
-
-import java.io.Serializable
+package com.live.quickscores.fixtureresponse
 
 data class League(
     val country: String,
@@ -10,4 +8,4 @@ data class League(
     val name: String,
     val round: String,
     val season: Int
-): Serializable
+)

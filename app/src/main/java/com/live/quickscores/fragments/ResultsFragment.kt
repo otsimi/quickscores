@@ -21,7 +21,7 @@ import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.R
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentResultsBinding
-import com.live.quickscores.fixturesresponse.Response
+import com.live.quickscores.fixtureresponse.Response
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.ZonedDateTime
@@ -33,7 +33,6 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
     private var _binding:FragmentResultsBinding?=null
     private val binding get() = _binding!!
     private lateinit var fixturesAdapter: LeagueFixturesAdapter
-    private var fixtureClickListener: OnFixtureClickListener? = null
     private val viewModel: LeagueFixturesViewModel by viewModels {
         LeagueFixturesViewModelFactoryProvider(LeagueFixturesRepo())
     }
@@ -155,8 +154,8 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
             putString("country", country ?: "")
             putString("referee", referee ?: "")
             putString("city", city ?: "")
-            putString("homeTeamGoals", homeTeamGoals ?: "")
-            putString("awayTeamGoals", awayTeamGoals ?: "")
+            putString("homeTeamGoals", (homeTeamGoals ?: "").toString())
+            putString("awayTeamGoals", (awayTeamGoals ?: "").toString())
             putString("homeTeamId", homeTeamId.toString())
             putString("awayTeamId", awayTeamId.toString())
             putString("leagueId", leagueId.toString())

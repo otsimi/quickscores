@@ -1,6 +1,5 @@
 package com.live.quickscores.fragments
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,8 +18,8 @@ import com.live.quickscores.viewmodelclasses.FixturesViewModel
 import com.live.quickscores.viewmodelclasses.FixturesViewModelFactory
 import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
-import com.live.quickscores.fixturesresponse.Response
-import com.live.quickscores.fixturesresponse.FixturesResponse
+import com.live.quickscores.fixtureresponse.FixtureResponse
+import com.live.quickscores.fixtureresponse.Response
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -63,45 +62,41 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFixtureClickListener) {
-            fixtureClickListener = context
-        } else {
-            throw RuntimeException("$context must implement OnFixtureClickListener")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_match, container, false)
-        println("viewCreatedMalenge,${view}")
-        date = arguments?.getString("date") ?: ""
-        println("${date},Malengedate")
-        recyclerView = view.findViewById(R.id.RecyclerView)
-
-        viewModel.fetchFixtures(date)
-        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
-            response?.let {
-                if (it.isSuccessful) {
-                    println("${response.body()},Malengeresponse")
-                    it.body()?.let { fixturesData ->
-                        setupRecyclerView(fixturesData)
-                    } ?: run {
-                        Log.e("MatchFragment", "Empty response body")
-                    }
-                } else {
-                    Log.e("MatchFragment", "Error: ${it.message()}")
-                }
-            } ?: run {
-                Log.e("MatchFragment", "Response is null")
-            }
-        })
-
-
-
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        date = arguments?.getString("date") ?: ""
+        recyclerView = view.findViewById(R.id.RecyclerView)
+        if (date.isNotEmpty()) {
+            println("${date},Malengedate")
+            viewModel.fetchFixtures(date)
+            viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+                response?.let {
+                    if (it.isSuccessful) {
+
+                        it.body()?.let { fixturesData ->
+                            println("${fixturesData},Malengeresponse")
+                            setupRecyclerView(fixturesData)
+                        } ?: run {
+                            Log.e("MatchFragment", "Empty response body")
+                        }
+                    } else {
+                        Log.e("MatchFragment", "Error: ${it.message()}")
+                    }
+                } ?: run {
+                    Log.e("MatchFragment", "Response is null")
+                }
+            })
+        }else{
+            Log.d("Date","Date is empty")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -126,13 +121,13 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
 
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
-            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
+//        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
+//            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
         println("${referee},Malenge")
     }
 
 
-    private fun setupRecyclerView(fixturesResponse: FixturesResponse) {
+    private fun setupRecyclerView(fixturesResponse:FixtureResponse) {
         recyclerViewAdapter = RecyclerViewAdapter(listOf(fixturesResponse), this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

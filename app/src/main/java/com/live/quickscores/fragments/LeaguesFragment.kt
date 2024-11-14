@@ -25,7 +25,6 @@ import com.live.quickscores.leagueResponse.Response
 class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
    private var _binding:FragmentLeaguesBinding?=null
     private val binding get() = _binding!!
-    private var leagueClickListener:OnLeagueClicked?=null
     private lateinit var leaguesAdapter: LeaguesAdapter
     private var countryCode: String? = null
     private var countryName:String?=null
@@ -35,25 +34,6 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         LeaguesViewModelFactoryProvider(LeaguesRepository())
     }
 
-    interface OnLeagueClicked{
-        fun onLeagueClicked(
-            leagueId:String,
-            season: String,
-            name:String,
-            leagueLogo:String,
-            leagueCountryName:String
-        )
-
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnLeagueClicked){
-            leagueClickListener=context
-        }else{
-            throw RuntimeException("$context must implement OnLeagueClicked")
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +83,6 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         }
     }
 
-
     private fun updateAdapterData(response: LeaguesResponse) {
         leaguesAdapter = LeaguesAdapter(response.response, this)
         binding.RecyclerView.adapter = leaguesAdapter
@@ -113,11 +92,6 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        leagueClickListener=null
     }
 
     companion object {

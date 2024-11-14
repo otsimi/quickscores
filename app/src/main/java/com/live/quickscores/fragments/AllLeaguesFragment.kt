@@ -25,30 +25,14 @@ import com.live.quickscores.databinding.FragmentAllLeaguesBinding
 class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
     private var _binding: FragmentAllLeaguesBinding?=null
     private val binding get() = _binding!!
-    private var leagueClickListener: OnLeagueClicked?=null
+
     private lateinit var leaguesAdapter: AllLeaguesAdapter
     private lateinit var sharedViewModel: LeagueIdSharedViewModel
     private val viewModel: AllLeaguesViewModel by viewModels{
         AllLeaguesViewModelFactoryProvider(AllLeaguesRepo())
     }
-    interface OnLeagueClicked{
-        fun onLeagueClicked(
-            leagueId:String,
-            season: String,
-            name:String,
-            leagueLogo:String,
-            leagueCountryName:String
-        )
 
-    }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnLeagueClicked){
-            leagueClickListener=context
-        }else{
-            throw RuntimeException("$context must implement OnLeagueClicked")
-        }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,8 +118,5 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
         super.onDestroyView()
         _binding = null
     }
-    override fun onDetach() {
-        super.onDetach()
-        leagueClickListener=null
-    }
+
 }
