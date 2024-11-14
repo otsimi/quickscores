@@ -12,7 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("v3/fixtures?")
+    @GET("v3/fixtures")
     suspend fun fetchFixtures(@Query("date") date: String): Response<FixturesResponse>
 
    @GET("v3/fixtures/statistics")

@@ -76,13 +76,16 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_match, container, false)
+        println("viewCreatedMalenge,${view}")
         date = arguments?.getString("date") ?: ""
+        println("${date},Malengedate")
         recyclerView = view.findViewById(R.id.RecyclerView)
 
         viewModel.fetchFixtures(date)
         viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
             response?.let {
                 if (it.isSuccessful) {
+                    println("${response.body()},Malengeresponse")
                     it.body()?.let { fixturesData ->
                         setupRecyclerView(fixturesData)
                     } ?: run {

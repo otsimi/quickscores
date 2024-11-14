@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.repositories.AllLeaguesRepo
 import com.live.quickscores.viewmodelclasses.AllLeaguesViewModel
@@ -116,12 +117,18 @@ class AllLeaguesFragment : Fragment(), AllLeaguesAdapter.OnLeagueClickListener {
         val leagueId=league.league.id.toString()
         sharedViewModel.setSelectedLeagueId(leagueId)
         val season=league.seasons.toString()
-        val name=league.league.name
+        val leagueName=league.league.name
         val leagueLogo=league.league.logo
         val leagueCountryName=league.country.name
-        leagueClickListener?.onLeagueClicked(leagueId,season,name,leagueLogo,
-            leagueCountryName)
-        println("${leagueId},${season},${name},${leagueLogo},${leagueCountryName},AllLeagues Malenge")
+        val action=AllLeaguesFragmentDirections.actionAllLeaguesFragmentToLeaguesFixturesFragment(
+            leagueId = leagueId,
+            season = season,
+            leagueName = leagueName,
+            leagueLogo = leagueLogo,
+            leagueCountryName = leagueCountryName
+        )
+        findNavController().navigate(action)
+        println("${leagueId},${season},${leagueName},${leagueLogo},${leagueCountryName},AllLeagues Malenge")
     }
     override fun onDestroyView() {
         super.onDestroyView()

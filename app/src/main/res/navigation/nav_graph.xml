@@ -3,11 +3,145 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fixtureFragment">
+    app:startDestination="@id/matchFragment">
 
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.live.quickscores.fragments.MatchFragment"
+        android:label="All Fixtures" />
+    <fragment
+        android:id="@+id/countriesFragment"
+        android:name="com.live.quickscores.fragments.CountriesFragment"
+        android:label="Countries" >
+
+        <action
+            android:id="@+id/action_countriesFragment_to_leaguesFragment"
+            app:destination="@id/leaguesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fixtureFragment"
         android:name="com.live.quickscores.fragments.FixtureFragment"
-        android:label="fragment_fixture"
-        tools:layout="@layout/fragment_fixture" />
+        android:label="Fixture Details"
+        tools:layout="@layout/fragment_fixture" >
+        <argument
+            android:name="homeTeam"
+            app:argType="string" />
+        <argument
+            android:name="awayTeam"
+            app:argType="string" />
+        <argument
+            android:name="homeTeamLogoUrl"
+            app:argType="string" />
+        <argument
+            android:name="awayTeamLogoUrl"
+            app:argType="string" />
+        <argument
+            android:name="leagueName"
+            app:argType="string" />
+        <argument
+            android:name="venue"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="country"
+            app:argType="string" />
+        <argument
+            android:name="city"
+            app:argType="string" />
+        <argument
+            android:name="homeTeamGoals"
+            app:argType="string" />
+        <argument
+            android:name="awayTeamGoals"
+            app:argType="string" />
+        <argument
+            android:name="homeTeamId"
+            app:argType="string" />
+        <argument
+            android:name="awayTeamId"
+            app:argType="string" />
+        <argument
+            android:name="leagueId"
+            app:argType="string" />
+        <argument
+            android:name="season"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/allLeaguesFragment"
+        android:name="com.live.quickscores.fragments.AllLeaguesFragment"
+        android:label="Leagues"
+        tools:layout="@layout/fragment_all_leagues" >
+        <action
+            android:id="@+id/action_allLeaguesFragment_to_leaguesFixturesFragment"
+            app:destination="@id/leaguesFixturesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/leagueTableFragment"
+        android:name="com.live.quickscores.fragments.LeagueTableFragment"
+        android:label="Standings"
+        tools:layout="@layout/fragment_league_table" />
+    <fragment
+        android:id="@+id/leaguesFixturesFragment"
+        android:name="com.live.quickscores.fragments.LeaguesFixturesFragment"
+        android:label="League Fixtures"
+        tools:layout="@layout/fragment_leagues_fixtures" >
+        <argument
+            android:name="leagueId"
+            app:argType="string" />
+        <argument
+            android:name="season"
+            app:argType="string" />
+        <argument
+            android:name="leagueName"
+            app:argType="string" />
+        <argument
+            android:name="leagueLogo"
+            app:argType="string" />
+        <argument
+            android:name="leagueCountryName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_leaguesFixturesFragment_to_fixtureFragment3"
+            app:destination="@id/fixtureFragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/leaguesFragment"
+        android:name="com.live.quickscores.fragments.LeaguesFragment"
+        android:label="Leagues"
+        tools:layout="@layout/fragment_leagues">
+        <argument
+            android:name="countryName"
+            app:argType="string" />
+        <argument
+            android:name="countryCode"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_leaguesFragment_to_leaguesFixturesFragment"
+            app:destination="@id/leaguesFixturesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/leagueFixturesContentFragment"
+        android:name="com.live.quickscores.fragments.LeagueFixturesContentFragment"
+        android:label="LeagueFixturesContentFragment" >
+
+        <action
+            android:id="@+id/action_leagueFixturesContentFragment_to_fixtureFragment2"
+            app:destination="@id/fixtureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.live.quickscores.fragments.ResultsFragment"
+        android:label="fragment_results"
+        tools:layout="@layout/fragment_results" >
+        <action
+            android:id="@+id/action_resultsFragment_to_fixtureFragment"
+            app:destination="@id/fixtureFragment" />
+    </fragment>
+
+
 </navigation>

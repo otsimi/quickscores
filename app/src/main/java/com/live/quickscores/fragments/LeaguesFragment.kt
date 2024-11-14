@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.repositories.LeaguesRepository
@@ -134,13 +135,18 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
         val leagueId=league.league.id.toString()
         sharedViewModel.setSelectedLeagueId(leagueId)
         val season=league.seasons.toString()
-        val name=league.league.name
+        val leagueName=league.league.name
         val leagueLogo=league.league.logo
         val leagueCountryName=league.country.name
-        leagueClickListener?.onLeagueClicked(leagueId,season,name,leagueLogo,
-            leagueCountryName
+        val action=LeaguesFragmentDirections.actionLeaguesFragmentToLeaguesFixturesFragment(
+            leagueId = leagueId,
+            season = season,
+            leagueName = leagueName,
+            leagueLogo = leagueLogo,
+            leagueCountryName = leagueCountryName
         )
-        println("${leagueCountryName},${leagueId},${name},${leagueLogo},leaguefetchDetails")
+        findNavController().navigate(action)
+        println("${leagueCountryName},${leagueId},${leagueName},${leagueLogo},leaguefetchDetails")
 
     }
 }

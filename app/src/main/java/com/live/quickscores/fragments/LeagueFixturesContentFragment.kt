@@ -1,5 +1,6 @@
 package com.live.quickscores.fragments
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.repositories.LeagueFixturesRepo
 import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModel
 import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModelFactoryProvider
 import com.live.quickscores.LeagueIdSharedViewModel
+import com.live.quickscores.R
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentLeagueFixturesContentBinding
 import com.live.quickscores.fixturesresponse.Response
@@ -28,39 +31,10 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
     private var _binding: FragmentLeagueFixturesContentBinding? = null
     private val binding get() = _binding!!
     private lateinit var fixturesAdapter: LeagueFixturesAdapter
-    private var fixtureClickListener: OnFixtureClickListener? = null
     private val sharedViewModel: LeagueIdSharedViewModel by activityViewModels()
     private var leagueId: String? = null
     private val viewModel: LeagueFixturesViewModel by viewModels {
         LeagueFixturesViewModelFactoryProvider(LeagueFixturesRepo())
-    }
-
-    interface OnFixtureClickListener {
-        fun onFixtureClicked(
-            matchId: String,
-            homeTeam: String,
-            awayTeam: String,
-            homeTeamLogoUrl: String,
-            awayTeamLogoUrl: String,
-            leagueName: String,
-            venue: String?,
-            date: String?,
-            country: String?,
-            referee: String?,
-            city: String?,
-            homeTeamGoals: String?,
-            awayTeamGoals: String?,
-            homeTeamId: String,
-            awayTeamId: String,
-            leagueId: String,
-            season: String
-        )
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -129,9 +103,27 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
         val season=match.league.season
 
         Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
-            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
-        println("$referee, Malenge")
+        val args = Bundle().apply {
+            putString("matchId", matchId ?: "")
+            putString("homeTeam", homeTeam ?: "Unknown")
+            putString("awayTeam", awayTeam ?: "Unknown")
+            putString("homeTeamLogoUrl", homeTeamLogoUrl ?: "")
+            putString("awayTeamLogoUrl", awayTeamLogoUrl ?: "")
+            putString("leagueName", leagueName ?: "")
+            putString("venue", venue ?: "")
+            putString("date", formattedDate ?: "")
+            putString("country", country ?: "")
+            putString("referee", referee ?: "")
+            putString("city", city ?: "")
+            putString("homeTeamGoals", homeTeamGoals ?: "")
+            putString("awayTeamGoals", awayTeamGoals ?: "")
+            putString("homeTeamId", homeTeamId.toString())
+            putString("awayTeamId", awayTeamId.toString())
+            putString("leagueId", leagueId.toString())
+            putString("season", season.toString())
+        }
+
+        findNavController().navigate(R.id.action_leaguesFixturesFragment_to_fixtureFragment3, args)
     }
 
     override fun onDestroyView() {

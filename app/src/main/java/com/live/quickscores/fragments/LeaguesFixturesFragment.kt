@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.LeagueIdSharedViewModel
+import com.live.quickscores.R
 import com.live.quickscores.adapters.LeagueFixturesViewPagerAdapter
 import com.live.quickscores.databinding.FragmentLeaguesFixturesBinding
 import com.squareup.picasso.Picasso
@@ -38,7 +40,7 @@ class LeaguesFixturesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         arguments?.let {
-            leagueName= requireArguments().getString("name")
+            leagueName= requireArguments().getString("leagueName")
             println("${leagueName},MalengeName")
             leagueLogo=requireArguments().getString("leagueLogo")
             println("${leagueLogo},leagueLogoUrlString")
@@ -106,5 +108,7 @@ class LeaguesFixturesFragment : Fragment() {
                 println("${initialLeagueId},initialLeagueId")
             }
     }
+
+
 
 }

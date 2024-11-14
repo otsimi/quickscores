@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
-//    id("androidx.navigation.safeargs.kotlin")
+    id("androidx.navigation.safeargs.kotlin")
 
 }
 
@@ -64,7 +64,5 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.8.3")
-
 
 }

@@ -45,7 +45,7 @@ class LeagueFixturesAdapter(
         }
     }
 
-    inner class LeagueFixturesViewHolder(val binding: MatchesBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class LeagueFixturesViewHolder(val binding: MatchesBinding) : RecyclerView.ViewHolder(binding.root),View.OnClickListener {
         val homeTeam: TextView = binding.HomeTeam
         val awayTeam: TextView = binding.AwayTeam
         val homeGoals: TextView = binding.HomeGoals
@@ -55,11 +55,13 @@ class LeagueFixturesAdapter(
         val matchTime: TextView = binding.Time
 
         init {
-            binding.root.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    itemList[position].second?.let { fixtureClickListener.onFixtureClick(it) }
-                }
+            binding.root.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                itemList[position].second?.let { fixtureClickListener.onFixtureClick(it) }
             }
         }
 
@@ -81,21 +83,25 @@ class LeagueFixturesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = itemList[position]
-        if (getItemViewType(position) == TYPE_HEADER) {
-            (holder as DateHeaderViewHolder).dateHeader.text = item.first
-        } else {
-            val itemHolder = holder as LeagueFixturesViewHolder
-            item.second?.let {
-                itemHolder.homeTeam.text = it.teams.home.name
-                itemHolder.awayTeam.text = it.teams.away.name
-                Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
-                Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
-                itemHolder.homeGoals.text = it.goals.home ?: "0"
-                itemHolder.awayGoals.text = it.goals.away ?: "0"
-                itemHolder.matchTime.text = convertToLocalTime(it.fixture.date)
+        when {
+            getItemViewType(position) == TYPE_HEADER -> {
+                (holder as DateHeaderViewHolder).dateHeader.text = item.first
+            }
+            else -> {
+                val itemHolder = holder as LeagueFixturesViewHolder
+                item.second?.let {
+                    itemHolder.homeTeam.text = it.teams.home.name
+                    itemHolder.awayTeam.text = it.teams.away.name
+                    Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
+                    Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
+                    itemHolder.homeGoals.text = it.goals.home ?: "0"
+                    itemHolder.awayGoals.text = it.goals.away ?: "0"
+                    itemHolder.matchTime.text = convertToLocalTime(it.fixture.date)
+                }
             }
         }
     }
+
 
     override fun getItemCount(): Int = itemList.size
 

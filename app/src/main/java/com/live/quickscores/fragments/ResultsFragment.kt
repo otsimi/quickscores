@@ -12,11 +12,13 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.repositories.LeagueFixturesRepo
 import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModel
 import com.live.quickscores.viewmodelclasses.LeagueFixturesViewModelFactoryProvider
 import com.live.quickscores.LeagueIdSharedViewModel
+import com.live.quickscores.R
 import com.live.quickscores.adapters.LeagueFixturesAdapter
 import com.live.quickscores.databinding.FragmentResultsBinding
 import com.live.quickscores.fixturesresponse.Response
@@ -127,26 +129,41 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
         val homeTeamLogoUrl = match.teams.home.logo
         val awayTeamLogoUrl = match.teams.away.logo
         val matchId = match.fixture.id.toString()
-        val leagueName = match.league.name
-        val venue = match.fixture.venue.name
+        val leagueName=match.league.name
+        val venue=match.fixture.venue.name
         val formattedDate = formatDate(match.fixture.date)
-        val country = match.league.country
-        val referee = match.fixture.referee
-        val city = match.fixture.venue.city
-        val homeTeamGoals = match.goals.home
-        val awayTeamGoals = match.goals.away
-        val homeTeamId = match.teams.home.id
-        val awayTeamId = match.teams.away.id
-        val leagueId = match.league.id
-        val season = match.league.season
+        val country=match.league.country
+        val referee=match.fixture.referee
+        val city=match.fixture.venue.city
+        val homeTeamGoals=match.goals.home
+        val awayTeamGoals=match.goals.away
+        val homeTeamId=match.teams.home.id
+        val awayTeamId=match.teams.away.id
+        val leagueId=match.league.id
+        val season=match.league.season
 
         Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
-        fixtureClickListener?.onFixtureClicked(
-            matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl, leagueName, venue,
-            formattedDate, country, city, referee, homeTeamGoals, awayTeamGoals,
-            homeTeamId.toString(), awayTeamId.toString(), leagueId.toString(), season.toString()
-        )
-        println("$referee, Malenge")
+        val args = Bundle().apply {
+            putString("matchId", matchId ?: "")
+            putString("homeTeam", homeTeam ?: "Unknown")
+            putString("awayTeam", awayTeam ?: "Unknown")
+            putString("homeTeamLogoUrl", homeTeamLogoUrl ?: "")
+            putString("awayTeamLogoUrl", awayTeamLogoUrl ?: "")
+            putString("leagueName", leagueName ?: "")
+            putString("venue", venue ?: "")
+            putString("date", formattedDate ?: "")
+            putString("country", country ?: "")
+            putString("referee", referee ?: "")
+            putString("city", city ?: "")
+            putString("homeTeamGoals", homeTeamGoals ?: "")
+            putString("awayTeamGoals", awayTeamGoals ?: "")
+            putString("homeTeamId", homeTeamId.toString())
+            putString("awayTeamId", awayTeamId.toString())
+            putString("leagueId", leagueId.toString())
+            putString("season", season.toString())
+        }
+
+        findNavController().navigate(R.id.action_leaguesFixturesFragment_to_fixtureFragment3, args)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

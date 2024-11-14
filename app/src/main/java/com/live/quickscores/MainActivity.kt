@@ -1,7 +1,6 @@
 package com.live.quickscores
 
 import com.live.quickscores.fragments.LeagueFixturesContentFragment
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -24,7 +27,6 @@ import com.live.quickscores.databinding.ActivityMainBinding
 import com.live.quickscores.fragments.AllLeaguesFragment
 import com.live.quickscores.fragments.CountriesFragment
 import com.live.quickscores.fragments.FixtureFragment
-import com.live.quickscores.fragments.LeagueTableFragment
 import com.live.quickscores.fragments.LeaguesFixturesFragment
 import com.live.quickscores.fragments.LeaguesFragment
 import com.live.quickscores.fragments.MatchFragment
@@ -34,8 +36,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
-    CountriesFragment.OnCountryClicked,LeaguesFragment.OnLeagueClicked,AllLeaguesFragment.OnLeagueClicked, LeagueFixturesContentFragment.OnFixtureClickListener,ResultsFragment.OnFixtureClickListener {
+class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,LeaguesFragment.OnLeagueClicked,AllLeaguesFragment.OnLeagueClicked,ResultsFragment.OnFixtureClickListener {
 
     private lateinit var adView: AdView
     private lateinit var adRequest: AdRequest
@@ -49,93 +50,78 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        supportActionBar.setBackgroundDrawable(R.color.gray)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedViewModel= ViewModelProvider(this)[LeagueIdSharedViewModel::class.java]
+
+        sharedViewModel = ViewModelProvider(this)[LeagueIdSharedViewModel::class.java]
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.matchFragment,
+            R.id.countriesFragment,
+            R.id.leagueTableFragment,
+            R.id.allLeaguesFragment,
+            R.id.leaguesFragment
+        ))
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         dates = generateDates()
 
-        toolbar = findViewById(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
         adView = findViewById(R.id.BannerAdView)
         setUpToolBar()
         loadBannerAd()
 
-        viewPager = findViewById(R.id.view_pager)
+        viewPager = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tab_layout)
 
-
         setUpViewPager(viewPager, tabLayout)
-
 
         val todayIndex = findTodayIndex(dates)
         viewPager.setCurrentItem(todayIndex, false)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            handleBottomNavigationItemSelected(menuItem.itemId)
-        }
 
-    }
-    private fun handleBottomNavigationItemSelected(itemId: Int): Boolean {
-        return when (itemId) {
-            R.id.home -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.standings -> {
-                hideViewPagerAndTabs()
-                navigateToFragment(LeagueTableFragment())
-                true
-            }
-            R.id.leagues -> {
-                hideViewPagerAndTabs()
-                navigateToFragment(AllLeaguesFragment())
-                true
-            }
-            R.id.countries -> {
-                hideViewPagerAndTabs()
-                navigateToFragment(CountriesFragment())
-                true
-            }
-            else -> false
-        }
-    }
-
-    private fun navigateToFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-    }
-
-    override fun onCountryClicked(
-        countryName: String,
-        countryCode:String){
-        navigateToLeaguesFragment(countryName,countryCode)
-        hideViewPagerAndTabs()
-    }
-    private fun navigateToLeaguesFragment(countryName: String?,countryCode: String?){
-        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        if (existingFragment !is LeaguesFragment){
-            val leaguesFragment=LeaguesFragment().apply {
-                arguments=Bundle().apply {
-                    putString("countryName", countryName)
-                    putString("countryCode",countryCode)
+        bottomNavigationView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.countriesFragment -> {
+                    toggleViewPagerAndTabLayout(false)
                 }
-                println("${countryName},${countryCode},Malengekubwa")
+                R.id.leagueTableFragment->{
+                    toggleViewPagerAndTabLayout(false)
+                }
+                R.id.allLeaguesFragment->{
+                    toggleViewPagerAndTabLayout(false)
+                }
+                R.id.leaguesFragment->{
+                    toggleViewPagerAndTabLayout(false)
+                }
+                R.id.leaguesFixturesFragment->{
+                   hideToolBar()
+                }
+                R.id.fixtureFragment->{
+                    hideToolBar()
 
-
+                }
+                else -> {
+                    toggleViewPagerAndTabLayout(true)
+                }
             }
-            hideViewPagerAndTabs()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, leaguesFragment)
-                .addToBackStack(null)
-                .commit()
         }
-
     }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+
 
     override fun onFixtureClicked(
         matchId: String,
@@ -181,7 +167,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
         season: String
 
     ) {
-        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val existingFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         if (existingFragment !is FixtureFragment) {
             val fixtureFragment = FixtureFragment().apply {
                 arguments = Bundle().apply {
@@ -210,7 +196,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
 
             hideViewPagerAndTabs()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fixtureFragment)
+                .replace(R.id.nav_host_fragment, fixtureFragment)
                 .addToBackStack(null)
                 .commit()
 
@@ -222,7 +208,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
         hideViewPagerAndTabs()
     }
     private fun navigateToLeaguesFixtureFragment(leagueId: String, season: String, name: String, leagueLogo: String,leagueCountryName: String) {
-        val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val existingFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         if (existingFragment !is LeaguesFixturesFragment) {
             val leaguesFixturesFragment = LeaguesFixturesFragment().apply {
                 arguments = Bundle().apply {
@@ -236,7 +222,7 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
 
             }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, leaguesFixturesFragment)
+                .replace(R.id.nav_host_fragment, leaguesFixturesFragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -262,7 +248,6 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
             }
         }
     }
-
 
     private fun loadBannerAd() {
         adRequest = AdRequest.Builder().build()
@@ -297,7 +282,6 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
             else -> SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(date)
         }
     }
-
     private fun generateDates(): List<String> {
         val dateList = mutableListOf<String>()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -331,23 +315,34 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
     }
 
     private fun hideViewPagerAndTabs() {
-        viewPager.visibility = View.GONE
-        tabLayout.visibility = View.GONE
-        toolbar.visibility = View.GONE
+        tabLayout.visibility=View.GONE
+        toolbar.visibility = View.VISIBLE
+        viewPager.visibility=View.GONE
         Log.d("Murima", "ViewPager and Tabs are now hidden")
     }
 
     private fun showViewPagerAndTabs() {
-        viewPager.visibility = View.VISIBLE
-        tabLayout.visibility = View.VISIBLE
+        viewPager.visibility=View.VISIBLE
         toolbar.visibility = View.VISIBLE
+        tabLayout.visibility=View.VISIBLE
         Log.d("Murima", "ViewPager and Tabs are now visible")
     }
-
-
+    private fun hideToolBar(){
+        tabLayout.visibility=View.GONE
+        toolbar.visibility = View.GONE
+        viewPager.visibility=View.GONE
+        Log.d("Murima","Everything Hidden")
+    }
+    private fun toggleViewPagerAndTabLayout(show: Boolean) {
+        if (show) {
+            showViewPagerAndTabs()
+        } else {
+            hideViewPagerAndTabs()
+        }
+    }
     @Deprecated("This method has been deprecated in favor of using the OnBackPressedDispatcher.")
     override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
 
         if (currentFragment is FixtureFragment) {
             supportFragmentManager.popBackStack()
@@ -356,7 +351,4 @@ class MainActivity : AppCompatActivity(), MatchFragment.OnFixtureClickListener,
             super.onBackPressed()
         }
     }
-
-
-
 }
