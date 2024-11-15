@@ -77,6 +77,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         if (date.isNotEmpty()) {
             println("${date},Malengedate")
             viewModel.fetchFixtures(date)
+            println("${date},fetchDatadate")
             viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
                 response?.let {
                     if (it.isSuccessful) {

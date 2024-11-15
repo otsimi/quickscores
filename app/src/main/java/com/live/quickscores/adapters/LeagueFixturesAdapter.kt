@@ -92,8 +92,17 @@ class LeagueFixturesAdapter(
                     itemHolder.awayTeam.text = it.teams.away.name
                     Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
                     Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
-                    itemHolder.homeGoals.text = it.goals.home.toString() ?: "0"
-                    itemHolder.awayGoals.text = it.goals.away.toString() ?: "0"
+                    if(it.goals.home.toString()!=null){
+                        println("${it.goals.home},HomeGoals")
+                        itemHolder.homeGoals.text = it.goals.home.toString()
+                        itemHolder.homeGoals.visibility=View.VISIBLE
+                    }
+                    if(it.goals.away.toString()!=null){
+                        println("${it.goals.away},AwayGoals")
+                        itemHolder.awayGoals.text = it.goals.away.toString()
+                        itemHolder.awayGoals.visibility=View.VISIBLE
+                    }
+
                     itemHolder.matchTime.text = convertToLocalTime(it.fixture.date)
                 }
             }
