@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(){
                     toggleViewPagerAndTabLayout(false)
                 }
                 R.id.leaguesFixturesFragment->{
-                   hideToolBar()
+                    hideToolBar()
                 }
                 R.id.fixtureFragment->{
                     hideToolBar()

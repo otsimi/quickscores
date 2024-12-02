@@ -29,7 +29,7 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@android:color/white"
                 app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="@color/white" />
+                app:tabTextAppearance="@style/CustomTabTextStyle"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -53,29 +53,29 @@
             app:layout_constraintTop_toBottomOf="@id/appbar"
             app:layout_constraintBottom_toTopOf="@id/BannerAdView" />
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/BannerAdView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:adSize="BANNER"
-                app:adUnitId="ca-app-pub-3940256099942544/9214589741"
-                app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/BannerAdView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-3940256099942544/9214589741"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:menu="@menu/bottom_navigation_menu"
-                app:itemTextColor="@color/white"
-                app:labelVisibilityMode="labeled"
-                android:background="@color/dark_slate_gray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_navigation_menu"
+            app:itemTextColor="@color/white"
+            app:labelVisibilityMode="labeled"
+            android:background="@color/dark_slate_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <com.google.android.material.navigation.NavigationView

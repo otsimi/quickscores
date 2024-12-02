@@ -1,7 +1,6 @@
 package com.live.quickscores.adapters
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,7 @@ import com.live.quickscores.databinding.MatchesBinding
 import com.live.quickscores.fixtureresponse.Response
 import com.squareup.picasso.Picasso
 import java.time.OffsetDateTime
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 import java.util.*
 
 class LeagueFixturesAdapter(

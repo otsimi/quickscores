@@ -33,8 +33,15 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
     </style>
-<!--    <style name="Base.Theme.QuickScores" parent="Theme.Material3.DayNight.NoActionBar">-->
+    <style name="CustomTabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!--    <style name="Base.Theme.QuickScores" parent="Theme.Material3.DayNight.NoActionBar">-->
 <!--        <item name="android:statusBarColor" tools:targetApi="l" >@color/dark_slate_gray</item>-->
 <!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
 <!--    </style>-->
+
 </resources>
