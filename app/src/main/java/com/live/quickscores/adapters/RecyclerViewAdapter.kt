@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.CompetitionTitleBinding
 import com.live.quickscores.databinding.MatchesBinding
-import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.fixtureresponse.Response
 import com.live.quickscores.utils.LEAGUE_LOGO_URL
 import com.live.quickscores.utils.LOGO_URL
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class RecyclerViewAdapter(
-    private val headerList: List<FixtureResponse>,private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val headerList: List<Response>, private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -102,14 +101,14 @@ class RecyclerViewAdapter(
         var count = 0
         var lastLeagueId = -1
 
-        headerList.forEach { fixtureResponse ->
-            fixtureResponse.response.forEach { match ->
-                if (match.league.id != lastLeagueId) {
+        headerList.forEach { response ->
+
+                if (response.league.id != lastLeagueId) {
                     count++
-                    lastLeagueId = match.league.id
+                    lastLeagueId = response.league.id
                 }
                 count++
-            }
+
         }
         return count
     }
@@ -138,25 +137,24 @@ class RecyclerViewAdapter(
         var offset = 0
         var lastLeagueId = -1
 
-        headerList.forEach { fixtureResponse ->
-            fixtureResponse.response.forEach { match ->
-                if (match.league.id != lastLeagueId) {
+        headerList.forEach { response ->
+                if (response.league.id != lastLeagueId) {
                     if (offset == position) {
                         return HeaderItem(
-                            leagueName = match.league.name,
-                            country = match.league.country,
-                            leagueId = match.league.id
+                            leagueName = response.league.name,
+                            country =response.league.country,
+                            leagueId = response.league.id
                         )
                     }
                     offset++
-                    lastLeagueId = match.league.id
+                    lastLeagueId = response.league.id
                 }
 
                 if (offset == position) {
-                    return MatchItem(match)
+                    return MatchItem(response)
                 }
                 offset++
-            }
+
         }
         throw IllegalStateException("Invalid position")
     }

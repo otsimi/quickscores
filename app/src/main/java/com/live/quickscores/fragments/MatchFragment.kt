@@ -18,7 +18,6 @@ import com.live.quickscores.viewmodelclasses.FixturesViewModel
 import com.live.quickscores.viewmodelclasses.FixturesViewModelFactory
 import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
-import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.fixtureresponse.Response
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -80,25 +79,28 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             println("${date},fetchDatadate")
             viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
                 response?.let {
-                    if (it.isSuccessful) {
-
-                        it.body()?.let { fixturesData ->
-                            println("${fixturesData},Malengeresponse")
-                            setupRecyclerView(fixturesData)
+                    if (response.isSuccessful) {
+                        println("Response Body: ${response.body()}")
+                        val fixturesData = response.body()
+                        fixturesData?.response?.let { fixturesList ->
+                            if (fixturesList.isNotEmpty()) {
+                                println("Fixtures List: $fixturesList")
+                                setupRecyclerView(fixturesList)
+                            } else {
+                                Log.e("MatchFragment", "No fixtures found for this date")
+                            }
                         } ?: run {
-                            Log.e("MatchFragment", "Empty response body")
+                            Log.e("MatchFragment", "Response body is empty")
                         }
-                    } else {
-                        Log.e("MatchFragment", "Error: ${it.message()}")
                     }
-                } ?: run {
-                    Log.e("MatchFragment", "Response is null")
-                }
+            }
             })
         }else{
             Log.d("Date","Date is empty")
         }
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onFixtureClick(match: Response) {
@@ -128,13 +130,15 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     }
 
 
-    private fun setupRecyclerView(fixturesResponse:FixtureResponse) {
-        recyclerViewAdapter = RecyclerViewAdapter(listOf(fixturesResponse), this)
+    private fun setupRecyclerView(fixtureList: List<Response>) {
+        val combinedList = recyclerViewAdapter.prepareData(fixtureList)
+        recyclerViewAdapter = RecyclerViewAdapter(combinedList, this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {
         return try {
