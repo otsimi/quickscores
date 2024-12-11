@@ -43,9 +43,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
-    private lateinit var dates: List<String>
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
     private lateinit var sharedViewModel:LeagueIdSharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,48 +66,17 @@ class MainActivity : AppCompatActivity(){
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        dates = generateDates()
-
         drawerLayout = findViewById(R.id.drawer_layout)
         adView = findViewById(R.id.BannerAdView)
         setUpToolBar()
         loadBannerAd()
-
-        viewPager = findViewById(R.id.viewPager)
-        tabLayout = findViewById(R.id.tab_layout)
-
-        setUpViewPager(viewPager, tabLayout)
-
-        val todayIndex = findTodayIndex(dates)
-        viewPager.setCurrentItem(todayIndex, false)
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.countriesFragment -> {
-                    toggleViewPagerAndTabLayout(false)
-                }
-                R.id.leagueTableFragment->{
-                    toggleViewPagerAndTabLayout(false)
-                }
-                R.id.allLeaguesFragment->{
-                    toggleViewPagerAndTabLayout(false)
-                }
-                R.id.leaguesFragment->{
-                    toggleViewPagerAndTabLayout(false)
-                }
-                R.id.leaguesFixturesFragment->{
-                    hideToolBar()
-                }
-                R.id.fixtureFragment->{
-                    hideToolBar()
-
-                }
-                else -> {
-                    toggleViewPagerAndTabLayout(true)
-                }
+                R.id.fixtureFragment -> binding.bottomNavigation.visibility = View.GONE
+                else -> binding.bottomNavigation.visibility = View.VISIBLE
             }
         }
     }
@@ -145,102 +111,17 @@ class MainActivity : AppCompatActivity(){
         adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
     }
-
-    private fun setUpViewPager(viewPager: ViewPager2, tabLayout: TabLayout) {
-        val adapter = ViewPagerAdapter(this, dates)
-        viewPager.adapter = adapter
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            val date = dates[position]
-            tab.text = getTabTitle(date)
-        }.attach()
+    override fun onPause() {
+        super.onPause()
+        adView.pause()
+    }
+    override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+    override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
     }
 
-    private fun getTabTitle(dateString: String): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val date = dateFormat.parse(dateString) ?: return dateString
-
-        val calendar = Calendar.getInstance().apply { time = date }
-        val today = Calendar.getInstance()
-        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
-        val tomorrow = Calendar.getInstance().apply { add(Calendar.DATE, 1) }
-
-        return when {
-            calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "Today"
-            calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
-            calendar.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR) -> "Tomorrow"
-            else -> SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(date)
-        }
-    }
-    private fun generateDates(): List<String> {
-        val dateList = mutableListOf<String>()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val calendar = Calendar.getInstance()
-
-        dateList.add(dateFormat.format(calendar.time))
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        for (i in 1..14) {
-            calendar.add(Calendar.DATE, -1)
-            dateList.add(0, dateFormat.format(calendar.time))
-        }
-
-        calendar.time = Date()
-
-        for (i in 1..15) {
-            calendar.add(Calendar.DATE, 1)
-            dateList.add(dateFormat.format(calendar.time))
-        }
-
-        return dateList
-    }
-
-    private fun findTodayIndex(dates: List<String>): Int {
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        return dates.indexOf(today)
-    }
-
-    private fun hideViewPagerAndTabs() {
-        tabLayout.visibility=View.GONE
-        toolbar.visibility = View.VISIBLE
-        viewPager.visibility=View.GONE
-        Log.d("Murima", "ViewPager and Tabs are now hidden")
-    }
-
-    private fun showViewPagerAndTabs() {
-        viewPager.visibility=View.VISIBLE
-        toolbar.visibility = View.VISIBLE
-        tabLayout.visibility=View.VISIBLE
-        Log.d("Murima", "ViewPager and Tabs are now visible")
-    }
-    private fun hideToolBar(){
-        tabLayout.visibility=View.GONE
-        toolbar.visibility = View.GONE
-        viewPager.visibility=View.GONE
-        Log.d("Murima","Everything Hidden")
-    }
-    private fun toggleViewPagerAndTabLayout(show: Boolean) {
-        if (show) {
-            showViewPagerAndTabs()
-        } else {
-            hideViewPagerAndTabs()
-        }
-    }
-    @Deprecated("This method has been deprecated in favor of using the OnBackPressedDispatcher.")
-    override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-
-        if (currentFragment is FixtureFragment) {
-            supportFragmentManager.popBackStack()
-            showViewPagerAndTabs()
-        } else {
-            super.onBackPressed()
-        }
-    }
 }

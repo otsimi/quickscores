@@ -13,25 +13,33 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.repositories.FixturesRepository
 import com.live.quickscores.viewmodelclasses.FixturesViewModel
 import com.live.quickscores.viewmodelclasses.FixturesViewModelFactory
 import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
+import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.fixtureresponse.Response
+import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var date: String
     private var fixtureClickListener: OnFixtureClickListener? = null
-
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var dates: List<String>
     private val viewModel: FixturesViewModel by viewModels {
         FixturesViewModelFactory(FixturesRepository())
     }
@@ -61,46 +69,25 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_match, container, false)
+        dates = generateDates()
+        val todayIndex = findTodayIndex(dates)
+        viewPager = view.findViewById(R.id.viewPager)
+        tabLayout = view.findViewById(R.id.tab_layout)
+        viewPager.setCurrentItem(todayIndex, false)
+        setUpViewPager(viewPager, tabLayout)
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        date = arguments?.getString("date") ?: ""
         recyclerView = view.findViewById(R.id.RecyclerView)
-        if (date.isNotEmpty()) {
-            println("${date},Malengedate")
-            viewModel.fetchFixtures(date)
-            println("${date},fetchDatadate")
-            viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
-                response?.let {
-                    if (response.isSuccessful) {
-                        println("Response Body: ${response.body()}")
-                        val fixturesData = response.body()
-                        fixturesData?.response?.let { fixturesList ->
-                            if (fixturesList.isNotEmpty()) {
-                                println("Fixtures List: $fixturesList")
-                                setupRecyclerView(fixturesList)
-                            } else {
-                                Log.e("MatchFragment", "No fixtures found for this date")
-                            }
-                        } ?: run {
-                            Log.e("MatchFragment", "Response body is empty")
-                        }
-                    }
-            }
-            })
-        }else{
-            Log.d("Date","Date is empty")
-        }
+
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onFixtureClick(match: Response) {
@@ -128,14 +115,99 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 //            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
         println("${referee},Malenge")
     }
+    private fun generateDates(): List<String> {
+        val dateList = mutableListOf<String>()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+
+        dateList.add(dateFormat.format(calendar.time))
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        for (i in 1..14) {
+            calendar.add(Calendar.DATE, -1)
+            dateList.add(0, dateFormat.format(calendar.time))
+        }
+
+        calendar.time = Date()
+
+        for (i in 1..15) {
+            calendar.add(Calendar.DATE, 1)
+            dateList.add(dateFormat.format(calendar.time))
+        }
+
+        return dateList
+    }
+    private fun setUpViewPager(viewPager: ViewPager2, tabLayout: TabLayout) {
+        val adapter = ViewPagerAdapter(requireActivity(), dates)
+        viewPager.adapter = adapter
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val selectedDate = dates[position]
+                fetchFixturesForDate(selectedDate)
+            }
+        })
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            val date = dates[position]
+            tab.text = getTabTitle(date)
+        }.attach()
+    }
+    private fun fetchFixturesForDate(date: String) {
+        println("Fetching fixtures for date: $date")
+        viewModel.fetchFixtures(date)
+        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+            response?.let {
+                if (response.isSuccessful) {
+                    val fixturesData = response.body()
+                    fixturesData?.response?.let { fixturesList ->
+                        if (fixturesList.isNotEmpty()) {
+                            setupRecyclerView(fixturesList)
+                        } else {
+                            Log.e("MatchFragment", "No fixtures found for this date")
+                        }
+                    }
+                }
+            }
+        })
+    }
 
 
+    private fun getTabTitle(dateString: String): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val date = dateFormat.parse(dateString) ?: return dateString
+
+        val calendar = Calendar.getInstance().apply { time = date }
+        val today = Calendar.getInstance()
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
+        val tomorrow = Calendar.getInstance().apply { add(Calendar.DATE, 1) }
+
+        return when {
+            calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "Today"
+            calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
+            calendar.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
+                    calendar.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR) -> "Tomorrow"
+            else -> SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(date)
+        }
+    }
+    private fun findTodayIndex(dates: List<String>): Int {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        return dates.indexOf(today)
+    }
     private fun setupRecyclerView(fixtureList: List<Response>) {
-        val combinedList = recyclerViewAdapter.prepareData(fixtureList)
-        recyclerViewAdapter = RecyclerViewAdapter(combinedList, this)
+        Log.d("RecyclerViewSetup", "Starting RecyclerView setup")
+        Log.d("RecyclerViewSetup", "Fixture list size: ${fixtureList.size}")
+        recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
+            Log.d("RecyclerViewSetup", "RecyclerView setup completed")
+            Log.d("RecyclerViewSetup", "Number of items in adapter: ${recyclerViewAdapter.itemCount}")
         }
     }
 
@@ -156,13 +228,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         fixtureClickListener = null
     }
 
-    companion object {
-        fun newInstance(date: String): MatchFragment {
-            val fragment = MatchFragment()
-            val args = Bundle()
-            args.putString("date", date)
-            fragment.arguments = args
-            return fragment
-        }
-    }
+
+
+
 }

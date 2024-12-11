@@ -7,13 +7,13 @@ import com.live.quickscores.fragments.MatchFragment
 
 class ViewPagerAdapter(activity: FragmentActivity, private val dates: List<String>): FragmentStateAdapter(activity) {
 
+
     override fun getItemCount(): Int {
         return dates.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return MatchFragment.newInstance(dates[position])
+        return MatchFragment()
     }
-
 
 }

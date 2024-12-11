@@ -2,7 +2,6 @@ package com.live.quickscores.services
 
 import com.live.quickscores.allleaguesresponse.AllLeaguesReponse
 import com.live.quickscores.countriesresponse.CountriesResponse
-import com.live.quickscores.fixturedataresponse.FixtureDataResponse
 import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.leagueResponse.LeaguesResponse
 import com.live.quickscores.lineupresponse.LineupsResponse

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.*
-import com.live.quickscores.fixturedataresponse.FixtureDataResponse
 import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.repositories.FixturesRepository
 import kotlinx.coroutines.launch

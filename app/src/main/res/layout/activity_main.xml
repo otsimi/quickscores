@@ -21,26 +21,8 @@
 
             <include layout="@layout/toolbar_layout" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="scrollable"
-                app:tabGravity="fill"
-                app:tabIndicatorColor="@android:color/white"
-                app:tabSelectedTextColor="@color/black"
-                app:tabTextAppearance="@style/CustomTabTextStyle"/>
 
         </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/appbar"
-            app:layout_constraintBottom_toTopOf="@id/BannerAdView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"

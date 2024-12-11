@@ -1,6 +1,7 @@
 package com.live.quickscores.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +18,13 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class RecyclerViewAdapter(
-    private val headerList: List<Response>, private val fixtureClickListener: OnFixtureClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val fixtureList: List<Response>, private val fixtureClickListener: OnFixtureClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_ITEM = 1
+        private const val TAG = "RecyclerViewAdapter"
+
     }
 
     interface OnFixtureClickListener {
@@ -33,7 +36,6 @@ class RecyclerViewAdapter(
         fun bind(leagueName: String, country: String, leagueId: Int) {
             binding.league.text = leagueName
             binding.country.text = country
-
             Picasso.get().load("$LEAGUE_LOGO_URL$leagueId.png").into(binding.leagueLogo)
         }
     }
@@ -41,44 +43,44 @@ class RecyclerViewAdapter(
     inner class MatchViewHolder(private val binding: MatchesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(match: Response) {
+            Log.d(TAG, "Binding Match: ${match.teams.home.name} vs ${match.teams.away.name}")
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
-            val isoDate = match.fixture.date
-            val formattedTime = convertToLocalTime(isoDate)
-            println("${formattedTime},Murima Imeguswa")
 
+            val formattedTime = convertToLocalTime(match.fixture.date)
             binding.Time.text = formattedTime
-            if (match.teams.home.logo.isNotEmpty()) {
-                Picasso.get().load("$LOGO_URL${match.teams.home.id}.png").into(binding.HomeLogo)
-            }else{
-                binding.HomeLogo.setImageResource(R.drawable.imageholder)
-            }
-            if (match.teams.away.logo.isNotEmpty()) {
-                Picasso.get().load("$LOGO_URL${match.teams.away.id}.png").into(binding.AwayLogo)
-            }else{
-                binding.AwayLogo.setImageResource(R.drawable.imageholder)
-            }
-            val homeTeamGoals = match.goals.home
-            println("${match.goals.home},Malenge")
 
-            if (homeTeamGoals!= null){
-                binding.HomeGoals.visibility = View.VISIBLE
-                binding.HomeGoals.text= match.goals.home.toString()
+            loadImage(match.teams.home.logo, match.teams.home.id, binding.HomeLogo)
+            loadImage(match.teams.away.logo, match.teams.away.id, binding.AwayLogo)
 
-            } else{
-                binding.HomeGoals.visibility = View.GONE
-            }
-            val awayTeamGoals=match.goals.away
-            if (awayTeamGoals!=null){
-                binding.AwayGoals.visibility=View.VISIBLE
-                binding.AwayGoals.text=match.goals.away.toString()
-            }
-            else{
-                binding.AwayGoals.visibility = View.GONE
-            }
+            setGoals(binding, match.goals.home, match.goals.away)
 
             binding.root.setOnClickListener {
                 fixtureClickListener.onFixtureClick(match)
+            }
+        }
+
+        private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
+            if (logoUrl.isNotEmpty()) {
+                Picasso.get().load("$LOGO_URL$teamId.png").into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.imageholder)
+            }
+        }
+
+        private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?) {
+            if (homeGoals != null) {
+                binding.HomeGoals.visibility = View.VISIBLE
+                binding.HomeGoals.text = homeGoals.toString()
+            } else {
+                binding.HomeGoals.visibility = View.GONE
+            }
+
+            if (awayGoals != null) {
+                binding.AwayGoals.visibility = View.VISIBLE
+                binding.AwayGoals.text = awayGoals.toString()
+            } else {
+                binding.AwayGoals.visibility = View.GONE
             }
         }
     }
@@ -89,10 +91,18 @@ class RecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            val binding = CompetitionTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = CompetitionTitleBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             TitleViewHolder(binding)
         } else {
-            val binding = MatchesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = MatchesBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             MatchViewHolder(binding)
         }
     }
@@ -100,26 +110,23 @@ class RecyclerViewAdapter(
     override fun getItemCount(): Int {
         var count = 0
         var lastLeagueId = -1
-
-        headerList.forEach { response ->
-
-                if (response.league.id != lastLeagueId) {
-                    count++
-                    lastLeagueId = response.league.id
-                }
+        fixtureList.forEach { fixture ->
+            if (fixture.league.id != lastLeagueId) {
                 count++
-
+                lastLeagueId = fixture.league.id
+            }
+            count++
         }
+        Log.d(TAG, "getItemCount: Total items = $count")
         return count
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItemAtPosition(position)
-        when {
-            holder is TitleViewHolder && item is HeaderItem -> {
+        when (val item = getItemAtPosition(position)) {
+            is HeaderItem -> if (holder is TitleViewHolder) {
                 holder.bind(item.leagueName, item.country, item.leagueId)
             }
-            holder is MatchViewHolder && item is MatchItem -> {
+            is MatchItem -> if (holder is MatchViewHolder) {
                 holder.bind(item.match)
             }
         }
@@ -130,34 +137,37 @@ class RecyclerViewAdapter(
     }
 
     private sealed class ListItem
-    private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int) : ListItem()
+    private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int) :
+        ListItem()
+
     private data class MatchItem(val match: Response) : ListItem()
 
     private fun getItemAtPosition(position: Int): ListItem {
         var offset = 0
         var lastLeagueId = -1
 
-        headerList.forEach { response ->
-                if (response.league.id != lastLeagueId) {
-                    if (offset == position) {
-                        return HeaderItem(
-                            leagueName = response.league.name,
-                            country =response.league.country,
-                            leagueId = response.league.id
-                        )
-                    }
-                    offset++
-                    lastLeagueId = response.league.id
-                }
-
+        fixtureList.forEach { fixture ->
+            if (fixture.league.id != lastLeagueId) {
                 if (offset == position) {
-                    return MatchItem(response)
+                    return HeaderItem(
+                        leagueName = fixture.league.name,
+                        country = fixture.league.country,
+                        leagueId = fixture.league.id
+                    )
                 }
                 offset++
+                lastLeagueId = fixture.league.id
+            }
 
+            if (offset == position) {
+                return MatchItem(fixture)
+            }
+            offset++
         }
-        throw IllegalStateException("Invalid position")
+
+        throw IllegalStateException("Invalid position: $position")
     }
+
     @SuppressLint("NewApi")
     private fun convertToLocalTime(isoDate: String): String {
         return try {
@@ -167,6 +177,5 @@ class RecyclerViewAdapter(
         } catch (e: Exception) {
             "N/A"
         }
-
     }
 }
