@@ -74,18 +74,19 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_match, container, false)
         dates = generateDates()
-        val todayIndex = findTodayIndex(dates)
-        viewPager = view.findViewById(R.id.viewPager)
-        tabLayout = view.findViewById(R.id.tab_layout)
-        viewPager.setCurrentItem(todayIndex, false)
-        setUpViewPager(viewPager, tabLayout)
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.RecyclerView)
+        viewPager = view.findViewById(R.id.viewPager)
+        tabLayout = view.findViewById(R.id.tab_layout)
+        val todayIndex = findTodayIndex(dates)
+        setUpViewPager(viewPager, tabLayout)
+        viewPager.post {
+            viewPager.setCurrentItem(todayIndex, false)
+        }
 
     }
 
@@ -120,25 +121,11 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
-        dateList.add(dateFormat.format(calendar.time))
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        for (i in 1..14) {
-            calendar.add(Calendar.DATE, -1)
-            dateList.add(0, dateFormat.format(calendar.time))
-        }
-
-        calendar.time = Date()
-
-        for (i in 1..15) {
-            calendar.add(Calendar.DATE, 1)
+        for (i in -30..30) {
+            calendar.time = Date()
+            calendar.add(Calendar.DATE, i)
             dateList.add(dateFormat.format(calendar.time))
         }
-
         return dateList
     }
     private fun setUpViewPager(viewPager: ViewPager2, tabLayout: TabLayout) {
@@ -147,8 +134,25 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                Log.d("ViewPagerSwipe", "Page swiped to position: $position")
                 val selectedDate = dates[position]
+                println("${selectedDate},selected date malenge")
                 fetchFixturesForDate(selectedDate)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                when(state){
+                    ViewPager2.SCROLL_STATE_IDLE->{
+                        Log.d("ViewPagerSwipe", "Swipe ended (idle state)")
+                    }
+                    ViewPager2.SCROLL_STATE_DRAGGING->{
+                        Log.d("ViewPagerSwipe", "Swipe started (dragging state)")
+                    }
+                    ViewPager2.SCROLL_STATE_SETTLING->{
+                        Log.d("ViewPagerSwipe", "Swipe settling")
+                    }
+                }
             }
         })
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

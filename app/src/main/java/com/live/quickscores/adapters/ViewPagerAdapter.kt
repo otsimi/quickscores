@@ -14,6 +14,7 @@ class ViewPagerAdapter(activity: FragmentActivity, private val dates: List<Strin
 
     override fun createFragment(position: Int): Fragment {
         return MatchFragment()
+
     }
 
 }

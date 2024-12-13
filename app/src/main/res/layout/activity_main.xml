@@ -24,16 +24,18 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            app:navGraph="@navigation/nav_graph"
-            app:defaultNavHost="true"
             app:layout_constraintTop_toBottomOf="@id/appbar"
-            app:layout_constraintBottom_toTopOf="@id/BannerAdView" />
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
+
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/BannerAdView"
