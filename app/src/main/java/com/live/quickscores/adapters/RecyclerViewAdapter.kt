@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.CompetitionTitleBinding
@@ -48,7 +49,7 @@ class RecyclerViewAdapter(
             binding.AwayTeam.text = match.teams.away.name
 
             val formattedTime = convertToLocalTime(match.fixture.date)
-            binding.Time.text = formattedTime
+//            binding.Time.text = formattedTime
 
             loadImage(match.teams.home.logo, match.teams.home.id, binding.HomeLogo)
             loadImage(match.teams.away.logo, match.teams.away.id, binding.AwayLogo)
@@ -58,6 +59,29 @@ class RecyclerViewAdapter(
             binding.root.setOnClickListener {
                 fixtureClickListener.onFixtureClick(match)
             }
+            val fixtureStatus=match.fixture.status.short
+            val matchPeriod=match.fixture.status.elapsed
+            println("${fixtureStatus},${matchPeriod},Malenge live match")
+
+            when(fixtureStatus){
+                "1H","2H","ET"->{
+                    binding.Time.text= matchPeriod.toString()
+                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context,R.color.orange_red))
+                }
+                "HT","FT","BT","P","SUSP","INT","AET"->{
+                    binding.Time.text=fixtureStatus
+                }
+                else->{
+                    binding.Time.text=formattedTime
+                }
+            }
+
+            if (fixtureStatus == "NS" || fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="AWD"||fixtureStatus=="WO") {
+                hideGoals(binding)
+            } else {
+                setGoals(binding, match.goals.home, match.goals.away)
+            }
+
         }
 
         private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
@@ -68,7 +92,8 @@ class RecyclerViewAdapter(
             }
         }
 
-        private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?) {
+        private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?,) {
+
             if (homeGoals != null) {
                 binding.HomeGoals.visibility = View.VISIBLE
                 binding.HomeGoals.text = homeGoals.toString()
@@ -83,6 +108,10 @@ class RecyclerViewAdapter(
                 binding.AwayGoals.visibility = View.GONE
             }
         }
+    }
+    private fun hideGoals(binding: MatchesBinding) {
+        binding.HomeGoals.visibility = View.GONE
+        binding.AwayGoals.visibility = View.GONE
     }
 
     override fun getItemViewType(position: Int): Int {

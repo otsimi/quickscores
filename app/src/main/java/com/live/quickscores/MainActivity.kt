@@ -1,9 +1,7 @@
 package com.live.quickscores
 
-import com.live.quickscores.fragments.LeagueFixturesContentFragment
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,25 +14,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.databinding.ActivityMainBinding
-import com.live.quickscores.fragments.AllLeaguesFragment
-import com.live.quickscores.fragments.CountriesFragment
-import com.live.quickscores.fragments.FixtureFragment
-import com.live.quickscores.fragments.LeaguesFixturesFragment
-import com.live.quickscores.fragments.LeaguesFragment
-import com.live.quickscores.fragments.MatchFragment
-import com.live.quickscores.fragments.ResultsFragment
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+
 
 class MainActivity : AppCompatActivity(){
 

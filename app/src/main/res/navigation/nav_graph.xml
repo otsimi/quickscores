@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/matchFragment"
         android:name="com.live.quickscores.fragments.MatchFragment"
-        android:label="All Fixtures" />
+        android:label="All Fixtures" >
+        <action
+            android:id="@+id/action_matchFragment_to_fixtureFragment"
+            app:destination="@id/fixtureFragment" />
+    </fragment>
     <fragment
         android:id="@+id/countriesFragment"
         android:name="com.live.quickscores.fragments.CountriesFragment"

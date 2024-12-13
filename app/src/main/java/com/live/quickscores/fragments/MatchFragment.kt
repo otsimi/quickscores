@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -36,7 +37,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
-    private var fixtureClickListener: OnFixtureClickListener? = null
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
     private lateinit var dates: List<String>
@@ -44,30 +44,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         FixturesViewModelFactory(FixturesRepository())
     }
 
-    interface OnFixtureClickListener {
-        fun onFixtureClicked(
-            matchId: String,
-            homeTeam: String,
-            awayTeam: String,
-            homeTeamLogoUrl: String,
-            awayTeamLogoUrl: String,
-            leagueName:String,
-            venue:String?,
-            date:String?,
-            country:String?,
-            referee:String?,
-            city:String?,
-            homeTeamGoals:String?,
-            awayTeamGoals:String?,
-            homeTeamId:String,
-            awayTeamId:String,
-            leagueId:String,
-            season:String
-
-
-        )
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -109,12 +85,27 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val awayTeamId=match.teams.away.id
         val leagueId=match.league.id
         val season=match.league.season
-
-
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
-//        fixtureClickListener?.onFixtureClicked(matchId, homeTeam, awayTeam, homeTeamLogoUrl, awayTeamLogoUrl,leagueName,venue,formattedDate,country,city,referee,homeTeamGoals,awayTeamGoals,
-//            homeTeamId.toString(),awayTeamId.toString(),leagueId.toString(),season.toString())
-        println("${referee},Malenge")
+        val args = Bundle().apply {
+            putString("matchId", matchId ?: "")
+            putString("homeTeam", homeTeam ?: "Unknown")
+            putString("awayTeam", awayTeam ?: "Unknown")
+            putString("homeTeamLogoUrl", homeTeamLogoUrl ?: "")
+            putString("awayTeamLogoUrl", awayTeamLogoUrl ?: "")
+            putString("leagueName", leagueName ?: "")
+            putString("venue", venue ?: "")
+            putString("date", formattedDate ?: "")
+            putString("country", country ?: "")
+            putString("referee", referee ?: "")
+            putString("city", city ?: "")
+            putString("homeTeamGoals", (homeTeamGoals ?: "").toString())
+            putString("awayTeamGoals", (awayTeamGoals ?: "").toString())
+            putString("homeTeamId", homeTeamId.toString())
+            putString("awayTeamId", awayTeamId.toString())
+            putString("leagueId", leagueId.toString())
+            putString("season", season.toString())
+        }
+        findNavController().navigate(R.id.action_matchFragment_to_fixtureFragment,args)
     }
     private fun generateDates(): List<String> {
         val dateList = mutableListOf<String>()
@@ -229,7 +220,15 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     override fun onDetach() {
         super.onDetach()
-        fixtureClickListener = null
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val todayIndex = findTodayIndex(dates)
+        viewPager.post {
+            viewPager.setCurrentItem(todayIndex, false)
+        }
     }
 
 
