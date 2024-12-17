@@ -122,7 +122,10 @@ class FixtureFragment : Fragment() {
                 else -> binding.matchDate.text = date
 
             }
-            if (fixtureStatus=="NS") {
+            if (fixtureStatus=="TBD"){
+                binding.matchDate.text=date
+                binding.venue.text=venue
+            } else if (fixtureStatus=="NS") {
                 binding.venue.text = venue
             } else if (fixtureStatus == "1H"||fixtureStatus=="2H"||fixtureStatus=="ET") {
                 binding.venue.text = matchPeriod.toString()
