@@ -59,31 +59,37 @@ class RecyclerViewAdapter(
             binding.root.setOnClickListener {
                 fixtureClickListener.onFixtureClick(match)
             }
-            val fixtureStatus=match.fixture.status.short
-            val matchPeriod=match.fixture.status.elapsed
+            val fixtureStatus = match.fixture.status.short
+            val matchPeriod = match.fixture.status.elapsed
             println("${fixtureStatus},${matchPeriod},Malenge live match")
 
-            when(fixtureStatus){
-                "1H","2H","ET"->{
-                    binding.Time.text= matchPeriod.toString()
-                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context,R.color.orange_red))
-                }
-                "HT","FT","BT","P","SUSP","INT","AET"->{
-                    binding.Time.text=fixtureStatus
-                }
-                else->{
-                    binding.Time.text=formattedTime
-                }
-            }
-
-            if (fixtureStatus == "NS" || fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="AWD"||fixtureStatus=="WO") {
+            if (fixtureStatus=="TBD"){
                 hideGoals(binding)
-            } else {
+                binding.Time.text=fixtureStatus
+            }else if (fixtureStatus == "NS") {
+                hideGoals(binding)
+                binding.Time.text=formattedTime
+            } else if (fixtureStatus == "1H" || fixtureStatus == "2H" || fixtureStatus == "ET") {
+                binding.Time.text = matchPeriod.toString()
+                binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
                 setGoals(binding, match.goals.home, match.goals.away)
+            } else if (fixtureStatus == "HT" || fixtureStatus == "BT" || fixtureStatus == "P") {
+                binding.Time.text = fixtureStatus
+                binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+                setGoals(binding, match.goals.home, match.goals.away)
+            } else if (fixtureStatus == "FT" || fixtureStatus == "AET"||fixtureStatus=="PEN") {
+                binding.Time.text = fixtureStatus
+                setGoals(binding, match.goals.home, match.goals.away)
+            } else if (fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="INT") {
+                showFixtureResultsUnavailable(binding, match.fixture.status.short)
+                hideGoals(binding)
+            }else if(fixtureStatus=="AWD"){
+                binding.Time.text=fixtureStatus
+                showFixtureResultsUnavailable(binding,match.fixture.status.short)
             }
-
         }
 
+    }
         private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
             if (logoUrl.isNotEmpty()) {
                 Picasso.get().load("$LOGO_URL$teamId.png").into(imageView)
@@ -108,7 +114,19 @@ class RecyclerViewAdapter(
                 binding.AwayGoals.visibility = View.GONE
             }
         }
-    }
+        private fun showFixtureResultsUnavailable(binding: MatchesBinding, status: String) {
+            binding.cancelled.visibility = View.VISIBLE
+            binding.cancelled.text = when (status) {
+                "PST" -> "Postponed"
+                "CANC" -> "Cancelled"
+                "ABD" -> "Abandoned"
+                "AWD"->"Technical Loss"
+
+                else -> "N/A"
+            }
+        }
+
+
     private fun hideGoals(binding: MatchesBinding) {
         binding.HomeGoals.visibility = View.GONE
         binding.AwayGoals.visibility = View.GONE
