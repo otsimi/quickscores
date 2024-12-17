@@ -39,35 +39,12 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
     private val sharedViewModel: LeagueIdSharedViewModel by activityViewModels()
     private var leagueId: String? = null
 
-    interface OnFixtureClickListener {
-        fun onFixtureClicked(
-            matchId: String,
-            homeTeam: String,
-            awayTeam: String,
-            homeTeamLogoUrl: String,
-            awayTeamLogoUrl: String,
-            leagueName: String,
-            venue: String?,
-            date: String?,
-            country: String?,
-            referee: String?,
-            city: String?,
-            homeTeamGoals: String?,
-            awayTeamGoals: String?,
-            homeTeamId: String,
-            awayTeamId: String,
-            leagueId: String,
-            season: String
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
 
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -161,14 +138,17 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
             putString("leagueId", leagueId.toString())
             putString("season", season.toString())
         }
-
         findNavController().navigate(R.id.action_leaguesFixturesFragment_to_fixtureFragment3, args)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun groupFixturesByDate(fixtures: List<Response>): Map<String, List<Response>> {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return fixtures.groupBy { fixture ->
+
+        val sortedFixtures = fixtures.sortedByDescending { fixture ->
+            OffsetDateTime.parse(fixture.fixture.date).toLocalDate()
+        }
+        return sortedFixtures.groupBy { fixture ->
             OffsetDateTime.parse(fixture.fixture.date).format(dateFormatter)
         }
     }
@@ -180,7 +160,7 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
     fun getDateThreeMonthsAgo(): String {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, -3)
-        val formatter = SimpleDateFormat("yyyy-MM-dd") // Change pattern as needed
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
         return formatter.format(calendar.time)
     }
     @RequiresApi(Build.VERSION_CODES.O)

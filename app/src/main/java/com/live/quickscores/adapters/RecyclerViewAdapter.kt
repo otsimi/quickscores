@@ -82,7 +82,7 @@ class RecyclerViewAdapter(
                 setGoals(binding, match.goals.home, match.goals.away)
             } else if (fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="INT") {
                 showFixtureResultsUnavailable(binding, match.fixture.status.short)
-                hideGoals(binding)
+
             }else if(fixtureStatus=="AWD"){
                 binding.Time.text=fixtureStatus
                 showFixtureResultsUnavailable(binding,match.fixture.status.short)
@@ -121,11 +121,11 @@ class RecyclerViewAdapter(
                 "CANC" -> "Cancelled"
                 "ABD" -> "Abandoned"
                 "AWD"->"Technical Loss"
-
                 else -> "N/A"
             }
+            hideGoals(binding)
+            binding.Time.text=status
         }
-
 
     private fun hideGoals(binding: MatchesBinding) {
         binding.HomeGoals.visibility = View.GONE
