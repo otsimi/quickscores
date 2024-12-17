@@ -62,6 +62,25 @@
     <string name="logo">Img</string>
     <string name="team_points">50</string>
     <string name="notification_dialog">No fixtures available for this day,Scroll to another day!</string>
+    <string name="first_half">First Half</string>
+    <string name="second_half">Second Half</string>
+    <string name="half_time">Half Time</string>
+    <string name="full_time">Full Time</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="postponed">Postponed</string>
+    <string name="extra_time">Extra Time</string>
+    <string name="added_extra_time">Added Extra Time</string>
+    <string name="break_time">Break Time</string>
+    <string name="penalties">Penalties</string>
+    <string name="abandoned">Abandoned</string>
+    <string name="interrupted">Interrupted</string>
+
+
+
+
+
+
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -85,6 +85,8 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         val awayTeamId=match.teams.away.id
         val leagueId=match.league.id
         val season=match.league.season
+        val fixtureStatus=match.fixture.status.short
+        val matchPeriod=match.fixture.status.elapsed
         Toast.makeText(requireContext(), "Clicked on: ${match.teams.home.name} vs ${match.teams.away.name}", Toast.LENGTH_SHORT).show()
         val args = Bundle().apply {
             putString("matchId", matchId ?: "")
@@ -104,6 +106,8 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             putString("awayTeamId", awayTeamId.toString())
             putString("leagueId", leagueId.toString())
             putString("season", season.toString())
+            putString("fixtureStatus",fixtureStatus)
+            putString("matchPeriod",matchPeriod.toString())
         }
         findNavController().navigate(R.id.action_matchFragment_to_fixtureFragment,args)
     }
@@ -177,16 +181,10 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
         val calendar = Calendar.getInstance().apply { time = date }
         val today = Calendar.getInstance()
-        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
-        val tomorrow = Calendar.getInstance().apply { add(Calendar.DATE, 1) }
 
         return when {
             calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                     calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "Today"
-            calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
-            calendar.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
-                    calendar.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR) -> "Tomorrow"
             else -> SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(date)
         }
     }
@@ -230,8 +228,5 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             viewPager.setCurrentItem(todayIndex, false)
         }
     }
-
-
-
 
 }

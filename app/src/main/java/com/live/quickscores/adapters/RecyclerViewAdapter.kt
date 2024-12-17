@@ -25,7 +25,6 @@ class RecyclerViewAdapter(
         private const val TYPE_HEADER = 0
         private const val TYPE_ITEM = 1
         private const val TAG = "RecyclerViewAdapter"
-
     }
 
     interface OnFixtureClickListener {

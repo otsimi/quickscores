@@ -72,6 +72,12 @@
         <argument
             android:name="season"
             app:argType="string" />
+        <argument
+            android:name="fixtureStatus"
+            app:argType="string"/>
+        <argument
+            android:name="matchPeriod"
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/allLeaguesFragment"

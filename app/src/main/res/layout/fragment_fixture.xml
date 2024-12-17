@@ -97,7 +97,7 @@
                     android:layout_centerInParent="true"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                     android:text="@string/venue"
                     android:layout_below="@id/matchDate"
                     android:layout_centerHorizontal="true"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -136,9 +136,7 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_toStartOf="@id/awayTeamLogo"
-                    android:layout_marginEnd="25dp"
-
-                    />
+                    android:layout_marginEnd="25dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

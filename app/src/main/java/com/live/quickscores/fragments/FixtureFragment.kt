@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.MainActivity
+import com.live.quickscores.R
 import com.live.quickscores.adapters.MatchDetailsViewPagerAdapter
 import com.live.quickscores.databinding.FragmentFixtureBinding
 import com.squareup.picasso.Picasso
@@ -63,6 +64,9 @@ class FixtureFragment : Fragment() {
                 putString("homeTeamId",it.getString("homeTeamId"))
                 putString("awayTeamId",it.getString("awayTeamId"))
                 putString("season",it.getString("season"))
+                putString("matchPeriod",it.getString("matchPeriod"))
+                putString("fixtureStatus",it.getString("fixtureStatus"))
+
 
             }
         }
@@ -91,12 +95,42 @@ class FixtureFragment : Fragment() {
             binding.homeTeamName.text = it.getString("homeTeam")
             binding.awayTeamName.text = it.getString("awayTeam")
             binding.leagueName.text = it.getString("leagueName")
-            binding.venue.text = it.getString("venue")
-            binding.matchDate.text = it.getString("date")
+//            binding.venue.text = it.getString("venue")
+//            binding.matchDate.text = it.getString("date")
             Picasso.get().load(it.getString("homeTeamLogoUrl")).into(binding.homeTeamLogo)
             Picasso.get().load(it.getString("awayTeamLogoUrl")).into(binding.awayTeamLogo)
             binding.homeTeamGoals.text = it.getString("homeTeamGoals")
             binding.awayTeamGoals.text = it.getString("awayTeamGoals")
+            val fixtureStatus=it.getString("fixtureStatus")
+            val matchPeriod=it.getString("matchPeriod")
+            val venue=it.getString("venue")
+            val date=it.getString("date")
+
+            when(fixtureStatus){
+                "NS" -> binding.matchDate.text = date
+                "1H" -> binding.matchDate.text = getString(R.string.first_half)
+                "2H" -> binding.matchDate.text = getString(R.string.second_half)
+                "HT" -> binding.matchDate.text = getString(R.string.half_time)
+                "FT" -> binding.matchDate.text = getString(R.string.full_time)
+                "ET"->binding.matchDate.text=getString(R.string.extra_time)
+                "AET"->binding.matchDate.text=getString(R.string.added_extra_time)
+                "PEN" -> binding.matchDate.text = getString(R.string.penalties)
+                "CANC"->binding.matchDate.text=getString(R.string.cancelled)
+                "PST"->binding.matchDate.text=getString(R.string.postponed)
+                "ABD"->binding.matchDate.text=getString(R.string.abandoned)
+                "INT"->binding.matchDate.text=getString(R.string.interrupted)
+                else -> binding.matchDate.text = date
+
+            }
+            if (fixtureStatus=="NS") {
+                binding.venue.text = venue
+            } else if (fixtureStatus == "1H"||fixtureStatus=="2H"||fixtureStatus=="ET") {
+                binding.venue.text = matchPeriod.toString()
+            } else if (fixtureStatus=="HT"||fixtureStatus=="FT"||fixtureStatus=="BT"||fixtureStatus=="AET"||fixtureStatus=="PEN") {
+                binding.venue.text = fixtureStatus
+            }else if (fixtureStatus=="PST"||fixtureStatus=="ABD"||fixtureStatus=="INT"||fixtureStatus=="CANC"){
+                binding.venue.text=venue
+            }
 
             if (homeTeamGoals == "-" && awayTeamGoals == "-") {
                 binding.homeTeamGoals.visibility = View.VISIBLE
@@ -114,8 +148,8 @@ class FixtureFragment : Fragment() {
                 if (homeGoalsInt > 0 && awayGoalsInt > 0) {
                     binding.homeTeamGoals.visibility = View.VISIBLE
                     binding.awayTeamGoals.visibility = View.VISIBLE
-                    binding.matchDate.visibility = View.GONE
-                    binding.venue.visibility = View.GONE
+                    binding.matchDate.visibility = View.VISIBLE
+                    binding.venue.visibility = View.VISIBLE
                 }
             }
         }
