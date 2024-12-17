@@ -101,6 +101,8 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
         val awayTeamId=match.teams.away.id
         val leagueId=match.league.id
         val season=match.league.season
+        val fixtureStatus=match.fixture.status.short
+        val matchPeriod=match.fixture.status.elapsed
 
         Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
         val args = Bundle().apply {
@@ -121,6 +123,8 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
             putString("awayTeamId", awayTeamId.toString())
             putString("leagueId", leagueId.toString())
             putString("season", season.toString())
+            putString("fixtureStatus",fixtureStatus)
+            putString("matchPeriod",matchPeriod.toString())
         }
 
         findNavController().navigate(R.id.action_leaguesFixturesFragment_to_fixtureFragment3, args)
