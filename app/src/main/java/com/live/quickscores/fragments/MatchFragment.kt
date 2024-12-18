@@ -109,6 +109,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             putString("fixtureStatus",fixtureStatus)
             putString("matchPeriod",matchPeriod.toString())
         }
+        println("${fixtureStatus},${matchPeriod},Malenge live match")
         findNavController().navigate(R.id.action_matchFragment_to_fixtureFragment,args)
     }
     private fun generateDates(): List<String> {

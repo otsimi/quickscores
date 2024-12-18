@@ -42,54 +42,71 @@ class RecyclerViewAdapter(
 
     inner class MatchViewHolder(private val binding: MatchesBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        @SuppressLint("SetTextI18n")
         fun bind(match: Response) {
             Log.d(TAG, "Binding Match: ${match.teams.home.name} vs ${match.teams.away.name}")
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
-
-            val formattedTime = convertToLocalTime(match.fixture.date)
-//            binding.Time.text = formattedTime
-
             loadImage(match.teams.home.logo, match.teams.home.id, binding.HomeLogo)
             loadImage(match.teams.away.logo, match.teams.away.id, binding.AwayLogo)
 
-            setGoals(binding, match.goals.home, match.goals.away)
+            val formattedTime = convertToLocalTime(match.fixture.date)
+            val fixtureStatus = match.fixture.status.short
+            val matchPeriod = match.fixture.status.elapsed
+            println("${fixtureStatus}, ${matchPeriod}, Malenge live match")
+            hideGoals(binding)
 
+            when {
+                fixtureStatus == "1H" || fixtureStatus == "2H" || fixtureStatus == "ET" -> {
+                    binding.Time.text = "${matchPeriod}'"
+                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+                    setGoals(binding, match.goals.home, match.goals.away)
+                }
+                fixtureStatus == "INT" -> {
+                    binding.Time.text = "INT (${matchPeriod}')"
+                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+                    setGoals(binding, match.goals.home, match.goals.away)
+                }
+                fixtureStatus=="NS"&& match.fixture.status.short == "CANC"->{
+                    hideGoals(binding)
+                    binding.Time.text=fixtureStatus
+                }
+                fixtureStatus == "NS" && match.fixture.status.short == "PST" -> {
+                    binding.Time.text = formattedTime
+                }
+                fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="AWD" -> {
+                    showFixtureResultsUnavailable(binding, fixtureStatus)
+                    binding.Time.text=fixtureStatus
+                    hideGoals(binding)
+                }
+
+                fixtureStatus == "NS" -> {
+                    binding.Time.text = formattedTime
+                    hideGoals(binding)
+                }
+                fixtureStatus == "HT" || fixtureStatus == "BT" || fixtureStatus == "P" -> {
+                    binding.Time.text = fixtureStatus
+                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+                    setGoals(binding, match.goals.home, match.goals.away)
+                }
+                fixtureStatus == "FT" || fixtureStatus == "AET" || fixtureStatus == "PEN" -> {
+                    binding.Time.text = fixtureStatus
+                    setGoals(binding, match.goals.home, match.goals.away)
+                }
+                else -> {
+                    binding.Time.text = fixtureStatus
+                    showFixtureResultsUnavailable(binding, fixtureStatus)
+                    hideGoals(binding)
+                }
+            }
             binding.root.setOnClickListener {
                 fixtureClickListener.onFixtureClick(match)
             }
-            val fixtureStatus = match.fixture.status.short
-            val matchPeriod = match.fixture.status.elapsed
-            println("${fixtureStatus},${matchPeriod},Malenge live match")
-
-            if (fixtureStatus=="TBD"){
-                hideGoals(binding)
-                binding.Time.text=fixtureStatus
-            }else if (fixtureStatus == "NS") {
-                hideGoals(binding)
-                binding.Time.text=formattedTime
-            } else if (fixtureStatus == "1H" || fixtureStatus == "2H" || fixtureStatus == "ET") {
-                binding.Time.text = matchPeriod.toString()
-                binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
-                setGoals(binding, match.goals.home, match.goals.away)
-            } else if (fixtureStatus == "HT" || fixtureStatus == "BT" || fixtureStatus == "P") {
-                binding.Time.text = fixtureStatus
-                binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
-                setGoals(binding, match.goals.home, match.goals.away)
-            } else if (fixtureStatus == "FT" || fixtureStatus == "AET"||fixtureStatus=="PEN") {
-                binding.Time.text = fixtureStatus
-                setGoals(binding, match.goals.home, match.goals.away)
-            } else if (fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="INT") {
-                showFixtureResultsUnavailable(binding, match.fixture.status.short)
-
-            }else if(fixtureStatus=="AWD"){
-                binding.Time.text=fixtureStatus
-                showFixtureResultsUnavailable(binding,match.fixture.status.short)
-            }
         }
-
     }
-        private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
+
+    private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
             if (logoUrl.isNotEmpty()) {
                 Picasso.get().load("$LOGO_URL$teamId.png").into(imageView)
             } else {
