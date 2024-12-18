@@ -66,7 +66,7 @@ class RecyclerViewAdapter(
                 }
                 fixtureStatus == "INT" -> {
                     binding.Time.text = "INT (${matchPeriod}')"
-                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+//                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
                     setGoals(binding, match.goals.home, match.goals.away)
                 }
                 fixtureStatus=="NS"&& match.fixture.status.short == "CANC"->{
@@ -94,7 +94,7 @@ class RecyclerViewAdapter(
                 }
                 fixtureStatus == "HT" || fixtureStatus == "BT" || fixtureStatus == "P" -> {
                     binding.Time.text = fixtureStatus
-                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
+//                    binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
                     setGoals(binding, match.goals.home, match.goals.away)
                     binding.cancelled.visibility=View.GONE
                 }
