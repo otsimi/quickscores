@@ -62,6 +62,7 @@ class RecyclerViewAdapter(
                     binding.Time.text = "${matchPeriod}'"
                     binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
                     setGoals(binding, match.goals.home, match.goals.away)
+                    binding.cancelled.visibility=View.GONE
                 }
                 fixtureStatus == "INT" -> {
                     binding.Time.text = "INT (${matchPeriod}')"
@@ -70,34 +71,40 @@ class RecyclerViewAdapter(
                 }
                 fixtureStatus=="NS"&& match.fixture.status.short == "CANC"->{
                     hideGoals(binding)
-                    binding.Time.text=fixtureStatus
+                    binding.Time.text=formattedTime
                 }
                 fixtureStatus == "NS" && match.fixture.status.short == "PST" -> {
                     binding.Time.text = formattedTime
                 }
+                ((match.goals.home ) > 0 || (match.goals.away) > 0) && (fixtureStatus=="HT"||fixtureStatus=="FT"||fixtureStatus=="AET"||fixtureStatus=="PEN") -> {
+                    binding.Time.text = fixtureStatus
+                    setGoals(binding, match.goals.home, match.goals.away)
+                    binding.cancelled.visibility=View.GONE
+                }
                 fixtureStatus == "PST" || fixtureStatus == "CANC" || fixtureStatus == "ABD"||fixtureStatus=="AWD" -> {
                     showFixtureResultsUnavailable(binding, fixtureStatus)
                     binding.Time.text=fixtureStatus
-                    hideGoals(binding)
+
                 }
 
                 fixtureStatus == "NS" -> {
                     binding.Time.text = formattedTime
                     hideGoals(binding)
+                    binding.cancelled.visibility=View.GONE
                 }
                 fixtureStatus == "HT" || fixtureStatus == "BT" || fixtureStatus == "P" -> {
                     binding.Time.text = fixtureStatus
                     binding.Time.setTextColor(ContextCompat.getColor(binding.root.context, R.color.orange_red))
                     setGoals(binding, match.goals.home, match.goals.away)
+                    binding.cancelled.visibility=View.GONE
                 }
                 fixtureStatus == "FT" || fixtureStatus == "AET" || fixtureStatus == "PEN" -> {
                     binding.Time.text = fixtureStatus
                     setGoals(binding, match.goals.home, match.goals.away)
+                    binding.cancelled.visibility=View.GONE
                 }
                 else -> {
-                    binding.Time.text = fixtureStatus
-                    showFixtureResultsUnavailable(binding, fixtureStatus)
-                    hideGoals(binding)
+                    println("${fixtureStatus},match statuses, Malenge")
                 }
             }
             binding.root.setOnClickListener {
