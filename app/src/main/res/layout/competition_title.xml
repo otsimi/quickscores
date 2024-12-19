@@ -2,35 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:padding="8dp">
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/imageholder"
-            android:id="@+id/leagueLogo"/>
-        <TextView
+            android:id="@+id/leagueLogo" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/league"
-            android:text="@string/league"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/country"
-            android:text="@string/country"
-            android:textSize="18sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/league"
+                android:text="@string/league"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/country"
+                android:text="@string/country"
+                android:textSize="14sp"
+                android:textColor="@color/grey" />
+        </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/leagues"
+        android:src="@drawable/baseline_navigate_next_24"
+        android:layout_gravity="center_vertical"/>
+
 </LinearLayout>

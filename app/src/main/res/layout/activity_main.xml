@@ -8,8 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_content"
-        >
+        android:id="@+id/main_content">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -21,10 +20,7 @@
 
             <include layout="@layout/toolbar_layout" />
 
-
         </com.google.android.material.appbar.AppBarLayout>
-
-
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
@@ -35,8 +31,6 @@
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
-
-
         <com.google.android.gms.ads.AdView
             android:id="@+id/BannerAdView"
             android:layout_width="match_parent"
@@ -60,7 +54,6 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

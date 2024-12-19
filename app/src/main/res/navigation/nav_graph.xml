@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_matchFragment_to_fixtureFragment"
             app:destination="@id/fixtureFragment" />
+        <action
+            android:id="@+id/action_matchFragment_to_leaguesFixturesFragment"
+            app:destination="@id/leaguesFixturesFragment" />
     </fragment>
     <fragment
         android:id="@+id/countriesFragment"

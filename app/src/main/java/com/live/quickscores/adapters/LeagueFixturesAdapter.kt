@@ -76,6 +76,7 @@ class LeagueFixturesAdapter(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = itemList[position]
         when {
@@ -87,13 +88,11 @@ class LeagueFixturesAdapter(
                 val fixture = item.second
 
                 fixture?.let {
-                    // Set team names and logos
                     itemHolder.homeTeam.text = it.teams.home.name
                     itemHolder.awayTeam.text = it.teams.away.name
                     Picasso.get().load(it.teams.home.logo).into(itemHolder.homeTeamLogo)
                     Picasso.get().load(it.teams.away.logo).into(itemHolder.awayTeamLogo)
 
-                    // Handle fixture statuses
                     val matchPeriod = it.fixture.status.elapsed
                     when (val fixtureStatus = it.fixture.status.short) {
                         "NS" -> {
@@ -102,7 +101,7 @@ class LeagueFixturesAdapter(
                             hideGoals(itemHolder)
                         }
                         "1H", "2H", "HT" -> {
-                            itemHolder.matchTime.text = matchPeriod.toString() + "'"
+                            itemHolder.matchTime.text = "$matchPeriod'"
                             itemHolder.matchTime.visibility = View.VISIBLE
                             setGoals(itemHolder, it.goals.home, it.goals.away)
                         }

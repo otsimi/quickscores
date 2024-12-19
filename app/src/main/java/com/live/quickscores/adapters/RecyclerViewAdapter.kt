@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class RecyclerViewAdapter(
-    private val fixtureList: List<Response>, private val fixtureClickListener: OnFixtureClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val fixtureList: List<Response>, private val fixtureClickListener: OnFixtureClickListener,private val leagueClickListener:OnLeagueItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -30,14 +30,21 @@ class RecyclerViewAdapter(
     interface OnFixtureClickListener {
         fun onFixtureClick(match: Response)
     }
+    interface OnLeagueItemClickListener{
+        fun onLeagueClick(leagueId: Int, leagueName: String, country: String,leagueLogo:String,season:Int)
+    }
 
     inner class TitleViewHolder(private val binding: CompetitionTitleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(leagueName: String, country: String, leagueId: Int) {
+        fun bind(leagueName: String, country: String, leagueId: Int,leagueLogo:String,season:Int) {
             binding.league.text = leagueName
             binding.country.text = country
             Picasso.get().load("$LEAGUE_LOGO_URL$leagueId.png").into(binding.leagueLogo)
+            binding.root.setOnClickListener{
+                leagueClickListener.onLeagueClick(leagueId,leagueName,country,leagueLogo,season)
+            }
         }
+
     }
 
     inner class MatchViewHolder(private val binding: MatchesBinding) :
@@ -110,6 +117,7 @@ class RecyclerViewAdapter(
             binding.root.setOnClickListener {
                 fixtureClickListener.onFixtureClick(match)
             }
+
         }
     }
 
@@ -194,7 +202,7 @@ class RecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItemAtPosition(position)) {
             is HeaderItem -> if (holder is TitleViewHolder) {
-                holder.bind(item.leagueName, item.country, item.leagueId)
+                holder.bind(item.leagueName, item.country, item.leagueId,item.leagueLogo,item.season)
             }
             is MatchItem -> if (holder is MatchViewHolder) {
                 holder.bind(item.match)
@@ -207,7 +215,7 @@ class RecyclerViewAdapter(
     }
 
     private sealed class ListItem
-    private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int) :
+    private data class HeaderItem(val leagueName: String, val country: String, val leagueId: Int,val leagueLogo:String,val season:Int) :
         ListItem()
 
     private data class MatchItem(val match: Response) : ListItem()
@@ -222,7 +230,9 @@ class RecyclerViewAdapter(
                     return HeaderItem(
                         leagueName = fixture.league.name,
                         country = fixture.league.country,
-                        leagueId = fixture.league.id
+                        leagueId = fixture.league.id,
+                        leagueLogo=fixture.league.logo,
+                        season = fixture.league.season
                     )
                 }
                 offset++

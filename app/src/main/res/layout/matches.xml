@@ -1,92 +1,100 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="10dp"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="10dp"
-    android:padding="10dp">
+    app:cardCornerRadius="8dp"
+    android:elevation="6dp"
+    android:layout_margin="8dp"
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/HomeLogo"
-                android:layout_marginStart="25dp"
-                android:src="@drawable/imageholder"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/imageholder" />
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:id="@+id/HomeTeam"
-                android:layout_weight="5"
-                android:textSize="18sp"
-                android:text="@string/Home"/>
+                android:textSize="14sp"
+                android:text="@string/Home" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/HomeGoals"
-                android:layout_weight="0"
-                android:textSize="18sp"
-                android:visibility="gone"/>
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:text="0" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:paddingVertical="4dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/Time"
-                android:textSize="18sp"
+                android:textSize="12sp"
+                android:textColor="@color/grey"
                 android:text="@string/Time"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cancelled"
+                android:textSize="12sp"
                 android:text="@string/cancelled_match"
-                android:layout_alignParentEnd="true"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/AwayLogo"
-                android:layout_marginStart="25dp"
-                android:src="@drawable/imageholder"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/imageholder" />
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:id="@+id/AwayTeam"
-                android:layout_weight="5"
-                android:textSize="18sp"
-                android:text="@string/Away"/>
+                android:textSize="14sp"
+                android:text="@string/Away" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/AwayGoals"
-                android:layout_weight="0"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:visibility="gone"/>
-
         </LinearLayout>
 
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

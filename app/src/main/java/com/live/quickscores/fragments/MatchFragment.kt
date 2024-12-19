@@ -11,12 +11,14 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.repositories.FixturesRepository
 import com.live.quickscores.viewmodelclasses.FixturesViewModel
 import com.live.quickscores.viewmodelclasses.FixturesViewModelFactory
@@ -33,13 +35,14 @@ import java.util.Date
 import java.util.Locale
 
 
-class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
+class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,RecyclerViewAdapter.OnLeagueItemClickListener {
 
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
     private lateinit var dates: List<String>
+    private lateinit var sharedViewModel: LeagueIdSharedViewModel
     private val viewModel: FixturesViewModel by viewModels {
         FixturesViewModelFactory(FixturesRepository())
     }
@@ -55,6 +58,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(LeagueIdSharedViewModel::class.java)
         recyclerView = view.findViewById(R.id.RecyclerView)
         viewPager = view.findViewById(R.id.viewPager)
         tabLayout = view.findViewById(R.id.tab_layout)
@@ -175,7 +179,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         })
     }
 
-
     private fun getTabTitle(dateString: String): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = dateFormat.parse(dateString) ?: return dateString
@@ -196,7 +199,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
     private fun setupRecyclerView(fixtureList: List<Response>) {
         Log.d("RecyclerViewSetup", "Starting RecyclerView setup")
         Log.d("RecyclerViewSetup", "Fixture list size: ${fixtureList.size}")
-        recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this)
+        recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this,this)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
@@ -216,10 +219,8 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
             null
         }
     }
-
     override fun onDetach() {
         super.onDetach()
-
     }
 
     override fun onResume() {
@@ -228,6 +229,21 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener {
         viewPager.post {
             viewPager.setCurrentItem(todayIndex, false)
         }
+    }
+
+    override fun onLeagueClick(leagueId: Int, leagueName: String, country: String,leagueLogo:String,season:Int) {
+        println("leagueClicked,$leagueId")
+        sharedViewModel.setSelectedLeagueId(leagueId.toString())
+        Toast.makeText(requireContext(),"Clicked on $leagueName",Toast.LENGTH_SHORT).show()
+        val args=Bundle().apply {
+            putString("leagueId",leagueId.toString())
+            putString("leagueName",leagueName)
+            putString("season",season.toString())
+            putString("leagueLogo",leagueLogo)
+            putString("leagueCountryName",country)
+        }
+        println("${leagueName},Malenge")
+        findNavController().navigate(R.id.action_matchFragment_to_leaguesFixturesFragment,args)
     }
 
 }
