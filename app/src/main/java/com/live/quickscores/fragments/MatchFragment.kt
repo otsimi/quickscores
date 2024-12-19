@@ -43,6 +43,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
     private lateinit var tabLayout: TabLayout
     private lateinit var dates: List<String>
     private lateinit var sharedViewModel: LeagueIdSharedViewModel
+    private var currentPage: Int = 0
     private val viewModel: FixturesViewModel by viewModels {
         FixturesViewModelFactory(FixturesRepository())
     }
@@ -67,6 +68,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         viewPager.post {
             viewPager.setCurrentItem(todayIndex, false)
         }
+
 
     }
 
@@ -135,7 +137,12 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 Log.d("ViewPagerSwipe", "Page swiped to position: $position")
+                val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
                 val selectedDate = dates[position]
+                if (todayDate==selectedDate){
+                    currentPage=position
+                    Log.d("Todays position $currentPage","Position equals selected date")
+                }
                 println("${selectedDate},selected date malenge")
                 fetchFixturesForDate(selectedDate)
             }
@@ -223,11 +230,16 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         super.onDetach()
     }
 
+    override fun onPause() {
+        super.onPause()
+        currentPage=viewPager.currentItem
+    }
+
     override fun onResume() {
         super.onResume()
-        val todayIndex = findTodayIndex(dates)
-        viewPager.post {
-            viewPager.setCurrentItem(todayIndex, false)
+        if (currentPage != 0) {
+            viewPager.setCurrentItem(currentPage, false)
+            Log.d("ViewPager", "Restored to today's position: $currentPage")
         }
     }
 
@@ -245,5 +257,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         println("${leagueName},Malenge")
         findNavController().navigate(R.id.action_matchFragment_to_leaguesFixturesFragment,args)
     }
+
 
 }

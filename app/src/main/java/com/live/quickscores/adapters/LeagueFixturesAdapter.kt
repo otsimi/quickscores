@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.live.quickscores.R
 import com.live.quickscores.databinding.MatchesBinding
@@ -100,8 +101,9 @@ class LeagueFixturesAdapter(
                             itemHolder.matchTime.visibility = View.VISIBLE
                             hideGoals(itemHolder)
                         }
-                        "1H", "2H", "HT" -> {
+                        "1H", "2H", "HT","BT" -> {
                             itemHolder.matchTime.text = "$matchPeriod'"
+                            itemHolder.matchTime.setTextColor(ContextCompat.getColor(itemHolder.matchTime.context,R.color.orange_red))
                             itemHolder.matchTime.visibility = View.VISIBLE
                             setGoals(itemHolder, it.goals.home, it.goals.away)
                         }
