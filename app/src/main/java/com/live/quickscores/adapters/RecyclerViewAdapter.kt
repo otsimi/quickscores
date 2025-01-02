@@ -122,41 +122,41 @@ class RecyclerViewAdapter(
     }
 
     private fun loadImage(logoUrl: String, teamId: Int, imageView: android.widget.ImageView) {
-            if (logoUrl.isNotEmpty()) {
-                Picasso.get().load("$LOGO_URL$teamId.png").into(imageView)
-            } else {
-                imageView.setImageResource(R.drawable.imageholder)
-            }
+        if (logoUrl.isNotEmpty()) {
+            Picasso.get().load("$LOGO_URL$teamId.png").into(imageView)
+        } else {
+            imageView.setImageResource(R.drawable.imageholder)
+        }
+    }
+
+    private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?,) {
+
+        if (homeGoals != null) {
+            binding.HomeGoals.visibility = View.VISIBLE
+            binding.HomeGoals.text = homeGoals.toString()
+        } else {
+            binding.HomeGoals.visibility = View.GONE
         }
 
-        private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?,) {
-
-            if (homeGoals != null) {
-                binding.HomeGoals.visibility = View.VISIBLE
-                binding.HomeGoals.text = homeGoals.toString()
-            } else {
-                binding.HomeGoals.visibility = View.GONE
-            }
-
-            if (awayGoals != null) {
-                binding.AwayGoals.visibility = View.VISIBLE
-                binding.AwayGoals.text = awayGoals.toString()
-            } else {
-                binding.AwayGoals.visibility = View.GONE
-            }
+        if (awayGoals != null) {
+            binding.AwayGoals.visibility = View.VISIBLE
+            binding.AwayGoals.text = awayGoals.toString()
+        } else {
+            binding.AwayGoals.visibility = View.GONE
         }
-        private fun showFixtureResultsUnavailable(binding: MatchesBinding, status: String) {
-            binding.cancelled.visibility = View.VISIBLE
-            binding.cancelled.text = when (status) {
-                "PST" -> "Postponed"
-                "CANC" -> "Cancelled"
-                "ABD" -> "Abandoned"
-                "AWD"->"Technical Loss"
-                else -> "N/A"
-            }
-            hideGoals(binding)
-            binding.Time.text=status
+    }
+    private fun showFixtureResultsUnavailable(binding: MatchesBinding, status: String) {
+        binding.cancelled.visibility = View.VISIBLE
+        binding.cancelled.text = when (status) {
+            "PST" -> "Postponed"
+            "CANC" -> "Cancelled"
+            "ABD" -> "Abandoned"
+            "AWD"->"Technical Loss"
+            else -> "N/A"
         }
+        hideGoals(binding)
+        binding.Time.text=status
+    }
 
     private fun hideGoals(binding: MatchesBinding) {
         binding.HomeGoals.visibility = View.GONE
