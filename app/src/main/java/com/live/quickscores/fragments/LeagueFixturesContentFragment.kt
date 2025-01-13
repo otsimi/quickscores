@@ -1,6 +1,5 @@
 package com.live.quickscores.fragments
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.live.quickscores.repositories.LeagueFixturesRepo
@@ -64,13 +62,15 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
             }
         }
 
-        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.fixtures.observe(viewLifecycleOwner) { response ->
+//            val daata=response.errorBody()
+//            println("$daata,errorparams")
             response?.body()?.let { fixturesData ->
                 val groupedFixtures = groupFixturesByDate(fixturesData.response)
                 println("$groupedFixtures, responseMalenge")
                 setUpRecyclerView(groupedFixtures)
             }
-        })
+        }
     }
 
 
@@ -106,19 +106,19 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
 
         Toast.makeText(requireContext(), "Clicked on: $homeTeam vs $awayTeam", Toast.LENGTH_SHORT).show()
         val args = Bundle().apply {
-            putString("matchId", matchId ?: "")
-            putString("homeTeam", homeTeam ?: "Unknown")
-            putString("awayTeam", awayTeam ?: "Unknown")
-            putString("homeTeamLogoUrl", homeTeamLogoUrl ?: "")
-            putString("awayTeamLogoUrl", awayTeamLogoUrl ?: "")
-            putString("leagueName", leagueName ?: "")
-            putString("venue", venue ?: "")
+            putString("matchId", matchId)
+            putString("homeTeam", homeTeam )
+            putString("awayTeam", awayTeam )
+            putString("homeTeamLogoUrl", homeTeamLogoUrl )
+            putString("awayTeamLogoUrl", awayTeamLogoUrl )
+            putString("leagueName", leagueName)
+            putString("venue", venue)
             putString("date", formattedDate ?: "")
-            putString("country", country ?: "")
-            putString("referee", referee ?: "")
-            putString("city", city ?: "")
-            putString("homeTeamGoals", (homeTeamGoals ?: "").toString())
-            putString("awayTeamGoals", (awayTeamGoals ?: "").toString())
+            putString("country", country)
+            putString("referee", referee )
+            putString("city", city)
+            putString("homeTeamGoals", (homeTeamGoals ).toString())
+            putString("awayTeamGoals", (awayTeamGoals).toString())
             putString("homeTeamId", homeTeamId.toString())
             putString("awayTeamId", awayTeamId.toString())
             putString("leagueId", leagueId.toString())
