@@ -48,7 +48,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
       _binding=FragmentLeaguesBinding.inflate(inflater,container,false)
         return binding.root
     }

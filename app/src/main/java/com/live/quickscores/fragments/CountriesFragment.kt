@@ -1,5 +1,6 @@
 package com.live.quickscores.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -64,6 +65,7 @@ class CountriesFragment : Fragment(), CountriesAdapter.OnCountryClickListener {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateAdapterData(countriesResponse: CountriesResponse) {
         countriesAdapter = CountriesAdapter(countriesResponse.response, this)
         binding.RecyclerView.adapter = countriesAdapter
@@ -72,8 +74,8 @@ class CountriesFragment : Fragment(), CountriesAdapter.OnCountryClickListener {
 
     override fun onCountryClick(country: Response) {
         val action = CountriesFragmentDirections.actionCountriesFragmentToLeaguesFragment(
-            countryName = country.name ?: "Unknown Country",
-            countryCode = country.code ?: "Unknown Code"
+            countryName = country.name,
+            countryCode = country.code
         )
         findNavController().navigate(action)
     }

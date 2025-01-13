@@ -226,9 +226,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
             null
         }
     }
-    override fun onDetach() {
-        super.onDetach()
-    }
 
     override fun onPause() {
         super.onPause()
