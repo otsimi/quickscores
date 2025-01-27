@@ -50,7 +50,7 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
             println("$id, gottenStringBundle")
             println("${leagueId}, malengeLoadedId")
 
-            val season = getCurrentYear().toString()
+            val season = getSeason().toString()
             val fromDate = getCurrentDate()
             val toDate = getDateInThreeMonths()
 
@@ -156,9 +156,15 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCurrentYear(): Int {
-        return ZonedDateTime.now().year
+    private fun getSeason(): Int {
+        val currentDate = ZonedDateTime.now()
+        return if (currentDate.month.value < 6) {
+            currentDate.year - 1
+        } else {
+            currentDate.year
+        }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {

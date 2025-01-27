@@ -61,7 +61,7 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
             println("$id, gottenStringBundle")
             println("${leagueId}, malengeLoadedId")
 
-            val season = getCurrentYear().toString()
+            val season = getSeason().toString()
             val fromDate = getDateThreeMonthsAgo()
             val toDate = getCurrentDate()
 
@@ -168,8 +168,13 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
         return formatter.format(calendar.time)
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCurrentYear(): Int {
-        return ZonedDateTime.now().year
+    private fun getSeason(): Int {
+        val currentDate = ZonedDateTime.now()
+        return if (currentDate.month.value < 6) {
+            currentDate.year - 1
+        } else {
+            currentDate.year
+        }
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {
