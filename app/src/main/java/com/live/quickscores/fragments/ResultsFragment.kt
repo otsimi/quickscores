@@ -72,13 +72,13 @@ class ResultsFragment : Fragment(),LeagueFixturesAdapter.OnFixtureClickListener 
                 println("leagueId is null, unable to fetch fixtures")
             }
         }
-        viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.fixtures.observe(viewLifecycleOwner) { response ->
             response?.body()?.let { fixturesData ->
                 val groupedFixtures = groupFixturesByDate(fixturesData.response)
                 println("$groupedFixtures, responseMalenge")
                 setUpRecyclerView(groupedFixtures)
             }
-        })
+        }
     }
     private fun setUpRecyclerView(groupedFixtures: Map<String, List<Response>>) {
         fixturesAdapter = LeagueFixturesAdapter(groupedFixtures, this)

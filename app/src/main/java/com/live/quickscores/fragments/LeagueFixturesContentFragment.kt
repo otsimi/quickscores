@@ -63,8 +63,6 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
         }
 
         viewModel.fixtures.observe(viewLifecycleOwner) { response ->
-//            val daata=response.errorBody()
-//            println("$daata,errorparams")
             response?.body()?.let { fixturesData ->
                 val groupedFixtures = groupFixturesByDate(fixturesData.response)
                 println("$groupedFixtures, responseMalenge")
@@ -158,7 +156,7 @@ class LeagueFixturesContentFragment : Fragment(), LeagueFixturesAdapter.OnFixtur
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getSeason(): Int {
         val currentDate = ZonedDateTime.now()
-        return if (currentDate.month.value < 6) {
+        return if (currentDate.month.value < 7) {
             currentDate.year - 1
         } else {
             currentDate.year
