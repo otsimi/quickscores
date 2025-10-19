@@ -129,6 +129,7 @@ class RecyclerViewAdapter(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setGoals(binding: MatchesBinding, homeGoals: Int?, awayGoals: Int?,) {
 
         if (homeGoals != null) {

@@ -1,7 +1,6 @@
 package com.live.quickscores.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -28,7 +27,6 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
     private lateinit var leaguesAdapter: LeaguesAdapter
     private var countryCode: String? = null
     private var countryName:String?=null
-    private var season: String? = null
     private lateinit var sharedViewModel: LeagueIdSharedViewModel
     private val viewModel: LeaguesViewModel by viewModels{
         LeaguesViewModelFactoryProvider(LeaguesRepository())
@@ -55,7 +53,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel = ViewModelProvider(requireActivity()).get(LeagueIdSharedViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity())[LeagueIdSharedViewModel::class.java]
         setUpRecyclerView()
         observeLeagueData()
         countryCode?.let { code ->
@@ -120,7 +118,7 @@ class LeaguesFragment : Fragment() ,LeaguesAdapter.OnLeagueClickListener{
             leagueCountryName = leagueCountryName
         )
         findNavController().navigate(action)
-        println("${leagueCountryName},${leagueId},${leagueName},${leagueLogo},leaguefetchDetails")
+        println("${leagueCountryName},${leagueId},${leagueName},${leagueLogo},league fetch Details")
 
     }
 }

@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.live.quickscores.databinding.ActivityMainBinding
+import androidx.core.graphics.toColorInt
 
 
 class MainActivity : AppCompatActivity(){
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(){
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         ).apply {
-            drawerArrowDrawable.color = Color.parseColor("#C0C0C0")
+            drawerArrowDrawable.color = "#C0C0C0".toColorInt()
         }
 
         drawerLayout.addDrawerListener(toggle)
