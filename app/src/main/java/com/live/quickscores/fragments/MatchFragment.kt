@@ -173,14 +173,14 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         viewModel.fixtures.observe(viewLifecycleOwner, Observer { response ->
             response?.let {
                 if (response.isSuccessful) {
-                    val fixturesData = response.body()
-                    fixturesData?.response?.let { fixturesList ->
-                        if (fixturesList.isNotEmpty()) {
-                            setupRecyclerView(fixturesList)
-                        } else {
-                            Log.e("MatchFragment", "No fixtures found for this date")
-                        }
+                    val sortedFixtures = response.body()?.response
+                    if (!sortedFixtures.isNullOrEmpty()){
+                        setupRecyclerView(sortedFixtures)
+                        println("✅ Sorted countries order: ${sortedFixtures.map { it.league.country }}")
+                    } else{
+                        Log.e("Match fragment","No fixtures found for this date")
                     }
+
                 }
             }
         })
