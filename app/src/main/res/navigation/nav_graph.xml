@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_matchFragment_to_leaguesFixturesFragment"
             app:destination="@id/leaguesFixturesFragment" />
+        <action
+            android:id="@+id/action_matchFragment_to_favoritesFragment"
+            app:destination="@+id/favoritesFragment"/>
     </fragment>
     <fragment
         android:id="@+id/countriesFragment"
@@ -154,6 +157,13 @@
         <action
             android:id="@+id/action_resultsFragment_to_fixtureFragment"
             app:destination="@id/fixtureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.live.quickscores.fragments.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+
     </fragment>
 
 

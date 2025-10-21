@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity(){
             R.id.countriesFragment,
             R.id.leagueTableFragment,
             R.id.allLeaguesFragment,
-            R.id.leaguesFragment
+            R.id.leaguesFragment,
+            R.id.favoritesFragment
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
 

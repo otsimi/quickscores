@@ -5,5 +5,6 @@ data class Response(
     val goals: Goals,
     val league: League,
     val score: Score,
-    val teams: Teams
+    val teams: Teams,
+    var isFavorite: Boolean = false
 )

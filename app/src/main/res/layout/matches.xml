@@ -13,6 +13,7 @@
         android:orientation="vertical"
         android:padding="4dp">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,28 +21,32 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
                 android:id="@+id/HomeLogo"
-                android:layout_marginEnd="8dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/imageholder" />
 
             <TextView
+                android:id="@+id/HomeTeam"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/HomeTeam"
+                android:text="@string/Home"
                 android:textSize="14sp"
-                android:text="@string/Home" />
+                android:layout_toEndOf="@id/HomeLogo"
+                />
 
             <TextView
+                android:id="@+id/HomeGoals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/HomeGoals"
+                android:text="@string/_0"
                 android:textSize="14sp"
                 android:visibility="gone"
-                android:text="0" />
+                android:layout_marginEnd="25dp"/>
         </LinearLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -49,23 +54,40 @@
             android:paddingVertical="4dp">
 
             <TextView
+                android:id="@+id/Time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Time"
-                android:textSize="12sp"
-                android:textColor="@color/grey"
                 android:text="@string/Time"
-                android:layout_alignParentStart="true" />
+
+                android:textColor="@color/grey"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
 
             <TextView
+                android:id="@+id/cancelled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cancelled"
-                android:textSize="12sp"
                 android:text="@string/cancelled_match"
-                android:visibility="gone"
-                android:layout_alignParentEnd="true" />
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:layout_alignParentEnd="true"
+                android:layout_toStartOf="@id/favoriteIcon"
+                android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/favoriteIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/favorites_icon"
+                android:padding="4dp"
+                android:src="@drawable/baseline_star_border_24"
+
+                               />
         </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,26 +96,28 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
                 android:id="@+id/AwayLogo"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/imageholder" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/imageholder"
+                android:layout_marginStart="12dp"/>
 
             <TextView
+                android:id="@+id/AwayTeam"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/AwayTeam"
+                android:text="@string/Away"
                 android:textSize="14sp"
-                android:text="@string/Away" />
+                android:layout_toEndOf="@id/AwayLogo"/>
 
             <TextView
+                android:id="@+id/AwayGoals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/AwayGoals"
                 android:textSize="14sp"
-                android:visibility="gone"/>
+                android:layout_marginEnd="25dp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

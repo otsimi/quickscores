@@ -26,6 +26,7 @@ class RecyclerViewAdapter(
         private const val TYPE_ITEM = 1
         private const val TAG = "RecyclerViewAdapter"
     }
+    var onFavoriteClickListener: ((Response) -> Unit)? = null
 
     interface OnFixtureClickListener {
         fun onFixtureClick(match: Response)
@@ -63,6 +64,31 @@ class RecyclerViewAdapter(
             val matchPeriod = match.fixture.status.elapsed
             println("${fixtureStatus}, ${matchPeriod}, Malenge live match")
             hideGoals(binding)
+
+            binding.favoriteIcon.setColorFilter(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    if (match.isFavorite) R.color.orange_red else R.color.grey
+                )
+            )
+            binding.favoriteIcon.setOnClickListener {
+                val currentPosition = bindingAdapterPosition
+                if (currentPosition!= RecyclerView.NO_POSITION){
+                    val match =fixtureList[currentPosition]
+                    match.isFavorite=!match.isFavorite
+                    val colorRes = if (match.isFavorite) R.color.orange_red else R.color.grey
+                    binding.favoriteIcon.setColorFilter(
+                        ContextCompat.getColor(binding.root.context, colorRes)
+                    )
+                    onFavoriteClickListener?.invoke(match)
+                    Log.d(TAG, "Favorite clicked for ${match.teams.home.name}: ${match.isFavorite}")
+                }
+
+
+
+
+
+            }
 
             when {
                 fixtureStatus == "1H" || fixtureStatus == "2H" || fixtureStatus == "ET" -> {
