@@ -1,5 +1,9 @@
 package com.live.quickscores.fragments
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -55,10 +62,13 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         val view = inflater.inflate(R.layout.fragment_match, container, false)
         dates = generateDates()
         return view
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        createNotificationChannel(requireContext())
         sharedViewModel = ViewModelProvider(requireActivity())[LeagueIdSharedViewModel::class.java]
         recyclerView = view.findViewById(R.id.RecyclerView)
         viewPager = view.findViewById(R.id.viewPager)
@@ -71,6 +81,23 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
 
 
     }
+    fun createNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "favorites_channel",
+                "Favorite Matches",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notifications for favorite matches"
+            }
+
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onFixtureClick(match: Response) {
@@ -203,10 +230,24 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         return dates.indexOf(today)
     }
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun setupRecyclerView(fixtureList: List<Response>) {
         Log.d("RecyclerViewSetup", "Starting RecyclerView setup")
         Log.d("RecyclerViewSetup", "Fixture list size: ${fixtureList.size}")
-        recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this,this)
+
+        recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this, this)
+
+        // 🔔 Handle favorite clicks here
+        recyclerViewAdapter.onFavoriteClickListener = { match ->
+            sendFavoriteNotification(
+                requireContext(),
+                "Match Added to Favorites",
+                "${match.teams.home.name} vs ${match.teams.away.name} has been added to your favorites!"
+            )
+
+            Log.d("Favorites", "Notification sent for ${match.teams.home.name} vs ${match.teams.away.name}")
+        }
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
@@ -214,6 +255,22 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
             Log.d("RecyclerViewSetup", "Number of items in adapter: ${recyclerViewAdapter.itemCount}")
         }
     }
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private fun sendFavoriteNotification(context: Context, title: String, message: String) {
+        val builder = NotificationCompat.Builder(context, "favorites_channel")
+            .setSmallIcon(android.R.drawable.btn_star_big_on)
+
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        val notificationManager = NotificationManagerCompat.from(context)
+        notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
+        Toast.makeText(context, "Notification sent: $title", Toast.LENGTH_SHORT).show()
+    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {

@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(){
         drawerLayout = findViewById(R.id.drawer_layout)
         adView = findViewById(R.id.BannerAdView)
         setUpToolBar()
-        loadBannerAd()
+//        loadBannerAd()
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.setupWithNavController(navController)
