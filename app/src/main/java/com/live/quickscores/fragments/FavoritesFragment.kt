@@ -1,59 +1,111 @@
 package com.live.quickscores.fragments
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import com.live.quickscores.R
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.live.quickscores.adapters.FavoritesAdapter
+import com.live.quickscores.databinding.FragmentFavoritesBinding
+import com.live.quickscores.viewmodelclasses.FavoriteViewModel
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FavoritesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FavoritesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class FavoritesFragment : Fragment()  {
+    private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var favoritesAdapter: FavoritesAdapter
+    private val viewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+
+        setupRecyclerView()
+        observeFavorites()
+        return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupRecyclerView() {
+        favoritesAdapter = FavoritesAdapter(onItemClick = { match ->
+            Toast.makeText(
+                requireContext(),
+                "Clicked on: ${match.homeTeam} vs ${match.awayTeam}",
+                Toast.LENGTH_SHORT
+            ).show()
+            val formattedDate=formatDate(match.time)
+
+            val args = Bundle().apply {
+                putString("matchId", match.id.toString())
+                putString("homeTeam", match.homeTeam)
+                putString("awayTeam", match.awayTeam)
+                putString("homeTeamLogoUrl", match.homeLogo)
+                putString("awayTeamLogoUrl", match.awayLogo)
+                putString("leagueName", match.league)
+                putString("date", formattedDate)
+                putString("homeTeamGoals", match.homeGoals)
+                putString("awayTeamGoals", match.awayGoals)
+                putString("venue",match.venue)
+                putString("country",match.country)
+                putString("referee",match.referee)
+                putString("city",match.city)
+
+                println("match time${match.time}")
+            }
+
+            findNavController().navigate(R.id.action_favoritesFragment_to_fixtureFragment, args)
+        })
+
+        binding.RecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = favoritesAdapter
+        }
+    }
+
+    private fun observeFavorites() {
+        viewModel.allFavorites.observe(viewLifecycleOwner) { favoritesList ->
+            favoritesAdapter.updateList(favoritesList)
+
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formatDate(dateString: String): String? {
+        return try {
+            val zonedDateTime = ZonedDateTime.parse(dateString)
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            zonedDateTime.format(formatter)
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoritesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             FavoritesFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

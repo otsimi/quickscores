@@ -72,7 +72,8 @@ class RecyclerViewAdapter(
                 )
             )
 
-            binding.favoriteIcon.setOnClickListener {
+            binding.favoriteIcon.setOnClickListener {view ->
+                view.isClickable = false
                 match.isFavorite = !match.isFavorite
 
                 val colorRes = if (match.isFavorite) R.color.orange_red else R.color.grey
@@ -81,6 +82,8 @@ class RecyclerViewAdapter(
                 )
 
                 onFavoriteClickListener?.invoke(match)
+                view.postDelayed({ view.isClickable = true }, 300)
+
                 Log.d(TAG, "Favorite clicked for ${match.teams.home.name}: ${match.isFavorite}")
             }
 

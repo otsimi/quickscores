@@ -163,6 +163,10 @@
         android:name="com.live.quickscores.fragments.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_fixtureFragment"
+            app:destination="@+id/fixtureFragment"/>
+
 
     </fragment>
 

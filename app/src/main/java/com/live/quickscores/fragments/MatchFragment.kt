@@ -19,12 +19,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.live.quickscores.AppDatabase
+import com.live.quickscores.DataClassFavorite
+import com.live.quickscores.FavoritesDao
 import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.repositories.FixturesRepository
 import com.live.quickscores.viewmodelclasses.FixturesViewModel
@@ -33,6 +37,8 @@ import com.live.quickscores.R
 import com.live.quickscores.adapters.RecyclerViewAdapter
 import com.live.quickscores.adapters.ViewPagerAdapter
 import com.live.quickscores.fixtureresponse.Response
+import com.live.quickscores.viewmodelclasses.FavoriteViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -54,6 +60,10 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
     private val viewModel: FixturesViewModel by viewModels {
         FixturesViewModelFactory(FixturesRepository())
     }
+    private lateinit var favoritesViewModel: FavoriteViewModel
+    private lateinit var database: AppDatabase
+    private lateinit var dao: FavoritesDao
+
 
 
     override fun onCreateView(
@@ -78,6 +88,11 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         viewPager.post {
             viewPager.setCurrentItem(todayIndex, false)
         }
+        database = AppDatabase.getDatabase(requireContext())
+        dao = database.favoritesDao()
+
+        favoritesViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
+
 
 
     }
@@ -232,27 +247,42 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
     }
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun setupRecyclerView(fixtureList: List<Response>) {
-        Log.d("RecyclerViewSetup", "Starting RecyclerView setup")
-        Log.d("RecyclerViewSetup", "Fixture list size: ${fixtureList.size}")
-
         recyclerViewAdapter = RecyclerViewAdapter(fixtureList, this, this)
 
-        // 🔔 Handle favorite clicks here
         recyclerViewAdapter.onFavoriteClickListener = { match ->
-            sendFavoriteNotification(
-                requireContext(),
-                "Match Added to Favorites",
-                "${match.teams.home.name} vs ${match.teams.away.name} has been added to your favorites!"
-            )
+            lifecycleScope.launch {
+                val isFavorite = dao.isFavorite(match.fixture.id)
+                val favorite = DataClassFavorite(
+                    id = match.fixture.id,
+                    homeTeam = match.teams.home.name,
+                    awayTeam = match.teams.away.name,
+                    league = match.league.name,
+                    homeLogo = match.teams.home.logo,
+                    awayLogo = match.teams.away.logo,
+                    time = match.fixture.date,
+                    homeGoals = match.goals.home.toString(),
+                    awayGoals = match.goals.away.toString()
 
-            Log.d("Favorites", "Notification sent for ${match.teams.home.name} vs ${match.teams.away.name}")
+                )
+
+                if (isFavorite) {
+                    dao.deleteFavorite(favorite)
+                    Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+                    Log.d("FavoritesDB", "Removed: ${favorite.homeTeam} vs ${favorite.awayTeam}")
+                } else {
+                    dao.insertFavorite(favorite)
+                    sendFavoriteNotification(
+                        requireContext(),
+                        "Match Added to Favorites",
+                        "${match.teams.home.name} vs ${match.teams.away.name} has been added to your favorites!"
+                    )
+                    Log.d("FavoritesDB", "Inserted: ${favorite.homeTeam} vs ${favorite.awayTeam}")                }
+            }
         }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerViewAdapter
-            Log.d("RecyclerViewSetup", "RecyclerView setup completed")
-            Log.d("RecyclerViewSetup", "Number of items in adapter: ${recyclerViewAdapter.itemCount}")
         }
     }
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

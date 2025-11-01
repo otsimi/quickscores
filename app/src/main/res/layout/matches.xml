@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cancelled_match"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_alignParentEnd="true"
                 android:layout_toStartOf="@id/favoriteIcon"
                 android:layout_marginEnd="8dp"
