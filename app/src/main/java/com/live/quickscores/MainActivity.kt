@@ -1,6 +1,5 @@
 package com.live.quickscores
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle

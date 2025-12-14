@@ -19,6 +19,16 @@ interface FavoritesDao {
     @Query("SELECT * FROM favorite_matches")
     fun getAllFavorites(): LiveData<List<DataClassFavorite>>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM favorite_matches WHERE id = :matchId)")
+    @Query("SELECT EXISTS(SELECT 1 FROM favorite_matches WHERE fixtureId = :matchId)")
     suspend fun isFavorite(matchId: Int): Boolean
+
+
+    @Query("SELECT * FROM favorite_matches")
+    fun getFavoritesFlow(): LiveData<List<DataClassFavorite>>
+
+    @Query("SELECT * FROM favorite_matches")
+    suspend fun getFavoritesOnce(): List<DataClassFavorite>
+
+
 }
+

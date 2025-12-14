@@ -38,6 +38,9 @@ interface ApiService {
     @GET("v3/leagues")
     suspend fun getAllLeagues():Response<AllLeaguesReponse>
 
+    @GET("v3/fixtures")
+    suspend fun getFixturesByFixtureId(@Query("matchId") fixtureId: Int): Response<FixtureResponse>
+
 }
 
 

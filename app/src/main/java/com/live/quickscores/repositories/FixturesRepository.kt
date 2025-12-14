@@ -9,5 +9,7 @@ class FixturesRepository() {
     private val apiService: ApiService = RetrofitClient().getRetrofitInstance()
     suspend fun fetchFixtures(date: String): Response<FixtureResponse> {
         return apiService.fetchFixtures(date)
+
     }
+
 }

@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.live.quickscores.AppDatabase
 import com.live.quickscores.DataClassFavorite
+import com.live.quickscores.FavoriteFixtureEntity
 import com.live.quickscores.FavoritesDao
 import com.live.quickscores.LeagueIdSharedViewModel
 import com.live.quickscores.repositories.FixturesRepository
@@ -78,24 +79,35 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        createNotificationChannel(requireContext())
-        sharedViewModel = ViewModelProvider(requireActivity())[LeagueIdSharedViewModel::class.java]
-        recyclerView = view.findViewById(R.id.RecyclerView)
-        viewPager = view.findViewById(R.id.viewPager)
-        tabLayout = view.findViewById(R.id.tab_layout)
-        val todayIndex = findTodayIndex(dates)
-        setUpViewPager(viewPager, tabLayout)
-        viewPager.post {
-            viewPager.setCurrentItem(todayIndex, false)
-        }
-        database = AppDatabase.getDatabase(requireContext())
-        dao = database.favoritesDao()
 
+        createNotificationChannel(requireContext())
+
+        dao = AppDatabase.getDatabase(requireContext()).favoritesDao()
         favoritesViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
 
+        recyclerView = view.findViewById(R.id.RecyclerView)
 
+        recyclerViewAdapter = RecyclerViewAdapter(emptyList(), this, this)
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = recyclerViewAdapter
+
+
+        favoritesViewModel.favoriteIds.observe(viewLifecycleOwner) { ids ->
+            Log.d("FavoritesDebug", "Fragment received favorite IDs: $ids")
+            recyclerViewAdapter.updateFavoriteIds(ids)
+        }
+
+        viewPager = view.findViewById(R.id.viewPager)
+        tabLayout = view.findViewById(R.id.tab_layout)
+
+        val todayIndex = findTodayIndex(dates)
+        setUpViewPager(viewPager, tabLayout)
+        viewPager.post { viewPager.setCurrentItem(todayIndex, false) }
 
     }
+
+
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -251,34 +263,48 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
 
         recyclerViewAdapter.onFavoriteClickListener = { match ->
             lifecycleScope.launch {
-                val isFavorite = dao.isFavorite(match.fixture.id)
-                val favorite = DataClassFavorite(
-                    id = match.fixture.id,
-                    homeTeam = match.teams.home.name,
-                    awayTeam = match.teams.away.name,
-                    league = match.league.name,
-                    homeLogo = match.teams.home.logo,
-                    awayLogo = match.teams.away.logo,
-                    time = match.fixture.date,
-                    homeGoals = match.goals.home.toString(),
-                    awayGoals = match.goals.away.toString()
-
+                val matchId = match.fixture.id
+                val isFavorite = dao.isFavorite(matchId)
+                Log.d(
+                    "FavoritesDebug",
+                    "Favorite clicked → fixtureId=$matchId | wasFavorite=$isFavorite"
                 )
 
                 if (isFavorite) {
-                    dao.deleteFavorite(favorite)
+                    dao.deleteFavorite(DataClassFavorite(fixtureId = matchId))
+                    Log.d("FavoritesDebug", "Removed fixtureId=$matchId from favorites")
                     Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
-                    Log.d("FavoritesDB", "Removed: ${favorite.homeTeam} vs ${favorite.awayTeam}")
                 } else {
-                    dao.insertFavorite(favorite)
-                    sendFavoriteNotification(
-                        requireContext(),
-                        "Match Added to Favorites",
-                        "${match.teams.home.name} vs ${match.teams.away.name} has been added to your favorites!"
+                    dao.insertFavorite(DataClassFavorite(fixtureId = matchId))
+                    Log.d("FavoritesDebug", "Added fixtureId=$matchId to favorites")
+                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+
+                    val fixtureEntity = FavoriteFixtureEntity(
+                        fixtureId = match.fixture.id,
+                        homeTeam = match.teams.home.name,
+                        awayTeam = match.teams.away.name,
+                        homeGoals = match.goals.home.toString(),
+                        awayGoals = match.goals.away.toString(),
+                        homeLogo = match.teams.home.logo,
+                        awayLogo = match.teams.away.logo,
+                        time = match.fixture.date,
+                        venue = match.fixture.venue.name,
+                        country = match.league.country,
+                        referee = match.fixture.referee,
+                        city = match.fixture.venue.city,
+                        homeTeamId = match.teams.home.id.toString(),
+                        awayTeamId = match.teams.away.id.toString(),
+                        leagueId = match.league.id.toString(),
+                        season = match.league.season.toString(),
+                        fixtureStatus = match.fixture.status.short,
+                        matchPeriod = match.fixture.status.elapsed.toString()
                     )
-                    Log.d("FavoritesDB", "Inserted: ${favorite.homeTeam} vs ${favorite.awayTeam}")                }
+
+                    favoritesViewModel.insertFavoriteFixture(fixtureEntity)
+                }
             }
         }
+
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

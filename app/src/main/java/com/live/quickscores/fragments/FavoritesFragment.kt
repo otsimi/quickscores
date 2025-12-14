@@ -2,6 +2,7 @@ package com.live.quickscores.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class FavoritesFragment : Fragment()  {
 
         setupRecyclerView()
         observeFavorites()
+        viewModel.refreshFavorites()
         return binding.root
     }
 
@@ -52,14 +54,15 @@ class FavoritesFragment : Fragment()  {
                 Toast.LENGTH_SHORT
             ).show()
             val formattedDate=formatDate(match.time)
+            Log.d("FavoritesAdapter", "Match period: $formattedDate")
 
             val args = Bundle().apply {
-                putString("matchId", match.id.toString())
+                putString("matchId", match.fixtureId.toString())
                 putString("homeTeam", match.homeTeam)
                 putString("awayTeam", match.awayTeam)
                 putString("homeTeamLogoUrl", match.homeLogo)
                 putString("awayTeamLogoUrl", match.awayLogo)
-                putString("leagueName", match.league)
+//                putString("leagueName", match.)
                 putString("date", formattedDate)
                 putString("homeTeamGoals", match.homeGoals)
                 putString("awayTeamGoals", match.awayGoals)
@@ -71,6 +74,8 @@ class FavoritesFragment : Fragment()  {
                 println("match time${match.time}")
             }
 
+
+
             findNavController().navigate(R.id.action_favoritesFragment_to_fixtureFragment, args)
         })
 
@@ -81,11 +86,12 @@ class FavoritesFragment : Fragment()  {
     }
 
     private fun observeFavorites() {
-        viewModel.allFavorites.observe(viewLifecycleOwner) { favoritesList ->
+        viewModel.favoriteFixtures.observe(viewLifecycleOwner) { favoritesList ->
+            Log.d("FavoritesFragment", "Favorites list size: ${favoritesList.size}")
             favoritesAdapter.updateList(favoritesList)
-
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun formatDate(dateString: String): String? {
         return try {

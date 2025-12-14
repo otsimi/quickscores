@@ -25,6 +25,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="12dp"
+                android:contentDescription="@string/logo"
                 android:src="@drawable/imageholder" />
 
             <TextView
@@ -33,9 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/Home"
-                android:textSize="14sp"
-                android:layout_toEndOf="@id/HomeLogo"
-                />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/HomeGoals"
@@ -58,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Time"
-
                 android:textColor="@color/grey"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"/>
@@ -84,8 +82,8 @@
                 android:contentDescription="@string/favorites_icon"
                 android:padding="4dp"
                 android:src="@drawable/baseline_star_border_24"
+                />
 
-                               />
         </RelativeLayout>
 
 
@@ -99,6 +97,7 @@
                 android:id="@+id/AwayLogo"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:contentDescription="@string/logo"
                 android:src="@drawable/imageholder"
                 android:layout_marginStart="12dp"/>
 
@@ -108,8 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/Away"
-                android:textSize="14sp"
-                android:layout_toEndOf="@id/AwayLogo"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/AwayGoals"
