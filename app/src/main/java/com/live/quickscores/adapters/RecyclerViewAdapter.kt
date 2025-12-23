@@ -77,13 +77,12 @@ class RecyclerViewAdapter(
         fun bind(match: Response) {
             val fixtureId = match.fixture.id
 
-            // Team names and logos
             binding.HomeTeam.text = match.teams.home.name
             binding.AwayTeam.text = match.teams.away.name
             loadImage(match.teams.home.logo, match.teams.home.id, binding.HomeLogo)
             loadImage(match.teams.away.logo, match.teams.away.id, binding.AwayLogo)
 
-            // Time & status
+
             val formattedTime = convertToLocalTime(match.fixture.date)
             val fixtureStatus = match.fixture.status.short
             val matchPeriod = match.fixture.status.elapsed

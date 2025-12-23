@@ -62,10 +62,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         FixturesViewModelFactory(FixturesRepository())
     }
     private lateinit var favoritesViewModel: FavoriteViewModel
-    private lateinit var database: AppDatabase
     private lateinit var dao: FavoritesDao
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -73,7 +70,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         val view = inflater.inflate(R.layout.fragment_match, container, false)
         dates = generateDates()
         return view
-
 
     }
 
@@ -94,7 +90,7 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
 
 
         favoritesViewModel.favoriteIds.observe(viewLifecycleOwner) { ids ->
-            Log.d("FavoritesDebug", "Fragment received favorite IDs: $ids")
+            Log.d("FavoritesDebug", "Fragment saved favorite IDs: $ids")
             recyclerViewAdapter.updateFavoriteIds(ids)
         }
 
@@ -106,8 +102,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
         viewPager.post { viewPager.setCurrentItem(todayIndex, false) }
 
     }
-
-
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -123,8 +117,6 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
             notificationManager.createNotificationChannel(channel)
         }
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onFixtureClick(match: Response) {
@@ -283,8 +275,8 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
                         fixtureId = match.fixture.id,
                         homeTeam = match.teams.home.name,
                         awayTeam = match.teams.away.name,
-                        homeGoals = match.goals.home.toString(),
-                        awayGoals = match.goals.away.toString(),
+//                        homeGoals = match.goals.home.toString(),
+//                        awayGoals = match.goals.away.toString(),
                         homeLogo = match.teams.home.logo,
                         awayLogo = match.teams.away.logo,
                         time = match.fixture.date,
@@ -292,15 +284,17 @@ class MatchFragment : Fragment(), RecyclerViewAdapter.OnFixtureClickListener,Rec
                         country = match.league.country,
                         referee = match.fixture.referee,
                         city = match.fixture.venue.city,
-                        homeTeamId = match.teams.home.id.toString(),
-                        awayTeamId = match.teams.away.id.toString(),
+//                        homeTeamId = match.teams.home.id.toString(),
+//                        awayTeamId = match.teams.away.id.toString(),
                         leagueId = match.league.id.toString(),
                         season = match.league.season.toString(),
-                        fixtureStatus = match.fixture.status.short,
-                        matchPeriod = match.fixture.status.elapsed.toString()
+//                        fixtureStatus = match.fixture.status.short,
+//                        matchPeriod = match.fixture.status.elapsed.toString()
                     )
 
                     favoritesViewModel.insertFavoriteFixture(fixtureEntity)
+                    println("${fixtureEntity},Malenge Saved Entity")
+                    Log.d("$fixtureEntity","Malenge Saved Entity")
                 }
             }
         }

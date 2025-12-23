@@ -1,13 +1,12 @@
 package com.live.quickscores.viewmodelclasses
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.live.quickscores.AppDatabase
 import com.live.quickscores.FavoriteFixtureEntity
 import com.live.quickscores.RetrofitClient
+import com.live.quickscores.fixtureresponse.Response
 import com.live.quickscores.repositories.FavoritesRepository
 import kotlinx.coroutines.launch
 
@@ -21,6 +20,9 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
     )
 
     val favoriteFixtures: LiveData<List<FavoriteFixtureEntity>> = repository.observeFavoriteFixtures()
+
+    val favoriteIds: LiveData<Set<Int>> = repository.getAllFavorites()
+        .map { list -> list.map { it.fixtureId }.toSet() }
 
     fun toggleFavorite(fixtureId: Int) {
         viewModelScope.launch {
@@ -38,7 +40,6 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-
     suspend fun isFavorite(fixtureId: Int): Boolean {
         return repository.isFavorite(fixtureId)
     }
@@ -48,6 +49,16 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
             repository.refreshAllFavorites()
         }
     }
-    val favoriteIds: LiveData<Set<Int>> = repository.getAllFavorites().map { list -> list.map { it.fixtureId }.toSet() }
 
+    private val _favoriteLiveFixtures = MutableLiveData<List<Response>>()
+    val favoriteLiveFixtures: LiveData<List<Response>> get() = _favoriteLiveFixtures
+
+    fun refreshLiveFavorites(ids: List<Int>) {
+        viewModelScope.launch {
+            if (ids.isEmpty()) return@launch
+            val liveFixtures = repository.getLiveFavorites(ids)
+            _favoriteLiveFixtures.postValue(liveFixtures)
+            Log.d("FavoriteViewModel", "Fetched ${liveFixtures.size} live fixtures")
+        }
+    }
 }
