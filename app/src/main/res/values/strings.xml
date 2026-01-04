@@ -84,5 +84,14 @@
     <string name="favorites_icon">Favorites Icon</string>
     <string name="_0">0</string>
     <string name="get_started">GET STARTED</string>
+    <string name="welcome">Welcome to Quickscores\n\nFor scores, stats and analytics for the sport you love — Football</string>
+    <string name="select_to_add_teams_players_and_leagues_to_your_favorites">Select * to add teams, players, and leagues to your favorites</string>
+    <string name="add_favourtites">Add favourites</string>
+    <string name="select_your_favourite_teams_or_players_to_personalise_your_football_experience">Select your favourite teams or players to personalise your football experience.</string>
+    <string name="teams">Teams</string>
+    <string name="players">Players</string>
+    <string name="skip">Skip</string>
+    <string name="item_name">item_name</string>
+    <string name="premier_league">Premier League</string>
 
 </resources>
