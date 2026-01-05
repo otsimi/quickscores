@@ -5,6 +5,7 @@ import com.live.quickscores.countriesresponse.CountriesResponse
 import com.live.quickscores.fixtureresponse.FixtureResponse
 import com.live.quickscores.leagueResponse.LeaguesResponse
 import com.live.quickscores.lineupresponse.LineupsResponse
+import com.live.quickscores.playersresponse.PlayerResponse
 import com.live.quickscores.standingsresponse.StandingsResponse
 import com.live.quickscores.teamsresponse.TeamsResponse
 import retrofit2.Response
@@ -39,15 +40,22 @@ interface ApiService {
     @GET("v3/leagues")
     suspend fun getAllLeagues():Response<AllLeaguesReponse>
 
-    @GET("v3/leagues")
-    suspend fun fetchLeagues(@Query("type") type: String,@Query("current")current:String?="true"):Response<AllLeaguesReponse>
+ @GET("v3/leagues")
+ suspend fun getCurrentLeagues(@Query("type") type: String = "league", @Query("current") current: Boolean = true): Response<AllLeaguesReponse>
 
     @GET("v3/teams")
     suspend fun getTeamsByLeague(@Query("league")leagueId:Int,@Query("season")season: Int):Response<TeamsResponse>
  @GET("v3/fixtures")
  suspend fun getFixturesByIds(@Query("ids") fixtureIds: String): Response<FixtureResponse>
 
+ @GET("v3/players/topscorers")
+ suspend fun getTopScorers(@Query("league")leagueId: Int,@Query("season")season: Int): Response<PlayerResponse>
 
+    @GET("v3/players/topassists")
+    suspend fun getTopAssister(@Query("league")leagueId: Int,@Query("season")season: Int): Response<PlayerResponse>
+
+    @GET("v3/players/topyellowcards")
+    suspend fun getTopYellowCarded(@Query("league")leagueId: Int,@Query("season")season: Int): Response<PlayerResponse>
 }
 
 
