@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="12dp">
     <ImageView
-        android:id="@+id/itemImage"
+        android:id="@+id/team_player_logo"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
@@ -15,28 +15,28 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
-        android:id="@+id/itemName"
+        android:id="@+id/team_player_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/item_name"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toEndOf="@id/itemImage"
-        app:layout_constraintTop_toTopOf="@id/itemImage"
+        app:layout_constraintStart_toEndOf="@id/team_player_logo"
+        app:layout_constraintTop_toTopOf="@id/team_player_logo"
         app:layout_constraintEnd_toStartOf="@id/favoriteIcon"
         android:layout_marginStart="12dp" />
 
     <TextView
-        android:id="@+id/itemSubtitle"
+        android:id="@+id/team_player_league_or_teamName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/premier_league"
         android:textSize="13sp"
         android:textColor="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@id/itemName"
-        app:layout_constraintTop_toBottomOf="@id/itemName"
-        app:layout_constraintEnd_toEndOf="@id/itemName" />
+        app:layout_constraintStart_toStartOf="@id/team_player_name"
+        app:layout_constraintTop_toBottomOf="@id/team_player_name"
+        app:layout_constraintEnd_toEndOf="@id/team_player_name" />
 
     <ImageView
         android:id="@+id/favoriteIcon"
