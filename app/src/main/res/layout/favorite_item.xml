@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="12dp">
-    <ImageView
-        android:id="@+id/team_player_logo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/imageholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    android:layout_margin="8dp"
+    android:padding="12dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
 
-    <TextView
-        android:id="@+id/team_player_name"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/item_name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toEndOf="@id/team_player_logo"
-        app:layout_constraintTop_toTopOf="@id/team_player_logo"
-        app:layout_constraintEnd_toStartOf="@id/favoriteIcon"
-        android:layout_marginStart="12dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/team_player_league_or_teamName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/premier_league"
-        android:textSize="13sp"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@id/team_player_name"
-        app:layout_constraintTop_toBottomOf="@id/team_player_name"
-        app:layout_constraintEnd_toEndOf="@id/team_player_name" />
+        <ImageView
+            android:id="@+id/team_player_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/imageholder" />
 
-    <ImageView
-        android:id="@+id/favoriteIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/baseline_star_border_24"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
 
+            <TextView
+                android:id="@+id/team_player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/team_player_league_or_teamName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/premier_league"
+                android:textSize="13sp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/favoriteIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/baseline_star_border_24"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
